@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 /* ─── Stitch "Luminous Tech Retail" Design System ─── */
 @theme {
   /* Brand primaries (deep navy from Stitch + your logo crimson as accent) */
@@ -103,10 +102,14 @@ body {
     @apply bg-white rounded-2xl border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0px_8px_30px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-200;
   }
 
-  /* ── Nav link ── */
+  /* ── Nav link (fallback; header uses inline classes) ── */
   .nav-link {
-    @apply text-sm font-semibold text-on-surface-variant hover:text-brand-700 transition-colors tracking-wide uppercase;
+    @apply text-[13px] font-semibold text-on-surface-variant hover:text-brand-700 transition-colors;
   }
+
+  /* ── Size helpers not in Tailwind default scale ── */
+  .w-13 { width:  3.25rem; }
+  .h-13 { height: 3.25rem; }
 }
 
 /* ── Scrollbar ── */

@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg overflow-hidden bg-brand-600 flex-shrink-0">
-                <img src="/logo.jpeg" alt="Hari Om Electronics" className="w-full h-full object-cover" />
+                <img src="/logo-icon.png" alt="Hariom Electronics" className="w-full h-full object-contain p-0.5" />
               </div>
               <span className="text-sm font-bold text-brand-800">Admin</span>
             </Link>

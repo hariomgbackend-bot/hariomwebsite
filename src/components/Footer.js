@@ -23,7 +23,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl overflow-hidden bg-white flex-shrink-0 ring-1 ring-white/20">
                 <img
-                  src="/logo-hariom.png"
+                  src="/logo-icon.png"
                   alt="Hariom Electronics"
                   className="w-full h-full object-contain p-0.5"
                 />

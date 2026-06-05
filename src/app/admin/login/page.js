@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-20 h-20 rounded-2xl overflow-hidden mx-auto mb-4 bg-brand-600">
-            <img src="/logo.jpeg" alt="Hari Om Electronics" className="w-full h-full object-cover" />
+            <img src="/logo-icon.png" alt="Hariom Electronics" className="w-full h-full object-contain p-2" />
           </div>
           <h1 className="text-2xl font-bold text-brand-800">{t('admin.login')}</h1>
           <p className="text-sm text-gray-500 mt-2">Hari Om Electronics</p>

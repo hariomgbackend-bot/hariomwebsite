@@ -27,8 +27,8 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        <link rel="icon" href="/logo-hariom.png" />
-        <link rel="apple-touch-icon" href="/logo-hariom.png" />
+        <link rel="icon" href="/logo-icon.png" />
+        <link rel="apple-touch-icon" href="/logo-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
