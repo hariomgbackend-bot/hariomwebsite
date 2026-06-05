@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #1e3a5f;
+  --color-brand-600: #1a2e4a;
+  --color-brand-700: #0f2440;
+  --color-brand-800: #0c1a2e;
+  --color-brand-900: #08101e;
+  --color-accent-50: #fff7ed;
+  --color-accent-100: #ffedd5;
+  --color-accent-200: #fed7aa;
+  --color-accent-300: #fdba74;
+  --color-accent-400: #fb923c;
+  --color-accent-500: #f97316;
+  --color-accent-600: #ea580c;
+  --color-accent-700: #c2410c;
+  --color-accent-800: #9a3412;
+  --color-accent-900: #7c2d12;
+  --color-gold-400: #d4a853;
+  --color-gold-500: #c9952e;
+  --color-gold-600: #b07d1a;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-all duration-200 text-sm md:text-base;
+  }
+  .btn-primary-light {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-brand-600 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm md:text-base border border-gray-200;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-500 text-white font-medium rounded-lg hover:bg-accent-600 transition-all duration-200 text-sm md:text-base;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-600 text-brand-600 font-medium rounded-lg hover:bg-brand-600 hover:text-white transition-all duration-200 text-sm md:text-base;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-brand-600 transition-all duration-200 text-sm md:text-base;
+  }
+  .section-title {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brand-800;
+  }
+  .section-subtitle {
+    @apply text-base md:text-lg text-gray-600 mt-2;
+  }
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+}
