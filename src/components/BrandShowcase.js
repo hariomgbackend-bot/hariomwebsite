@@ -1,10 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import brands from '@/data/brands'
 
-// Map brand names to a subtle colour for the badge
 const palette = [
   'bg-blue-50 text-blue-700 border-blue-100',
   'bg-rose-50 text-rose-700 border-rose-100',
@@ -16,6 +16,35 @@ const palette = [
   'bg-emerald-50 text-emerald-700 border-emerald-100',
   'bg-pink-50 text-pink-700 border-pink-100',
 ]
+
+function BrandLogo({ brand, color }) {
+  const [failed, setFailed] = useState(false)
+
+  if (failed) {
+    return (
+      <div className={`rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ${color}`}>
+        <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
+          {brand.name.slice(0, 2).toUpperCase()}
+        </div>
+        <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-gray-200">
+      <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
+        <img
+          src={`https://logo.clearbit.com/${brand.domain}`}
+          alt={brand.name}
+          className="max-w-full max-h-full object-contain"
+          onError={() => setFailed(true)}
+        />
+      </div>
+      <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
+    </div>
+  )
+}
 
 export default function BrandShowcase() {
   const { t } = useTranslation()
@@ -29,21 +58,9 @@ export default function BrandShowcase() {
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3 md:gap-4">
-          {brands.map((brand, i) => {
-            const color = palette[i % palette.length]
-            return (
-              <div
-                key={brand.id}
-                className={`rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ${color}`}
-              >
-                {/* Brand logo circle */}
-                <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
-                  {brand.name.slice(0, 2).toUpperCase()}
-                </div>
-                <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
-              </div>
-            )
-          })}
+          {brands.map((brand, i) => (
+            <BrandLogo key={brand.id} brand={brand} color={palette[i % palette.length]} />
+          ))}
         </div>
 
         <div className="text-center mt-10">

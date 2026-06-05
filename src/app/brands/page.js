@@ -1,7 +1,31 @@
 'use client'
 
+import { useState } from 'react'
 import { useTranslation } from '@/hooks/useTranslation'
 import brands from '@/data/brands'
+
+function BrandCard({ brand }) {
+  const [failed, setFailed] = useState(false)
+
+  return (
+    <div className="bg-white rounded-xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-gray-100 group">
+      <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-4 bg-gray-50 p-3">
+        {failed ? (
+          <span className="text-xl font-bold text-brand-600">{brand.name.slice(0, 2).toUpperCase()}</span>
+        ) : (
+          <img
+            src={`https://logo.clearbit.com/${brand.domain}`}
+            alt={brand.name}
+            className="max-w-full max-h-full object-contain"
+            onError={() => setFailed(true)}
+          />
+        )}
+      </div>
+      <h3 className="font-semibold text-gray-800">{brand.name}</h3>
+      <p className="text-xs text-gray-500 mt-1">{brand.description}</p>
+    </div>
+  )
+}
 
 export default function BrandsPage() {
   const { t } = useTranslation()
@@ -22,18 +46,7 @@ export default function BrandsPage() {
         <div className="container-custom">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {brands.map((brand) => (
-              <div
-                key={brand.id}
-                className="bg-white rounded-xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-gray-100 group"
-              >
-                <div className="w-16 h-16 mx-auto bg-brand-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-600 transition-colors">
-                  <span className="text-xl font-bold text-brand-600 group-hover:text-white transition-colors">
-                    {brand.name.slice(0, 2).toUpperCase()}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gray-800 group-hover:text-brand-600 transition-colors">{brand.name}</h3>
-                <p className="text-xs text-gray-500 mt-1">{brand.description}</p>
-              </div>
+              <BrandCard key={brand.id} brand={brand} />
             ))}
           </div>
         </div>
