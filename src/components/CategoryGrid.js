@@ -23,36 +23,48 @@ export default function CategoryGrid() {
   const { lang, t } = useTranslation()
 
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
+    <section className="py-14 md:py-20 bg-surface-container">
       <div className="container-custom">
-        <div className="text-center mb-8 md:mb-10">
+        <div className="text-center mb-10 md:mb-12">
           <h2 className="section-title">{t('categories.heading')}</h2>
           <p className="section-subtitle">{t('categories.subheading')}</p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
           {categories.slice(0, 12).map((cat) => {
-            const catName = lang === 'hi' ? cat.nameHi : lang === 'mr' ? cat.nameMr : cat.name
-            const catDesc = lang === 'hi' ? cat.descriptionHi : lang === 'mr' ? cat.descriptionMr : cat.description
+            const catName =
+              lang === 'hi' ? cat.nameHi : lang === 'mr' ? cat.nameMr : cat.name
+            const catDesc =
+              lang === 'hi' ? cat.descriptionHi : lang === 'mr' ? cat.descriptionMr : cat.description
+
             return (
               <Link
                 key={cat.id}
                 href={`/products/${cat.id}`}
-                className="group bg-white rounded-xl p-4 md:p-5 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-gray-100"
+                className="group card bg-white p-4 md:p-5 flex flex-col items-center text-center"
               >
-                <div className="w-12 h-12 mx-auto bg-brand-50 text-brand-600 rounded-xl flex items-center justify-center mb-3 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                <div className="w-13 h-13 mx-auto bg-brand-50 text-brand-700 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-brand-700 group-hover:text-white transition-colors shadow-sm">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icons[cat.icon] || icons.small} />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d={icons[cat.icon] || icons.small}
+                    />
                   </svg>
                 </div>
-                <h3 className="text-sm font-semibold text-gray-800 group-hover:text-brand-600 transition-colors">{catName}</h3>
-                <p className="text-xs text-gray-500 mt-1 line-clamp-2">{catDesc}</p>
+                <h3 className="text-sm font-semibold text-on-surface group-hover:text-brand-700 transition-colors">
+                  {catName}
+                </h3>
+                <p className="text-xs text-on-surface-variant mt-1 line-clamp-2 leading-relaxed">
+                  {catDesc}
+                </p>
               </Link>
             )
           })}
         </div>
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-10">
           <Link href="/products/televisions" className="btn-outline text-sm">
             {t('categories.viewAll')}
           </Link>

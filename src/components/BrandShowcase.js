@@ -4,36 +4,54 @@ import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import brands from '@/data/brands'
 
+// Map brand names to a subtle colour for the badge
+const palette = [
+  'bg-blue-50 text-blue-700 border-blue-100',
+  'bg-rose-50 text-rose-700 border-rose-100',
+  'bg-violet-50 text-violet-700 border-violet-100',
+  'bg-amber-50 text-amber-700 border-amber-100',
+  'bg-teal-50 text-teal-700 border-teal-100',
+  'bg-orange-50 text-orange-700 border-orange-100',
+  'bg-cyan-50 text-cyan-700 border-cyan-100',
+  'bg-emerald-50 text-emerald-700 border-emerald-100',
+  'bg-pink-50 text-pink-700 border-pink-100',
+]
+
 export default function BrandShowcase() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section className="py-14 md:py-20 bg-white">
       <div className="container-custom">
-        <div className="text-center mb-8 md:mb-10">
+        <div className="text-center mb-10 md:mb-12">
           <h2 className="section-title">{t('brands.heading')}</h2>
           <p className="section-subtitle">{t('brands.subheading')}</p>
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3 md:gap-4">
-          {brands.map((brand) => (
-            <div
-              key={brand.id}
-              className="bg-gray-50 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:shadow-md hover:bg-white transition-all duration-200 group border border-gray-100"
-            >
-              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center mb-2 group-hover:bg-brand-600 transition-colors">
-                <span className="text-brand-600 font-bold text-xs group-hover:text-white transition-colors">
+          {brands.map((brand, i) => {
+            const color = palette[i % palette.length]
+            return (
+              <div
+                key={brand.id}
+                className={`rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ${color}`}
+              >
+                {/* Brand logo circle */}
+                <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
                   {brand.name.slice(0, 2).toUpperCase()}
-                </span>
+                </div>
+                <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
               </div>
-              <span className="text-xs font-semibold text-gray-700 group-hover:text-brand-600 transition-colors">{brand.name}</span>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
-        <div className="text-center mt-8">
-          <Link href="/brands" className="text-sm text-brand-600 hover:text-accent-500 font-medium transition-colors">
-            {t('brands.heading')} &rarr;
+        <div className="text-center mt-10">
+          <Link href="/brands" className="text-sm font-semibold text-brand-700 hover:text-crimson-500 transition-colors inline-flex items-center gap-1.5">
+            {t('brands.heading')}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </Link>
         </div>
       </div>

@@ -1,31 +1,51 @@
 @import "tailwindcss";
 
+/* ─── Stitch "Luminous Tech Retail" Design System ─── */
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #1e3a5f;
-  --color-brand-600: #1a2e4a;
-  --color-brand-700: #0f2440;
-  --color-brand-800: #0c1a2e;
-  --color-brand-900: #08101e;
-  --color-accent-50: #fff7ed;
-  --color-accent-100: #ffedd5;
-  --color-accent-200: #fed7aa;
-  --color-accent-300: #fdba74;
-  --color-accent-400: #fb923c;
-  --color-accent-500: #f97316;
-  --color-accent-600: #ea580c;
-  --color-accent-700: #c2410c;
-  --color-accent-800: #9a3412;
-  --color-accent-900: #7c2d12;
-  --color-gold-400: #d4a853;
-  --color-gold-500: #c9952e;
-  --color-gold-600: #b07d1a;
-  --font-display: 'Georgia', 'Times New Roman', serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Brand primaries (deep navy from Stitch + your logo crimson as accent) */
+  --color-brand-50:  #dae2ff;
+  --color-brand-100: #b1c5ff;
+  --color-brand-200: #82a5fe;
+  --color-brand-300: #4f7ef8;
+  --color-brand-400: #2b5ce6;
+  --color-brand-500: #1a3fa8;
+  --color-brand-600: #00378b;
+  --color-brand-700: #00235e;
+  --color-brand-800: #001847;
+  --color-brand-900: #000d2e;
+
+  /* Logo crimson accent */
+  --color-crimson-50:  #fce8ee;
+  --color-crimson-100: #f5b8ca;
+  --color-crimson-200: #ee88a6;
+  --color-crimson-300: #d95070;
+  --color-crimson-400: #c22249;
+  --color-crimson-500: #8b1a35;
+  --color-crimson-600: #6e1429;
+  --color-crimson-700: #520e1f;
+
+  /* Stitch surface tokens */
+  --color-surface:                  #fcf8fb;
+  --color-surface-low:              #f6f3f5;
+  --color-surface-container:        #f0edef;
+  --color-surface-high:             #eae7ea;
+  --color-surface-highest:          #e4e2e4;
+  --color-on-surface:               #1b1b1d;
+  --color-on-surface-variant:       #434652;
+  --color-outline:                  #747783;
+  --color-outline-variant:          #c4c6d3;
+
+  /* Orange CTA (tertiary) */
+  --color-accent-50:  #ffdbcd;
+  --color-accent-100: #ffb595;
+  --color-accent-200: #ff854a;
+  --color-accent-300: #ea5f1e;
+  --color-accent-400: #c9460a;
+  --color-accent-500: #a33200;
+
+  /* Fonts */
+  --font-display: 'Hanken Grotesk', 'Segoe UI', Arial, sans-serif;
+  --font-body:    'Hanken Grotesk', 'Segoe UI', Arial, sans-serif;
 }
 
 html {
@@ -34,6 +54,8 @@ html {
 
 body {
   font-family: var(--font-body);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -43,46 +65,57 @@ body {
 }
 
 @layer components {
+  /* ── Buttons ── */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-brand-700 text-white font-semibold rounded-xl hover:bg-brand-800 transition-all duration-200 text-sm md:text-base shadow-sm hover:shadow-md;
   }
   .btn-primary-light {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-brand-600 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm md:text-base border border-gray-200;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-brand-700 font-semibold rounded-xl hover:bg-surface-low transition-all duration-200 text-sm md:text-base border border-outline-variant;
   }
   .btn-accent {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-500 text-white font-medium rounded-lg hover:bg-accent-600 transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-200 text-white font-semibold rounded-xl hover:bg-accent-300 transition-all duration-200 text-sm md:text-base shadow-sm;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-600 text-brand-600 font-medium rounded-lg hover:bg-brand-600 hover:text-white transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-700 text-brand-700 font-semibold rounded-xl hover:bg-brand-700 hover:text-white transition-all duration-200 text-sm md:text-base;
   }
   .btn-outline-light {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-brand-600 transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-brand-700 transition-all duration-200 text-sm md:text-base;
   }
+  .btn-crimson {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-crimson-500 text-white font-semibold rounded-xl hover:bg-crimson-600 transition-all duration-200 text-sm md:text-base shadow-sm;
+  }
+
+  /* ── Typography ── */
   .section-title {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brand-800;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brand-800 tracking-tight;
   }
   .section-subtitle {
-    @apply text-base md:text-lg text-gray-600 mt-2;
+    @apply text-base md:text-lg text-on-surface-variant mt-2 leading-relaxed;
   }
+
+  /* ── Layout ── */
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-16;
+  }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-2xl border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0px_8px_30px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-200;
+  }
+
+  /* ── Nav link ── */
+  .nav-link {
+    @apply text-sm font-semibold text-on-surface-variant hover:text-brand-700 transition-colors tracking-wide uppercase;
   }
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface-low); }
+::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
 
+/* ── WhatsApp float ── */
 .whatsapp-float {
   position: fixed;
   bottom: 24px;
