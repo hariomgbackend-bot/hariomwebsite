@@ -1,6 +1,8 @@
 'use client'
 
-import products from '@/data/products'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { getFeaturedProducts } from '@/lib/products'
 
 // Brand colour map for the placeholder badge
 const brandColors = {
@@ -12,7 +14,15 @@ const brandColors = {
 }
 
 export default function FeaturedProducts() {
-  const featured = products.filter((p) => p.featured).slice(0, 8)
+  var [featured, setFeatured] = useState([])
+  var [loading, setLoading] = useState(true)
+
+  useEffect(function () {
+    getFeaturedProducts(8).then(function (products) {
+      setFeatured(products)
+      setLoading(false)
+    })
+  }, [])
 
   return (
     <section className="py-14 md:py-20 bg-surface-container">
@@ -24,27 +34,31 @@ export default function FeaturedProducts() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
           {featured.map((product) => (
-            <div
+            <Link
               key={product.id}
+              href={'/product/' + product.slug}
               className="card group bg-white overflow-hidden flex flex-col"
             >
-              {/* Product image area */}
               <div className="aspect-[4/3] bg-gradient-to-br from-brand-50 to-surface-low flex items-center justify-center p-6 relative">
-                {/* Placeholder brand badge */}
-                <div
-                  className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm ${
-                    brandColors[product.brand] || 'bg-brand-50 text-brand-700'
-                  }`}
-                >
-                  <span className="text-3xl font-bold">{product.brand[0]}</span>
-                </div>
-                {/* "Featured" chip */}
+                {product.image && product.image !== '/images/placeholder.svg' ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    onError={function (e) { e.target.src = '/images/placeholder.svg'; e.target.onerror = null }}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div
+                    className={'w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm ' + (brandColors[product.brand] || 'bg-brand-50 text-brand-700')}
+                  >
+                    <span className="text-3xl font-bold">{product.brand ? product.brand[0] : product.name[0]}</span>
+                  </div>
+                )}
                 <span className="absolute top-3 left-3 px-2.5 py-1 bg-crimson-500 text-white text-[10px] font-bold rounded-full tracking-wide uppercase">
                   Featured
                 </span>
               </div>
 
-              {/* Content */}
               <div className="p-4 flex flex-col flex-1">
                 <span className="text-[11px] font-bold text-accent-200 uppercase tracking-wider">
                   {product.brand}
@@ -54,12 +68,12 @@ export default function FeaturedProducts() {
                 </h3>
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-outline-variant">
                   <span className="text-base font-bold text-brand-800">{product.price}</span>
-                  <button className="text-xs bg-brand-700 text-white px-3.5 py-1.5 rounded-xl hover:bg-brand-800 active:scale-95 transition-all font-semibold">
+                  <span className="text-xs bg-brand-700 text-white px-3.5 py-1.5 rounded-xl hover:bg-brand-800 active:scale-95 transition-all font-semibold">
                     Enquire
-                  </button>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

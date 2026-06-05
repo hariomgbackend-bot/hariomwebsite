@@ -1,10 +1,11 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useParams, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
-import categories from '@/data/categories'
-import products from '@/data/products'
+import { getCategoryBySlug } from '@/lib/categories'
+import { getProducts } from '@/lib/products'
 
 const iconPaths = {
   tv: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
@@ -22,15 +23,29 @@ const iconPaths = {
 }
 
 export default function CategoryPage() {
-  const params = useParams()
-  const { lang, t } = useTranslation()
+  var params = useParams()
+  var { lang, t } = useTranslation()
+  var [categoryProducts, setCategoryProducts] = useState([])
+  var [category, setCategory] = useState(null)
+  var [loading, setLoading] = useState(true)
 
-  const category = categories.find((c) => c.id === params.slug)
-  if (!category) return notFound()
+  useEffect(function () {
+    setLoading(true)
+    getCategoryBySlug(params.slug).then(function (cat) {
+      if (!cat) return
+      setCategory(cat)
+      getProducts(cat.id).then(function (products) {
+        setCategoryProducts(products)
+        setLoading(false)
+      })
+    })
+  }, [params.slug])
 
-  const catName = lang === 'hi' ? category.nameHi : lang === 'mr' ? category.nameMr : category.name
-  const catDesc = lang === 'hi' ? category.descriptionHi : lang === 'mr' ? category.descriptionMr : category.description
-  const categoryProducts = products.filter((p) => p.category === category.id)
+  if (category === null && !loading) return notFound()
+  if (!category) return null
+
+  var catName = lang === 'hi' ? category.nameHi : lang === 'mr' ? category.nameMr : category.name
+  var catDesc = lang === 'hi' ? category.descriptionHi : lang === 'mr' ? category.descriptionMr : category.description
 
   return (
     <>
@@ -50,41 +65,54 @@ export default function CategoryPage() {
 
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="container-custom">
-          <div className="flex flex-wrap gap-2 mb-8">
-            {category.brands.map((brand) => (
-              <span key={brand} className="px-3 py-1.5 bg-white text-sm font-medium text-brand-600 rounded-lg border border-brand-200">
-                {brand}
-              </span>
-            ))}
-          </div>
+          {category.brands && category.brands.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {category.brands.map(function (brand) {
+                return (
+                  <span key={brand} className="px-3 py-1.5 bg-white text-sm font-medium text-brand-600 rounded-lg border border-brand-200">
+                    {brand}
+                  </span>
+                )
+              })}
+            </div>
+          )}
 
-          {categoryProducts.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-16">
+              <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-400">Loading products...</p>
+            </div>
+          ) : categoryProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categoryProducts.map((product) => (
-                <div key={product.id} className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow group">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-brand-50 to-brand-100 flex items-center justify-center p-8">
-                    <div className="w-20 h-20 bg-brand-600/10 rounded-full flex items-center justify-center">
-                      <span className="text-3xl font-bold text-brand-600">{product.brand[0]}</span>
+              {categoryProducts.map(function (product) {
+                return (
+                  <Link
+                    key={product.id}
+                    href={'/product/' + product.slug}
+                    className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow group"
+                  >
+                    <div className="aspect-[4/3] bg-gradient-to-br from-brand-50 to-brand-100 flex items-center justify-center p-8">
+                      {product.image && product.image !== '/images/placeholder.svg' ? (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          onError={function (e) { e.target.src = '/images/placeholder.svg'; e.target.onerror = null }}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 bg-brand-600/10 rounded-full flex items-center justify-center">
+                          <span className="text-3xl font-bold text-brand-600">{product.brand ? product.brand[0] : product.name[0]}</span>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div className="p-5">
-                    <span className="text-xs font-medium text-accent-500 uppercase">{product.brand}</span>
-                    <h3 className="text-base font-semibold text-gray-800 mt-1 group-hover:text-brand-600 transition-colors">{product.name}</h3>
-                    <p className="text-lg font-bold text-brand-800 mt-2">{product.price}</p>
-                    <div className="flex gap-2 mt-4">
-                      <button className="btn-primary text-xs px-4 py-2 flex-1 text-center">Enquire Now</button>
-                      <a
-                        href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi! I'm interested in ${product.name}`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-accent text-xs px-4 py-2 flex-1 text-center"
-                      >
-                        WhatsApp
-                      </a>
+                    <div className="p-5">
+                      <span className="text-xs font-medium text-accent-500 uppercase">{product.brand}</span>
+                      <h3 className="text-base font-semibold text-gray-800 mt-1 group-hover:text-brand-600 transition-colors">{product.name}</h3>
+                      <p className="text-lg font-bold text-brand-800 mt-2">{product.price}</p>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </Link>
+                )
+              })}
             </div>
           ) : (
             <div className="text-center py-16">
@@ -96,7 +124,7 @@ export default function CategoryPage() {
               <div className="flex gap-3 justify-center">
                 <a href="/contact" className="btn-primary">Contact Us</a>
                 <a
-                  href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi! I'm looking for ${catName}`)}`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'}?text=${encodeURIComponent(`Hi! I'm looking for ${catName}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-accent"
@@ -116,7 +144,7 @@ export default function CategoryPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/contact" className="btn-primary">Get in Touch</Link>
             <a
-              href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi! I have a query about ${catName}`)}`}
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'}?text=${encodeURIComponent(`Hi! I have a query about ${catName}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-accent"

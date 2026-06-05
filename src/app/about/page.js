@@ -62,7 +62,7 @@ export default function AboutPage() {
         <div className="container-custom text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Ready to find the perfect product?</h2>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/products/televisions" className="btn-accent">Explore Products</Link>
+            <Link href="/products" className="btn-accent">Explore Products</Link>
             <Link href="/stores" className="btn-outline-light">Visit Our Stores</Link>
           </div>
         </div>

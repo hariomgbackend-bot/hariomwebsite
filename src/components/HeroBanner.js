@@ -51,7 +51,7 @@ export default function HeroBanner() {
               <Link href="/stores" className="btn-accent px-7 py-3.5">
                 {t('hero.cta1')}
               </Link>
-              <Link href="/products/televisions" className="btn-outline-light px-7 py-3.5">
+              <Link href="/products" className="btn-outline-light px-7 py-3.5">
                 {t('hero.cta2')}
               </Link>
               <Link href="/contact" className="flex items-center gap-1.5 text-sm text-brand-300 hover:text-white transition-colors py-3.5 font-medium">
