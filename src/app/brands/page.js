@@ -14,7 +14,7 @@ function BrandCard({ brand }) {
           <span className="text-xl font-bold text-brand-600">{brand.name.slice(0, 2).toUpperCase()}</span>
         ) : (
           <img
-            src={`https://logo.clearbit.com/${brand.domain}`}
+            src={`https://cdn.brandfetch.io/${brand.domain}`}
             alt={brand.name}
             className="max-w-full max-h-full object-contain"
             onError={() => setFailed(true)}

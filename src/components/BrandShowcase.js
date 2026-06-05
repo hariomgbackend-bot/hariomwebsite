@@ -35,7 +35,7 @@ function BrandLogo({ brand, color }) {
     <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-gray-200">
       <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
         <img
-          src={`https://logo.clearbit.com/${brand.domain}`}
+          src={`https://cdn.brandfetch.io/${brand.domain}`}
           alt={brand.name}
           className="max-w-full max-h-full object-contain"
           onError={() => setFailed(true)}
