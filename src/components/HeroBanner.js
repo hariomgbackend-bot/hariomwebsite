@@ -85,7 +85,7 @@ export default function HeroBanner() {
               {/* Logo card */}
               <div className="relative w-72 h-72 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center p-10 shadow-2xl">
                 <img
-                  src="/logo-icon.png"
+                  src="/logo-hariom.png"
                   alt="Hariom Electronics"
                   className="w-full h-full object-contain drop-shadow-2xl"
                 />
