@@ -52,8 +52,7 @@ export async function getProductBySlug(slug) {
     snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
     var match = results.find(function (p) { return p.slug === slug })
     if (match) return match
-    var fallback = staticProducts.find(function (p) { return slugify(p.name) === slug })
-    return fallback ? mapStaticProduct(fallback) : null
+    return null
   } catch (e) {
     console.error('getProductBySlug error:', e)
     var fallback = staticProducts.find(function (p) { return slugify(p.name) === slug })
@@ -71,7 +70,7 @@ export async function getProducts(categoryId) {
     var snap = await getDocs(query(ref, ...constraints))
     var results = []
     snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
-    return results.length > 0 ? results : staticProducts.filter(function (p) { return !categoryId || p.category === categoryId }).map(mapStaticProduct)
+    return results
   } catch (e) {
     console.error('getProducts error:', e)
     return staticProducts.filter(function (p) { return !categoryId || p.category === categoryId }).map(mapStaticProduct)
@@ -87,7 +86,7 @@ export async function getFeaturedProducts(max) {
     var snap = await getDocs(q)
     var results = []
     snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
-    if (results.length === 0) return staticProducts.filter(function (p) { return p.featured !== false }).slice(0, max).map(mapStaticProduct)
+    if (results.length === 0) return []
     var featured = results.filter(function (p) { return p.featured === true })
     if (featured.length > 0) results = featured
     results.sort(function (a, b) { return a.name.localeCompare(b.name) })

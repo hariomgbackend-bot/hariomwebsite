@@ -28,7 +28,7 @@ export async function getActivePromotions() {
     var results = []
     snap.forEach(function (doc) { results.push(mapPromotion(doc)) })
     results.sort(function (a, b) { return a.title.localeCompare(b.title) })
-    return results.length > 0 ? results : (staticOffers.current || [])
+    return results
   } catch (e) {
     console.error('getActivePromotions error:', e)
     return staticOffers.current || []

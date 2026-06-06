@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getProductBySlug } from '@/lib/products'
 import { getCategoryBySlug } from '@/lib/categories'
+import AddToCartButton from '@/components/AddToCartButton'
 
 export default function ProductDetailPage() {
   var params = useParams()
@@ -148,17 +149,11 @@ export default function ProductDetailPage() {
 
               {/* Action Buttons */}
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={'https://wa.me/' + (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918177896218') + '?text=' + encodeURIComponent('Hi! I am interested in ' + product.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-accent flex-1 text-center"
-                >
-                  Enquire on WhatsApp
-                </a>
-                <Link href="/contact" className="btn-primary-light flex-1 text-center">
-                  Contact Us
-                </Link>
+                <AddToCartButton product={product} />
+              </div>
+              <div className="mt-3 flex flex-col sm:flex-row gap-3">
+                <a href={'https://wa.me/' + (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918177896218') + '?text=' + encodeURIComponent('Hi! I am interested in ' + product.name)} target="_blank" rel="noopener noreferrer" className="btn-primary-light flex-1 text-center">Enquire on WhatsApp</a>
+                <Link href="/contact" className="btn-primary-light flex-1 text-center">Contact Us</Link>
               </div>
 
               {/* Trust badges */}

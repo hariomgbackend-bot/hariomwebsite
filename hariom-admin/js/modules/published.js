@@ -21,6 +21,7 @@ function renderPublished() {
     '  <div class="stat-card"><div class="stat-label">Active Promotions</div><div class="stat-value" id="pub-offers-count">—</div></div>' +
     '  <div class="stat-card"><div class="stat-label">Published Categories</div><div class="stat-value" id="pub-categories-count">—</div></div>' +
     '  <div class="stat-card"><div class="stat-label">Unread Enquiries</div><div class="stat-value" id="pub-enquiries-count">—</div></div>' +
+    '  <div class="stat-card"><div class="stat-label">Open Orders</div><div class="stat-value" id="pub-orders-count">—</div></div>' +
     '</div>' +
     '<div id="pub-sections"></div>'
 
@@ -102,6 +103,19 @@ function loadPublishedData() {
       document.getElementById('pub-enquiries-count').textContent = '?'
     })
   publishedUnsubs.push(enqUnsub)
+
+  var orderUnsub = db.collection('orders')
+    .onSnapshot(function (snap) {
+      var open = 0
+      snap.forEach(function (doc) {
+        var status = doc.data().status || 'new'
+        if (status !== 'delivered' && status !== 'cancelled') open++
+      })
+      document.getElementById('pub-orders-count').textContent = open
+    }, function () {
+      document.getElementById('pub-orders-count').textContent = '?'
+    })
+  publishedUnsubs.push(orderUnsub)
 }
 
 function showPublishedSection(type, rows, total) {

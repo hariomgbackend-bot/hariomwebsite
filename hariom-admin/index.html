@@ -36,6 +36,8 @@
 
   <!-- ── DASHBOARD SHELL ── -->
   <div id="dashboard" class="dashboard hidden">
+    <button id="mobile-menu-btn" class="mobile-toggle admin-mobile-toggle" aria-label="Open admin menu">&#9776;</button>
+    <div id="mobile-menu-backdrop" class="mobile-backdrop hidden"></div>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
@@ -56,6 +58,12 @@
         <button class="nav-btn" data-module="enquiries">
           <span class="nav-icon">&#9993;</span> Live Enquiries
           <span id="enquiry-badge" class="badge hidden">0</span>
+        </button>
+        <button class="nav-btn" data-module="orders">
+          <span class="nav-icon">&#9745;</span> Orders
+        </button>
+        <button class="nav-btn" data-module="returns">
+          <span class="nav-icon">&#8634;</span> Returns
         </button>
         <button class="nav-btn" data-module="categories">
           <span class="nav-icon">&#9776;</span> Website Categories
@@ -101,6 +109,8 @@
   <script src="js/modules/stock.js"></script>
   <script src="js/modules/offers.js"></script>
   <script src="js/modules/enquiries.js"></script>
+  <script src="js/modules/orders.js"></script>
+  <script src="js/modules/returns.js"></script>
   <script src="js/modules/categories.js"></script>
   <script src="js/modules/published.js"></script>
   <script src="js/app.js"></script>

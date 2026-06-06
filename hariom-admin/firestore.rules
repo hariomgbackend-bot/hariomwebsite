@@ -39,6 +39,30 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // ── ORDERS: customer checkout + admin management ──
+    match /orders/{orderId} {
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin()
+                  || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
+    // ── CUSTOMER PROFILES: customers manage their own saved checkout info ──
+    match /customer_profiles/{userId} {
+      allow read, create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── RETURNS: customers submit/read their own requests, admin manages all ──
+    match /returns/{returnId} {
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin()
+                  || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
     // ── Deny everything else by default ──
     match /{document=**} {
       allow read, write: if false;

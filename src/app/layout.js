@@ -3,6 +3,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import ClientProviders from '@/components/ClientProviders'
 
 export const metadata = {
   title: 'Hariom Electronics | Trusted Since 1988 | Electronics Store in Alandi',
@@ -59,10 +60,12 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <LanguageProvider>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <WhatsAppButton />
+          <ClientProviders>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+          </ClientProviders>
         </LanguageProvider>
       </body>
     </html>

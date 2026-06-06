@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutBtn: document.getElementById('logout-btn'),
     userEmailEl: document.getElementById('user-email'),
     mainContent: document.getElementById('main-content'),
+    sidebar: document.getElementById('sidebar'),
+    mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+    mobileBackdrop: document.getElementById('mobile-menu-backdrop'),
   }
 
   // ── Init Auth ──
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var navBtns = document.querySelectorAll('.nav-btn')
   navBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
+      closeMobileMenu()
       // Update active state
       navBtns.forEach(function (b) { b.classList.remove('active') })
       btn.classList.add('active')
@@ -43,6 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
           break
         case 'enquiries':
           renderEnquiries()
+          break
+        case 'orders':
+          renderOrders()
+          break
+        case 'returns':
+          renderReturns()
           break
         case 'categories':
           renderCategories()
@@ -66,4 +76,25 @@ document.addEventListener('DOMContentLoaded', function () {
       renderDashboard()
     }
   })
+
+  function openMobileMenu() {
+    if (refs.sidebar) refs.sidebar.classList.add('open')
+    if (refs.mobileBackdrop) refs.mobileBackdrop.classList.remove('hidden')
+  }
+
+  function closeMobileMenu() {
+    if (refs.sidebar) refs.sidebar.classList.remove('open')
+    if (refs.mobileBackdrop) refs.mobileBackdrop.classList.add('hidden')
+  }
+
+  if (refs.mobileMenuBtn) {
+    refs.mobileMenuBtn.addEventListener('click', function () {
+      if (refs.sidebar && refs.sidebar.classList.contains('open')) closeMobileMenu()
+      else openMobileMenu()
+    })
+  }
+
+  if (refs.mobileBackdrop) {
+    refs.mobileBackdrop.addEventListener('click', closeMobileMenu)
+  }
 })

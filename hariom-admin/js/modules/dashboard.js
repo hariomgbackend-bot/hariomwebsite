@@ -15,6 +15,7 @@ function renderDashboard() {
     '  <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value" id="stat-products">—</div></div>' +
     '  <div class="stat-card"><div class="stat-label">Active Offers</div><div class="stat-value" id="stat-offers">—</div></div>' +
     '  <div class="stat-card"><div class="stat-label">New Enquiries</div><div class="stat-value" id="stat-enquiries">—</div></div>' +
+    '  <div class="stat-card"><div class="stat-label">New Orders</div><div class="stat-value" id="stat-orders">—</div></div>' +
     '  <div class="stat-card"><div class="stat-label">Visible Products</div><div class="stat-value" id="stat-visible">—</div></div>' +
     '</div>' +
     '<div class="card" style="background:#fff;border-radius:12px;border:1px solid var(--outline-variant);padding:20px;margin-top:8px">' +
@@ -41,5 +42,11 @@ function renderDashboard() {
     document.getElementById('stat-enquiries').textContent = snap.size
   }).catch(function () {
     document.getElementById('stat-enquiries').textContent = '?'
+  })
+
+  db.collection('orders').where('read', '==', false).get().then(function (snap) {
+    document.getElementById('stat-orders').textContent = snap.size
+  }).catch(function () {
+    document.getElementById('stat-orders').textContent = '?'
   })
 }

@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from './LanguageSwitcher'
+import { useCart } from '@/lib/cart'
 
 export default function Header() {
   const { t } = useTranslation()
+  const { totalQuantity } = useCart()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -96,6 +98,25 @@ export default function Header() {
               </svg>
               {t('nav.contact')}
             </Link>
+            <Link
+              href="/checkout"
+              className="relative inline-flex items-center justify-center w-10 h-10 rounded-xl border border-outline-variant text-brand-800 hover:bg-brand-50 transition-colors"
+              aria-label="Cart"
+            >
+              <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M3 3h2l.4 2m0 0h15.2l-2 8H7.2M5.4 5L7 13m0 0l-1.2 3H19M9 20h.01M17 20h.01" />
+              </svg>
+              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-crimson-500 text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
+            </Link>
+            <Link
+              href="/account"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-outline-variant text-brand-800 hover:bg-brand-50 transition-colors"
+              aria-label="Account"
+            >
+              <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 21a7.5 7.5 0 0115 0" />
+              </svg>
+            </Link>
           </div>
 
           {/* ══ Mobile: Language + Hamburger ══ */}
@@ -114,6 +135,16 @@ export default function Header() {
                 )}
               </svg>
             </button>
+            <Link
+              href="/checkout"
+              aria-label="Cart"
+              className="relative w-9 h-9 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-high transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M3 3h2l.4 2m0 0h15.2l-2 8H7.2M5.4 5L7 13m0 0l-1.2 3H19M9 20h.01M17 20h.01" />
+              </svg>
+              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-crimson-500 text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
+            </Link>
           </div>
 
         </div>
@@ -154,6 +185,26 @@ export default function Header() {
                 </svg>
               </Link>
             ))}
+            <Link
+              href="/account"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-between px-4 py-3 text-[14px] font-semibold text-on-surface hover:text-brand-700 hover:bg-brand-50 rounded-xl transition-colors group"
+            >
+              Account
+              <svg className="w-4 h-4 text-outline opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link
+              href="/checkout"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-between px-4 py-3 text-[14px] font-semibold text-on-surface hover:text-brand-700 hover:bg-brand-50 rounded-xl transition-colors group"
+            >
+              Cart {totalQuantity > 0 ? '(' + totalQuantity + ')' : ''}
+              <svg className="w-4 h-4 text-outline opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </nav>
 
           {/* CTA */}
