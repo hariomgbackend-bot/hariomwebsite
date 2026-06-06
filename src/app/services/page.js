@@ -52,9 +52,9 @@ export default function ServicesPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/contact" className="btn-primary">{t('contact.heading')}</Link>
-            <a href="tel:+919876543210" className="btn-outline">{t('contact.call')}</a>
+            <a href="tel:+918177896218" className="btn-outline">{t('contact.call')}</a>
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/918177896218"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-accent"

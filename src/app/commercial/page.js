@@ -59,7 +59,7 @@ export default function CommercialPage() {
             <div className="flex flex-wrap justify-center gap-3">
               <Link href="/contact" className="btn-primary">Contact Us</Link>
               <a
-                href="https://wa.me/919876543210?text=Hi! I'm interested in commercial solutions for bulk procurement."
+                href="https://wa.me/918177896218?text=Hi! I'm interested in commercial solutions for bulk procurement."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-accent"

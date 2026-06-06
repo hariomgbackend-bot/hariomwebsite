@@ -35,7 +35,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">{t('contact.call')}</h3>
-                  <a href="tel:+919876543210" className="text-sm text-brand-600 hover:text-accent-500">+91 9876543210</a>
+                  <a href="tel:+918177896218" className="text-sm text-brand-600 hover:text-accent-500">+91 8177896218</a>
                 </div>
 
                 <div className="bg-white rounded-xl p-5 border border-gray-100 text-center hover:shadow-md transition-shadow">
@@ -45,7 +45,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">{t('contact.whatsapp')}</h3>
-                  <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="text-sm text-green-600 hover:text-green-700">Chat Now</a>
+                  <a href="https://wa.me/918177896218" target="_blank" rel="noopener noreferrer" className="text-sm text-green-600 hover:text-green-700">Chat Now</a>
                 </div>
 
                 <div className="bg-white rounded-xl p-5 border border-gray-100 text-center hover:shadow-md transition-shadow">

@@ -124,7 +124,7 @@ export default function CategoryPage() {
               <div className="flex gap-3 justify-center">
                 <a href="/contact" className="btn-primary">Contact Us</a>
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'}?text=${encodeURIComponent(`Hi! I'm looking for ${catName}`)}`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918177896218'}?text=${encodeURIComponent(`Hi! I'm looking for ${catName}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-accent"
@@ -144,7 +144,7 @@ export default function CategoryPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/contact" className="btn-primary">Get in Touch</Link>
             <a
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'}?text=${encodeURIComponent(`Hi! I have a query about ${catName}`)}`}
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918177896218'}?text=${encodeURIComponent(`Hi! I have a query about ${catName}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-accent"

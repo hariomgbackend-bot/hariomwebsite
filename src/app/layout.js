@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
               },
               contactPoint: {
                 '@type': 'ContactPoint',
-                telephone: '+91-9876543210',
+                telephone: '+91-8177896218',
                 contactType: 'customer service',
               },
               url: 'https://hariomwebsite.vercel.app',

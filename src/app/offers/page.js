@@ -112,7 +112,7 @@ export default function OffersPage() {
 
           <div className="text-center py-8">
             <a
-              href={'https://wa.me/919876543210?text=' + encodeURIComponent('Hi! I want to know about the best prices and offers.')}
+              href={'https://wa.me/918177896218?text=' + encodeURIComponent('Hi! I want to know about the best prices and offers.')}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-accent px-8 py-3"

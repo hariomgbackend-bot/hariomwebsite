@@ -149,7 +149,7 @@ export default function ProductDetailPage() {
               {/* Action Buttons */}
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <a
-                  href={'https://wa.me/' + (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210') + '?text=' + encodeURIComponent('Hi! I am interested in ' + product.name)}
+                  href={'https://wa.me/' + (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '918177896218') + '?text=' + encodeURIComponent('Hi! I am interested in ' + product.name)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-accent flex-1 text-center"

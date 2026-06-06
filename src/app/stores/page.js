@@ -52,9 +52,9 @@ export default function StoresPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Have Questions?</h2>
           <p className="text-gray-200 mb-6">Call or WhatsApp us for quick assistance</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a href="tel:+919876543210" className="btn-accent">Call Now</a>
+            <a href="tel:+918177896218" className="btn-accent">Call Now</a>
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/918177896218"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline-light"
