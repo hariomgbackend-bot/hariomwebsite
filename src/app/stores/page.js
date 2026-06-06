@@ -31,17 +31,18 @@ export default function StoresPage() {
 
       <section className="py-12 md:py-16 bg-white">
         <div className="container-custom">
-          <h2 className="text-2xl font-bold text-brand-800 text-center mb-8">Store Locations</h2>
-          <div className="aspect-[21/9] bg-gray-100 rounded-xl overflow-hidden">
-            <div className="w-full h-full flex items-center justify-center bg-gray-50">
-              <div className="text-center p-8">
-                <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                <p className="text-gray-500">Google Maps integration will appear here</p>
-                <p className="text-xs text-gray-400 mt-2">Add your Google Maps API key to display interactive maps</p>
-              </div>
-            </div>
+          <h2 className="text-2xl font-bold text-brand-800 text-center mb-8">Our Location</h2>
+          <div className="aspect-[21/9] max-h-[450px] rounded-xl overflow-hidden shadow-lg border border-gray-200">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.734984036247!2d73.89676947496694!3d18.675884682447997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c8831512374f%3A0x82bee502536ab580!2sHari%20Om%20Electronics-%20Best%20Electronics%20Shop%20in%20Alandi-%20Home%20Appliances%20Showroom%20in%20Alandi%2C%20Pune!5e0!3m2!1sen!2sin!4v1780745536804!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: '300px' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Hari Om Electronics - Main Store Location"
+            />
           </div>
         </div>
       </section>

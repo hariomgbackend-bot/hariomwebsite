@@ -4,6 +4,7 @@ import CategoryGrid from '@/components/CategoryGrid'
 import BrandShowcase from '@/components/BrandShowcase'
 import FeaturedProducts from '@/components/FeaturedProducts'
 import OffersCarousel from '@/components/OffersCarousel'
+import Testimonials from '@/components/Testimonials'
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       <CategoryGrid />
       <FeaturedProducts />
       <OffersCarousel />
+      <Testimonials />
       <BrandShowcase />
 
       <section className="py-12 md:py-16 bg-white">
