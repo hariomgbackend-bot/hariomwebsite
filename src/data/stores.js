@@ -9,7 +9,7 @@ const stores = [
     addressMr: 'श्री कृष्ण कॉम्प्लेक्स, आळंदी रोड, आळंदी, महाराष्ट्र 412105',
     phone: '02135-XXXXXX',
     mobile: '+91 8177896218',
-    email: 'info@hariomelectronics.com',
+    email: 'hariom_elect@live.com',
     coordinates: { lat: 18.6480, lng: 73.8975 },
     hours: {
       weekday: '10:00 AM - 9:00 PM',
@@ -28,7 +28,7 @@ const stores = [
     addressMr: 'आळंदी मंदिर रोड जवळ, आळंदी, महाराष्ट्र 412105',
     phone: '02135-XXXXXX',
     mobile: '+91 9876543211',
-    email: 'branch1@hariomelectronics.com',
+    email: 'hariom_elect@live.com',
     coordinates: { lat: 18.6500, lng: 73.8990 },
     hours: {
       weekday: '10:00 AM - 9:00 PM',
@@ -47,7 +47,7 @@ const stores = [
     addressMr: 'मार्केट रोड, आळंदी, महाराष्ट्र 412105',
     phone: '02135-XXXXXX',
     mobile: '+91 9876543212',
-    email: 'branch2@hariomelectronics.com',
+    email: 'hariom_elect@live.com',
     coordinates: { lat: 18.6460, lng: 73.8960 },
     hours: {
       weekday: '10:00 AM - 9:00 PM',
