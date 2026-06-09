@@ -8,6 +8,7 @@ function renderCustomers() {
     '    <h1>Customers</h1>' +
     '    <p>Registered customer profiles</p>' +
     '  </div>' +
+    '  <button class="btn btn-outline" onclick="syncAuthUsers()" id="sync-auth-btn">Sync from Auth</button>' +
     '</div>' +
     '<div id="customers-list" class="enquiry-list">' +
     '  <div class="empty-state"><p>Loading customers...</p></div>' +
@@ -79,6 +80,33 @@ function deleteCustomer(docId) {
   db.collection('customer_profiles').doc(docId).delete().then(function () {
     showToast('Customer deleted', 'success')
   }).catch(function (err) {
+    showToast('Error: ' + err.message, 'error')
+  })
+}
+
+function syncAuthUsers() {
+  var btn = document.getElementById('sync-auth-btn')
+  btn.disabled = true
+  btn.textContent = 'Syncing...'
+
+  var apiUrl = localStorage.getItem('mainSiteUrl') || 'https://hariomwebsite.vercel.app'
+
+  fetch(apiUrl + '/api/admin/sync-auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  }).then(function (res) {
+    return res.json()
+  }).then(function (data) {
+    btn.disabled = false
+    btn.textContent = 'Sync from Auth'
+    if (data.ok) {
+      showToast(data.message, 'success')
+    } else {
+      showToast(data.message || 'Sync failed', 'error')
+    }
+  }).catch(function (err) {
+    btn.disabled = false
+    btn.textContent = 'Sync from Auth'
     showToast('Error: ' + err.message, 'error')
   })
 }
