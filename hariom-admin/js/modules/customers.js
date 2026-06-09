@@ -20,17 +20,23 @@ function listenCustomers() {
   if (customersUnsubscribe) customersUnsubscribe()
 
   customersUnsubscribe = db.collection('customer_profiles')
-    .orderBy('updatedAt', 'desc')
-    .limit(100)
     .onSnapshot(function (snapshot) {
       if (snapshot.empty) {
         document.getElementById('customers-list').innerHTML = '<div class="empty-state"><p>No customers yet.</p></div>'
         return
       }
 
+      var docs = []
+      snapshot.forEach(function (doc) { docs.push({ id: doc.id, data: doc.data() }) })
+      docs.sort(function (a, b) {
+        var ta = a.data.updatedAt ? a.data.updatedAt.seconds || 0 : 0
+        var tb = b.data.updatedAt ? b.data.updatedAt.seconds || 0 : 0
+        return tb - ta
+      })
+
       var html = ''
-      snapshot.forEach(function (doc) {
-        var d = doc.data()
+      docs.forEach(function (doc) {
+        var d = doc.data
         html +=
           '<div class="enquiry-card">' +
           '  <div class="enquiry-header">' +
