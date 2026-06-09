@@ -5,6 +5,7 @@ const translations = {
     nav: {
       home: 'Home',
       about: 'About Us',
+      awards: 'Awards',
       products: 'Products',
       brands: 'Brands',
       offers: 'Offers',
@@ -170,6 +171,7 @@ const translations = {
     nav: {
       home: 'होम',
       about: 'हमारे बारे में',
+      awards: 'पुरस्कार',
       products: 'उत्पाद',
       brands: 'ब्रांड',
       offers: 'ऑफ़र',
@@ -335,6 +337,7 @@ const translations = {
     nav: {
       home: 'मुखपृष्ठ',
       about: 'आमच्याबद्दल',
+      awards: 'पुरस्कार',
       products: 'उत्पादने',
       brands: 'ब्रँड',
       offers: 'ऑफर',
