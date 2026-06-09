@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+*.zip
 .next
 out
 
@@ -24,3 +25,5 @@ out
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

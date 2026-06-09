@@ -5,7 +5,7 @@ import stores from '@/data/stores'
 import StoreCard from '@/components/StoreCard'
 
 export default function StoresPage() {
-  const { t } = useTranslation()
+  const { lang, t } = useTranslation()
 
   return (
     <>
@@ -31,18 +31,28 @@ export default function StoresPage() {
 
       <section className="py-12 md:py-16 bg-white">
         <div className="container-custom">
-          <h2 className="text-2xl font-bold text-brand-800 text-center mb-8">Our Location</h2>
-          <div className="aspect-[21/9] max-h-[450px] rounded-xl overflow-hidden shadow-lg border border-gray-200">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.734984036247!2d73.89676947496694!3d18.675884682447997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c8831512374f%3A0x82bee502536ab580!2sHari%20Om%20Electronics-%20Best%20Electronics%20Shop%20in%20Alandi-%20Home%20Appliances%20Showroom%20in%20Alandi%2C%20Pune!5e0!3m2!1sen!2sin!4v1780745536804!5m2!1sen!2sin"
-              width="100%"
-              height="100%"
-              style={{ border: 0, minHeight: '300px' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Hari Om Electronics - Main Store Location"
-            />
+          <h2 className="text-2xl font-bold text-brand-800 text-center mb-8">Store Locations</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {stores.map(function (store) {
+              var storeName = lang === 'hi' ? (store.nameHi || store.name) : lang === 'mr' ? (store.nameMr || store.name) : store.name
+              return (
+                <div key={store.id} className="space-y-3">
+                  <h3 className="text-lg font-bold text-brand-800">{storeName}</h3>
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-md border border-gray-200">
+                    <iframe
+                      src={store.mapEmbed}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0, minHeight: '220px' }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title={storeName}
+                    />
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
