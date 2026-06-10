@@ -168,25 +168,21 @@ function showCategoryView(categoryId) {
 }
 
 function showAddProductForm(categoryId) {
-  var tallyOpts = '<option value="">— Select from Tally —</option>'
+  var tallyData = ''
   if (_tallyNames.length > 0) {
-    _tallyNames.forEach(function (n) {
-      tallyOpts += '<option value="' + escapeHtml(n) + '">' + escapeHtml(n) + '</option>'
-    })
+    tallyData = _tallyNames.map(function (n) { return escapeHtml(n) }).join('|')
   }
-
-  var alreadyInCategory = {}
-  _allProducts.forEach(function (p) {
-    if (p.category === categoryId) alreadyInCategory[p.name] = true
-  })
 
   var body =
     '<div class="form-with-preview">' +
     '  <div class="form-with-preview-form">' +
-    '    <form id="product-form">' +
-    '      <div class="field"><label>Product Name (from Tally) *</label>' +
-    '        <select id="pf-name" onchange="onProductNameSelect()" required>' + tallyOpts + '</select>' +
-    '        <div style="margin-top:4px;"><input type="text" id="pf-name-custom" placeholder="Or type custom name..." style="display:none;font-size:0.85rem;" oninput="refreshAddPreview()" /></div>' +
+    '    <form id="product-form" autocomplete="off">' +
+    '      <div class="field"><label>Product Name (search Tally list) *</label>' +
+    '        <div class="searchable-select" style="position:relative;">' +
+    '          <input type="text" id="pf-name" placeholder="Type to search Tally products..." oninput="onTallySearch(this)" onblur="onTallyBlur(this)" onfocus="onTallyFocus(this)" style="width:100%;" />' +
+    '          <div id="pf-name-dropdown" style="position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:white;border:1px solid var(--outline-variant);border-radius:8px;z-index:100;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>' +
+    '        </div>' +
+    '        <input type="hidden" id="tally-data" value="' + tallyData + '" />' +
     '      </div>' +
     '      <div class="field"><label>Brand</label><input type="text" id="pf-brand" oninput="refreshAddPreview()" /></div>' +
     '      <div class="field"><label>Category</label><input type="text" id="pf-category" value="' + escapeHtml(categoryId) + '" readonly style="background:var(--surface-variant);color:var(--on-surface-variant);" /></div>' +
@@ -212,22 +208,45 @@ function showAddProductForm(categoryId) {
   )
 }
 
-function onProductNameSelect() {
-  var sel = document.getElementById('pf-name')
-  var customInput = document.getElementById('pf-name-custom')
-  if (sel.value === '') {
-    customInput.style.display = 'block'
-  } else {
-    customInput.style.display = 'none'
-    customInput.value = ''
-  }
+function onTallySearch(input) {
+  var dropdown = document.getElementById('pf-name-dropdown')
+  var q = input.value.trim().toLowerCase()
+
+  if (!q) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return }
+
+  var names = (document.getElementById('tally-data').value || '').split('|').filter(Boolean)
+  var matches = names.filter(function (n) { return n.toLowerCase().indexOf(q) !== -1 }).slice(0, 20)
+
+  if (matches.length === 0) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return }
+
+  dropdown.innerHTML = matches.map(function (n) {
+    return '<div style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--outline-variant);font-size:0.85rem;" onmousedown="selectTallyName(\'' + n.replace(/'/g, "\\'") + '\')">' + n + '</div>'
+  }).join('')
+  dropdown.style.display = 'block'
+  refreshAddPreview()
+}
+
+function onTallyFocus(input) {
+  if (input.value.trim()) onTallySearch(input)
+}
+
+function onTallyBlur(input) {
+  setTimeout(function () {
+    var dropdown = document.getElementById('pf-name-dropdown')
+    if (dropdown) dropdown.style.display = 'none'
+  }, 200)
+}
+
+function selectTallyName(name) {
+  var input = document.getElementById('pf-name')
+  if (input) { input.value = name }
+  var dropdown = document.getElementById('pf-name-dropdown')
+  if (dropdown) dropdown.style.display = 'none'
   refreshAddPreview()
 }
 
 function saveNewProduct(categoryId) {
   var name = document.getElementById('pf-name').value.trim()
-  var customName = document.getElementById('pf-name-custom').value.trim()
-  if (customName) name = customName
   if (!name) { showToast('Product name is required', 'error'); return }
 
   var alreadyInCategory = {}
@@ -309,8 +328,6 @@ function refreshAddPreview() {
   var el = document.getElementById('add-preview-container')
   if (!el) return
   var name = document.getElementById('pf-name').value.trim()
-  var customName = document.getElementById('pf-name-custom').value.trim()
-  if (customName) name = customName
   var data = {
     name: name || '',
     brand: (document.getElementById('pf-brand') || {}).value || '',
