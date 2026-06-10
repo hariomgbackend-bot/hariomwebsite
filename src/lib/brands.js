@@ -9,7 +9,18 @@ export async function getAllBrands() {
   if (!db) return staticBrands
   try {
     var snap = await getDocs(query(collection(db, COLLECTION), orderBy('name')))
-    return snap.docs.map(function (d) { return { id: d.id, ...d.data() } })
+    var firestoreBrands = snap.docs.map(function (d) { return { id: d.id, ...d.data() } })
+    var merged = staticBrands.slice()
+    var staticNames = new Set(staticBrands.map(function (b) { return b.name.toLowerCase() }))
+    firestoreBrands.forEach(function (fb) {
+      var idx = merged.findIndex(function (sb) { return sb.name.toLowerCase() === (fb.name || '').toLowerCase() })
+      if (idx !== -1) {
+        merged[idx] = { ...merged[idx], ...fb, _firestore: true }
+      } else {
+        merged.push({ ...fb, _firestore: true })
+      }
+    })
+    return merged
   } catch (e) {
     console.error('getAllBrands error:', e)
     return staticBrands
