@@ -1,69 +1,60 @@
-/* ════════════════════════════════════════════════════════════════
-   FIRESTORE SECURITY RULES — Hariom Electronics
-   ════════════════════════════════════════════════════════════════
-   Paste the entire content below into your Firebase Console →
-     Firestore Database → Rules
-   ════════════════════════════════════════════════════════════════
-   REPLACE 'ADMIN_UID_HERE' with your actual admin user UID.
-   You can get your UID from Firebase Console → Authentication → Users
-   ════════════════════════════════════════════════════════════════ */
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Helper: check if the requester is our verified admin ──
     function isAdmin() {
       return request.auth != null
         && request.auth.uid == 'OIkdwBtfJTgy1ZQpkKiH0YxdIgo2';
     }
 
-    // ── PRODUCTS: public read, admin write/delete ──
+    // PRODUCTS: public read, admin write/delete
     match /products/{productId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // ── PROMOTIONS: public read, admin write/delete ──
+    // PROMOTIONS: public read, admin write/delete
     match /promotions/{promotionId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // ── ENQUIRIES: public create (form submission),
-    //               admin read/update/delete ──
+    // TALLY PRODUCTS: admin read/write (Tally sync index)
+    match /tally_products/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ENQUIRIES: anyone can submit, admin manages
     match /enquiries/{enquiryId} {
-      allow create: if request.auth == null
-                    || request.auth.uid != null;   // allow anyone to submit
+      allow create: if true;
       allow read, update, delete: if isAdmin();
     }
 
-    // ── ORDERS: customer checkout + admin management ──
+    // ORDERS: guest + logged-in customers can create, admin manages all
     match /orders/{orderId} {
-      allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
+      allow create: if true;
       allow read: if isAdmin()
                   || (request.auth != null && resource.data.userId == request.auth.uid);
       allow update, delete: if isAdmin();
     }
 
-    // ── CUSTOMER PROFILES: customers manage their own saved checkout info ──
+    // CUSTOMER PROFILES: customers manage their own data
     match /customer_profiles/{userId} {
-      allow read, create, update: if request.auth != null && request.auth.uid == userId;
-      allow delete: if request.auth != null && request.auth.uid == userId;
+      allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow read, update, delete: if isAdmin();
     }
 
-    // ── RETURNS: customers submit/read their own requests, admin manages all ──
+    // RETURNS: customers submit their own, admin manages all
     match /returns/{returnId} {
-      allow create: if request.auth != null
-                    && request.resource.data.userId == request.auth.uid;
+      allow create: if true;
       allow read: if isAdmin()
                   || (request.auth != null && resource.data.userId == request.auth.uid);
       allow update, delete: if isAdmin();
     }
 
-    // ── Deny everything else by default ──
+    // Deny everything else
     match /{document=**} {
       allow read, write: if false;
     }

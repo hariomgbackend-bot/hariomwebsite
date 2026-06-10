@@ -10,15 +10,12 @@ export default function StoreCard({ store }) {
 
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-      <div className="aspect-[16/9] overflow-hidden">
-        <iframe
-          src={store.mapEmbed}
-          width="100%"
-          height="100%"
-          style={{ border: 0, minHeight: '180px' }}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title={storeName}
+      <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+        <img
+          src={store.image}
+          alt={storeName}
+          className="w-full h-full object-cover"
+          onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-gradient-to-br', 'from-brand-600', 'to-accent-600') }}
         />
       </div>
       <div className="p-5 space-y-3">

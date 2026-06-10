@@ -74,6 +74,8 @@ function showDashboard(user) {
   loginScreen.classList.add('hidden')
   dashboard.classList.remove('hidden')
   userEmailEl.textContent = user.email
+  var avatarEl = document.getElementById("user-avatar")
+  if (avatarEl) avatarEl.textContent = user.email ? user.email[0].toUpperCase() : "A"
 }
 
 function showLogin() {

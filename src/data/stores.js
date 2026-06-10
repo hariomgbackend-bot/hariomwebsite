@@ -15,7 +15,7 @@ const stores = [
       weekday: '10:00 AM - 9:00 PM',
       weekend: '10:00 AM - 9:00 PM',
     },
-    image: '/images/stores/store1.jpg',
+    image: '/images/stores/main.png',
     isMain: true,
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.734984036247!2d73.89676947496694!3d18.675884682447997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c8831512374f%3A0x82bee502536ab580!2sHari%20Om%20Electronics-%20Best%20Electronics%20Shop%20in%20Alandi-%20Home%20Appliances%20Showroom%20in%20Alandi%2C%20Pune!5e0!3m2!1sen!2sin!4v1780745536804!5m2!1sen!2sin'
   },
@@ -35,7 +35,7 @@ const stores = [
       weekday: '10:00 AM - 9:00 PM',
       weekend: '10:00 AM - 9:00 PM',
     },
-    image: '/images/stores/store2.jpg',
+    image: '/images/stores/dhanore.jpeg',
     isMain: false,
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.8597890978767!2d73.918347!3d18.6702868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c76befcccc9b%3A0x5a7567068d9543ab!2sHari%20Om%20Electronics%20and%20Home%20Appliances%20-%20Dhanore!5e0!3m2!1sen!2sin!4v1780986591418!5m2!1sen!2sin'
   },
@@ -55,7 +55,7 @@ const stores = [
       weekday: '10:00 AM - 9:00 PM',
       weekend: '10:00 AM - 9:00 PM',
     },
-    image: '/images/stores/store3.jpg',
+    image: '/images/stores/furniture.png',
     isMain: false,
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.4326051134094!2d73.90705497496732!3d18.689440582437093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c9baab53a975%3A0x5c3e288cee69aef2!2sHari%20Om%20Trader%27s%20Furniture%20and%20Electronics%20-%20Sleepwell%20Shoppe!5e0!3m2!1sen!2sin!4v1780986724058!5m2!1sen!2sin'
   }

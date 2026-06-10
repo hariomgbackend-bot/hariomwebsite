@@ -9,15 +9,15 @@
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
-  <!-- ── LOGIN SCREEN ── -->
+
+  <!-- LOGIN SCREEN -->
   <div id="login-screen" class="login-screen">
     <div class="login-card">
       <div class="login-logo">
-        <img src="https://raw.githubusercontent.com/hariomgbackend-bot/hariomwebsite/main/public/logo-icon.png"
-             alt="Hariom Electronics" />
+        <img src="https://raw.githubusercontent.com/hariomgbackend-bot/hariomwebsite/main/public/logo-icon.png" alt="Hariom Electronics" />
       </div>
       <h1 class="login-title">Admin Portal</h1>
-      <p class="login-subtitle">Hariom Electronics — Inventory &amp; CRM</p>
+      <p class="login-subtitle">Hariom Electronics &mdash; Inventory &amp; CRM</p>
       <form id="login-form" class="login-form">
         <div class="field">
           <label for="login-email">Email</label>
@@ -34,76 +34,91 @@
     </div>
   </div>
 
-  <!-- ── DASHBOARD SHELL ── -->
+  <!-- DASHBOARD SHELL -->
   <div id="dashboard" class="dashboard hidden">
-    <button id="mobile-menu-btn" class="mobile-toggle admin-mobile-toggle" aria-label="Open admin menu">&#9776;</button>
+    <button id="mobile-menu-btn" class="mobile-toggle admin-mobile-toggle" aria-label="Open menu">&#9776;</button>
     <div id="mobile-menu-backdrop" class="mobile-backdrop hidden"></div>
+
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <img src="https://raw.githubusercontent.com/hariomgbackend-bot/hariomwebsite/main/public/logo-icon.png"
-             alt="Hariom" />
-        <span class="sidebar-brand-text">Hariom Admin</span>
+        <img src="https://raw.githubusercontent.com/hariomgbackend-bot/hariomwebsite/main/public/logo-icon.png" alt="Hariom" />
+        <div>
+          <div class="sidebar-brand-name">Hariom Admin</div>
+          <div class="sidebar-brand-sub">Electronics Store</div>
+        </div>
       </div>
+
       <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Overview</div>
         <button class="nav-btn active" data-module="dashboard">
-          <span class="nav-icon">&#9632;</span> Dashboard
+          <span class="nav-icon-wrap">&#9632;</span>
+          <span class="nav-label">Dashboard</span>
         </button>
+        <button class="nav-btn" data-module="published">
+          <span class="nav-icon-wrap">&#9679;</span>
+          <span class="nav-label">Published</span>
+        </button>
+
+        <div class="sidebar-section-label">Catalog</div>
         <button class="nav-btn" data-module="stock">
-          <span class="nav-icon">&#9776;</span> Stock &amp; Pricing
+          <span class="nav-icon-wrap">&#9783;</span>
+          <span class="nav-label">Stock &amp; Pricing</span>
+        </button>
+        <button class="nav-btn" data-module="categories">
+          <span class="nav-icon-wrap">&#9776;</span>
+          <span class="nav-label">Categories</span>
         </button>
         <button class="nav-btn" data-module="offers">
-          <span class="nav-icon">&#9733;</span> Offers &amp; Campaigns
+          <span class="nav-icon-wrap">&#9733;</span>
+          <span class="nav-label">Offers &amp; Campaigns</span>
         </button>
+
+        <div class="sidebar-section-label">Operations</div>
         <button class="nav-btn" data-module="enquiries">
-          <span class="nav-icon">&#9993;</span> Live Enquiries
+          <span class="nav-icon-wrap">&#9993;</span>
+          <span class="nav-label">Live Enquiries</span>
           <span id="enquiry-badge" class="badge hidden">0</span>
         </button>
         <button class="nav-btn" data-module="orders">
-          <span class="nav-icon">&#9745;</span> Orders
+          <span class="nav-icon-wrap">&#9745;</span>
+          <span class="nav-label">Orders</span>
         </button>
         <button class="nav-btn" data-module="returns">
-          <span class="nav-icon">&#8634;</span> Returns
-        </button>
-        <button class="nav-btn" data-module="categories">
-          <span class="nav-icon">&#9776;</span> Website Categories
+          <span class="nav-icon-wrap">&#8634;</span>
+          <span class="nav-label">Returns</span>
         </button>
         <button class="nav-btn" data-module="customers">
-          <span class="nav-icon">&#128101;</span> Customers
-        </button>
-        <button class="nav-btn" data-module="published">
-          <span class="nav-icon">&#9679;</span> Published
+          <span class="nav-icon-wrap">&#128101;</span>
+          <span class="nav-label">Customers</span>
         </button>
       </nav>
+
       <div class="sidebar-footer">
-        <span id="user-email" class="sidebar-user"></span>
-        <button id="logout-btn" class="btn btn-outline btn-sm">Sign Out</button>
+        <div class="sidebar-user-row">
+          <div class="sidebar-user-avatar" id="user-avatar">A</div>
+          <span id="user-email" class="sidebar-user"></span>
+        </div>
+        <button id="logout-btn" class="btn btn-outline btn-sm btn-block">Sign Out</button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content" id="main-content">
-      <!-- Modules are loaded here by app.js -->
-    </main>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content"></main>
   </div>
 
-  <!-- ── HIDDEN AUDIO ELEMENT FOR ENQUIRY ALERT ── -->
+  <!-- Hidden audio -->
   <audio id="enquiry-alert" preload="auto" style="display:none">
     <source src="audio/alert.wav" type="audio/wav" />
   </audio>
 
-  <!-- ── SCRIPTS ── -->
-  <!-- Firebase SDK (compat) -->
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app-compat.js">
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth-compat.js">
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore-compat.js">
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-storage-compat.js">
-  </script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-storage-compat.js"></script>
 
-  <!-- App modules -->
+  <!-- App -->
   <script src="js/firebase-config.js"></script>
   <script src="js/utils/audio-alert.js"></script>
   <script src="js/utils/table.js"></script>
