@@ -197,10 +197,10 @@ function showUncategorizedView() {
     var uncategorized = _allProducts.filter(function (p) { return !p.category || !validCatIds[p.category] })
 
     var html =
-      '<div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;">' +
+      '<div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
       '  <button class="btn btn-outline btn-sm" onclick="renderCategoryTiles()">&#8592; All Categories</button>' +
       '  <span style="font-weight:700;font-size:1rem;color:var(--danger);flex:1;">Uncategorized (' + uncategorized.length + ')</span>' +
-      '  <span style="font-size:0.8rem;color:var(--on-surface-variant);">These products have no valid category — delete or edit them</span>' +
+      '  <button class="btn btn-danger btn-sm" onclick="deleteAllUncategorized()">Delete All</button>' +
       '</div>'
 
     if (uncategorized.length === 0) {
@@ -237,6 +237,29 @@ function showUncategorizedView() {
 
     html += '</tbody></table></div>'
     container.innerHTML = html
+  })
+}
+
+function deleteAllUncategorized() {
+  var validCatIds = {}
+  db.collection('categories').get().then(function (snap) {
+    snap.forEach(function (doc) { var d = doc.data(); validCatIds[d.id || doc.id] = true })
+
+    var toDelete = _allProducts.filter(function (p) { return !p.category || !validCatIds[p.category] })
+    if (toDelete.length === 0) { showToast('No uncategorized products', 'info'); return }
+    if (!confirm('Permanently DELETE all ' + toDelete.length + ' uncategorized products?')) return
+
+    var batch = db.batch()
+    var count = 0
+    toDelete.forEach(function (p) {
+      if (p._id) { batch.delete(db.collection('products').doc(p._id)); count++ }
+    })
+    if (count === 0) { showToast('No products with valid IDs to delete', 'info'); return }
+    batch.commit().then(function () {
+      showToast('Deleted ' + count + ' uncategorized products', 'success')
+    }).catch(function (err) {
+      showToast('Error: ' + err.message, 'error')
+    })
   })
 }
 

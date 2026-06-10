@@ -29,14 +29,30 @@ function mapFirestoreDoc(doc) {
   }
 }
 
+async function getValidCategoryIds() {
+  try {
+    var ref = collection(db, 'categories')
+    var snap = await getDocs(ref)
+    var ids = {}
+    snap.forEach(function (doc) { var d = doc.data(); ids[d.id || doc.id] = true })
+    return ids
+  } catch (e) {
+    return {}
+  }
+}
+
 export async function getProductBySlug(slug) {
   if (!db) return null
   try {
     var ref = collection(db, 'products')
     var q = query(ref, where('is_visible', '==', true))
     var snap = await getDocs(q)
+    var valid = await getValidCategoryIds()
     var results = []
-    snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
+    snap.forEach(function (doc) {
+      var p = mapFirestoreDoc(doc)
+      if (p.category && valid[p.category]) results.push(p)
+    })
     var match = results.find(function (p) { return p.slug === slug })
     return match || null
   } catch (e) {
@@ -54,7 +70,11 @@ export async function getProducts(categoryId) {
 
     var snap = await getDocs(query(ref, ...constraints))
     var results = []
-    snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
+    var valid = await getValidCategoryIds()
+    snap.forEach(function (doc) {
+      var p = mapFirestoreDoc(doc)
+      if (p.category && valid[p.category]) results.push(p)
+    })
     return results
   } catch (e) {
     console.error('getProducts error:', e)
@@ -69,8 +89,12 @@ export async function getFeaturedProducts(max) {
     var ref = collection(db, 'products')
     var q = query(ref, where('is_visible', '==', true))
     var snap = await getDocs(q)
+    var valid = await getValidCategoryIds()
     var results = []
-    snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
+    snap.forEach(function (doc) {
+      var p = mapFirestoreDoc(doc)
+      if (p.category && valid[p.category]) results.push(p)
+    })
     if (results.length === 0) return []
     var featured = results.filter(function (p) { return p.featured === true })
     if (featured.length > 0) results = featured
