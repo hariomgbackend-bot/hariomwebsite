@@ -186,21 +186,21 @@ export default function ProductDetailPage() {
                   <Link
                     key={sp.id}
                     href={'/product/' + sp.slug}
-                    className="min-w-[180px] md:min-w-[200px] bg-white rounded-xl border border-gray-100 hover:shadow-lg transition-shadow overflow-hidden shrink-0 snap-start group"
+                    className="min-w-[90px] md:min-w-[110px] bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow overflow-hidden shrink-0 snap-start group"
                   >
-                    <div className="aspect-[4/3] bg-gradient-to-br from-brand-50 to-surface-low flex items-center justify-center p-4">
+                    <div className="h-16 md:h-20 bg-gradient-to-br from-brand-50 to-surface-low flex items-center justify-center p-2">
                       {sp.image && sp.image !== '/images/placeholder.svg' ? (
-                        <img src={sp.image} alt={sp.name} className="w-full h-full object-contain" onError={function (e) { e.target.src = '/images/placeholder.svg'; e.target.onerror = null }} />
+                        <img src={sp.image} alt={sp.name} className="h-full w-full object-contain" onError={function (e) { e.target.src = '/images/placeholder.svg'; e.target.onerror = null }} />
                       ) : (
-                        <div className="w-14 h-14 bg-brand-600/10 rounded-xl flex items-center justify-center">
-                          <span className="text-xl font-bold text-brand-600">{sp.brand ? sp.brand[0] : sp.name[0]}</span>
+                        <div className="w-6 h-6 bg-brand-600/10 rounded-lg flex items-center justify-center">
+                          <span className="text-[10px] font-bold text-brand-600">{sp.brand ? sp.brand[0] : sp.name[0]}</span>
                         </div>
                       )}
                     </div>
-                    <div className="p-3">
-                      {sp.brand && <span className="text-[10px] font-bold text-accent-200 uppercase">{sp.brand}</span>}
-                      <h3 className="text-xs font-semibold text-gray-800 mt-0.5 line-clamp-2 group-hover:text-brand-700 transition-colors">{sp.name}</h3>
-                      <span className="text-sm font-bold text-brand-800 mt-1 block">{formatPrice(sp.price)}</span>
+                    <div className="p-1.5">
+                      {sp.brand && <span className="text-[8px] font-bold text-accent-200 uppercase leading-tight block truncate">{sp.brand}</span>}
+                      <h3 className="text-[10px] font-semibold text-gray-800 line-clamp-2 group-hover:text-brand-700 transition-colors leading-snug mt-0.5">{sp.name}</h3>
+                      <span className="text-[11px] font-bold text-brand-800 mt-0.5 block">{formatPrice(sp.price)}</span>
                     </div>
                   </Link>
                 )
