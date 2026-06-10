@@ -18,37 +18,28 @@ const palette = [
   'bg-pink-50 text-pink-700 border-pink-100',
 ]
 
-function BrandLogo({ brand, color }) {
-  var hasImage = !!brand.image
+function getBrandSrc(brand) {
+  if (brand.image && brand.image.startsWith('http')) return brand.image
   var domain = brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'
-  var [src, setSrc] = useState(hasImage ? brand.image : ('https://logo.clearbit.com/' + domain))
+  return 'https://cdn.brandfetch.io/' + domain
+}
+
+function BrandLogo({ brand, color }) {
   var [failed, setFailed] = useState(false)
 
-  function handleError() {
-    if (hasImage && src === brand.image) {
-      setSrc('https://logo.clearbit.com/' + domain)
-    } else {
-      setFailed(true)
-    }
-  }
-
-  var content = (
-    <div className={'rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ' + (failed ? color : 'bg-white border-gray-100 hover:border-gray-200')}>
-      {failed ? (
-        <>
-          <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
-            {brand.name.slice(0, 2).toUpperCase()}
-          </div>
-          <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
-        </>
-      ) : (
-        <>
-          <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
-            <img src={src} alt={brand.name} className="max-w-full max-h-full object-contain" onError={handleError} />
-          </div>
-          <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
-        </>
-      )}
+  var content = failed ? (
+    <div className={'rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ' + color}>
+      <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
+        {brand.name.slice(0, 2).toUpperCase()}
+      </div>
+      <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
+    </div>
+  ) : (
+    <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-gray-200">
+      <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
+        <img src={getBrandSrc(brand)} alt={brand.name} className="max-w-full max-h-full object-contain" onError={function () { setFailed(true) }} />
+      </div>
+      <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
     </div>
   )
 

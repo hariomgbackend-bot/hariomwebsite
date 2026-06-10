@@ -5,19 +5,14 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { getAllBrands } from '@/lib/brands'
 import staticBrands from '@/data/brands'
 
-function BrandCard({ brand }) {
-  var hasImage = !!brand.image
+function getBrandSrc(brand) {
+  if (brand.image && brand.image.startsWith('http')) return brand.image
   var domain = brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'
-  var [src, setSrc] = useState(hasImage ? brand.image : ('https://logo.clearbit.com/' + domain))
-  var [failed, setFailed] = useState(false)
+  return 'https://cdn.brandfetch.io/' + domain
+}
 
-  function handleError() {
-    if (hasImage && src === brand.image) {
-      setSrc('https://logo.clearbit.com/' + domain)
-    } else {
-      setFailed(true)
-    }
-  }
+function BrandCard({ brand }) {
+  var [failed, setFailed] = useState(false)
 
   var card = (
     <div className="bg-white rounded-xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-gray-100 group cursor-default">
@@ -26,10 +21,10 @@ function BrandCard({ brand }) {
           <span className="text-xl font-bold text-[#FF5E1A]">{brand.name.slice(0, 2).toUpperCase()}</span>
         ) : (
           <img
-            src={src}
+            src={getBrandSrc(brand)}
             alt={brand.name}
             className="max-w-full max-h-full object-contain"
-            onError={handleError}
+            onError={function () { setFailed(true) }}
           />
         )}
       </div>
@@ -41,7 +36,6 @@ function BrandCard({ brand }) {
   if (brand.link) {
     return <a href={brand.link} target="_blank" rel="noopener noreferrer">{card}</a>
   }
-
   return card
 }
 
