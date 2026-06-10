@@ -1,55 +1,54 @@
 @import "tailwindcss";
-/* ─── Stitch "Luminous Tech Retail" Design System ─── */
+
 @theme {
-  /* Brand primaries (deep navy from Stitch + your logo crimson as accent) */
-  --color-brand-50:  #dae2ff;
-  --color-brand-100: #b1c5ff;
-  --color-brand-200: #82a5fe;
-  --color-brand-300: #4f7ef8;
-  --color-brand-400: #2b5ce6;
-  --color-brand-500: #1a3fa8;
-  --color-brand-600: #00378b;
-  --color-brand-700: #00235e;
-  --color-brand-800: #001847;
-  --color-brand-900: #000d2e;
+  --color-primary-50:  #eef2ff;
+  --color-primary-100: #dbe4ff;
+  --color-primary-200: #bac8ff;
+  --color-primary-300: #91a7ff;
+  --color-primary-400: #6b8aff;
+  --color-primary-500: #0B1F4B;
+  --color-primary-600: #091942;
+  --color-primary-700: #071035;
+  --color-primary-800: #050a24;
+  --color-primary-900: #030518;
 
-  /* Logo crimson accent */
-  --color-crimson-50:  #fce8ee;
-  --color-crimson-100: #f5b8ca;
-  --color-crimson-200: #ee88a6;
-  --color-crimson-300: #d95070;
-  --color-crimson-400: #c22249;
-  --color-crimson-500: #8b1a35;
-  --color-crimson-600: #6e1429;
-  --color-crimson-700: #520e1f;
+  --color-accent-50:  #fff4ed;
+  --color-accent-100: #ffe8d5;
+  --color-accent-200: #ffc49a;
+  --color-accent-300: #ff8c4a;
+  --color-accent-400: #FF5E1A;
+  --color-accent-500: #e04a0a;
+  --color-accent-600: #b83800;
 
-  /* Stitch surface tokens */
-  --color-surface:                  #fcf8fb;
-  --color-surface-low:              #f6f3f5;
-  --color-surface-container:        #f0edef;
-  --color-surface-high:             #eae7ea;
-  --color-surface-highest:          #e4e2e4;
-  --color-on-surface:               #1b1b1d;
-  --color-on-surface-variant:       #434652;
-  --color-outline:                  #747783;
-  --color-outline-variant:          #c4c6d3;
+  --color-brand-50:  #eef2ff;
+  --color-brand-100: #dbe4ff;
+  --color-brand-200: #bac8ff;
+  --color-brand-300: #91a7ff;
+  --color-brand-400: #6b8aff;
+  --color-brand-500: #0B1F4B;
+  --color-brand-600: #091942;
+  --color-brand-700: #071035;
+  --color-brand-800: #050a24;
+  --color-brand-900: #030518;
 
-  /* Orange CTA (tertiary) */
-  --color-accent-50:  #ffdbcd;
-  --color-accent-100: #ffb595;
-  --color-accent-200: #ff854a;
-  --color-accent-300: #ea5f1e;
-  --color-accent-400: #c9460a;
-  --color-accent-500: #a33200;
+  --color-surface: #F4F6FB;
+  --color-surface-low: #eef1f7;
+  --color-surface-container: #e8ecf3;
+  --color-surface-high: #e2e6ef;
+  --color-on-surface: #1b1b1d;
+  --color-on-surface-variant: #6B7A99;
+  --color-outline: #c4c6d3;
+  --color-outline-variant: #E0E6F0;
 
-  /* Fonts */
-  --font-display: 'Hanken Grotesk', 'Segoe UI', Arial, sans-serif;
-  --font-body:    'Hanken Grotesk', 'Segoe UI', Arial, sans-serif;
+  --color-success: #1DB86B;
+  --color-muted: #6B7A99;
+  --color-dark: #071035;
+
+  --font-heading: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+  --font-body: 'Inter', 'Noto Sans Devanagari', sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
@@ -59,64 +58,78 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@utility text-balance {
-  text-wrap: balance;
-}
+/* ── Scroll-triggered fade-up ── */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Animations ── */
+@keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-20px) scale(1.05); } 66% { transform: translate(-20px,15px) scale(0.95); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-25px,25px) scale(0.95); } 66% { transform: translate(20px,-15px) scale(1.05); } }
+@keyframes float3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(15px,20px); } }
+@keyframes pulseGlow { 0%,100% { opacity: 0.15; } 50% { opacity: 0.25; } }
+@keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-whatsapp { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
+
+/* ── Utility classes ── */
+@utility text-balance { text-wrap: balance; }
+@utility animate-marquee { animation: marquee 40s linear infinite; }
+@utility animate-pulse-whatsapp { animation: pulse-whatsapp 2s ease-in-out infinite; }
 
 @layer components {
-  /* ── Buttons ── */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-brand-700 text-white font-semibold rounded-xl hover:bg-brand-800 transition-all duration-200 text-sm md:text-base shadow-sm hover:shadow-md;
-  }
-  .btn-primary-light {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-brand-700 font-semibold rounded-xl hover:bg-surface-low transition-all duration-200 text-sm md:text-base border border-outline-variant;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#0B1F4B] text-white font-semibold rounded-xl hover:bg-[#071035] transition-all duration-200 text-sm md:text-base shadow-sm hover:shadow-md hover:-translate-y-0.5;
   }
   .btn-accent {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-accent-200 text-white font-semibold rounded-xl hover:bg-accent-300 transition-all duration-200 text-sm md:text-base shadow-sm;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-[#FF5E1A] text-white font-semibold rounded-xl hover:bg-[#e04a0a] transition-all duration-200 text-sm md:text-base shadow-sm hover:shadow-md hover:-translate-y-0.5;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-brand-700 text-brand-700 font-semibold rounded-xl hover:bg-brand-700 hover:text-white transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-[#0B1F4B] text-[#0B1F4B] font-semibold rounded-xl hover:bg-[#0B1F4B] hover:text-white transition-all duration-200 text-sm md:text-base;
   }
   .btn-outline-light {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-brand-700 transition-all duration-200 text-sm md:text-base;
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-[#0B1F4B] transition-all duration-200 text-sm md:text-base;
   }
-  .btn-crimson {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-crimson-500 text-white font-semibold rounded-xl hover:bg-crimson-600 transition-all duration-200 text-sm md:text-base shadow-sm;
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 text-[#6B7A99] font-medium hover:text-[#0B1F4B] transition-colors text-sm;
   }
 
-  /* ── Typography ── */
   .section-title {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brand-800 tracking-tight;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-[#0B1F4B] tracking-tight font-heading;
   }
   .section-subtitle {
-    @apply text-base md:text-lg text-on-surface-variant mt-2 leading-relaxed;
+    @apply text-base md:text-lg text-[#6B7A99] mt-2 leading-relaxed;
+  }
+  .section-badge {
+    @apply inline-block px-4 py-1.5 bg-[#fff4ed] text-[#FF5E1A] text-xs font-bold rounded-full mb-4 tracking-widest uppercase;
   }
 
-  /* ── Layout ── */
   .container-custom {
     @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-16;
   }
 
-  /* ── Cards ── */
   .card {
-    @apply bg-white rounded-2xl border border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0px_8px_30px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-200;
+    @apply bg-white rounded-2xl border border-[#E0E6F0] shadow-[0_4px_24px_rgba(11,31,75,0.06)] hover:shadow-[0_8px_32px_rgba(11,31,75,0.12)] hover:-translate-y-1 transition-all duration-300;
   }
 
-  /* ── Nav link (fallback; header uses inline classes) ── */
+  .glass {
+    @apply bg-white/90 backdrop-blur-xl border-b border-[#E0E6F0];
+  }
+
   .nav-link {
-    @apply text-[13px] font-semibold text-on-surface-variant hover:text-brand-700 transition-colors;
+    @apply text-[13px] font-semibold text-[#6B7A99] hover:text-[#0B1F4B] transition-colors uppercase tracking-wider relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-[#FF5E1A] after:transition-all after:duration-300 hover:after:w-full;
   }
-
-  /* ── Size helpers not in Tailwind default scale ── */
-  .w-13 { width:  3.25rem; }
-  .h-13 { height: 3.25rem; }
+  .nav-link.active {
+    @apply text-[#0B1F4B] after:w-full;
+  }
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-surface-low); }
-::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
+::-webkit-scrollbar-thumb { background: #c4c6d3; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #6B7A99; }
 
 /* ── WhatsApp float ── */
 .whatsapp-float {

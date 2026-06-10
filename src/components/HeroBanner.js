@@ -22,7 +22,7 @@ export default function HeroBanner() {
   useEffect(function () { setMounted(true) }, [])
 
   return (
-    <section ref={sectionRef} onMouseMove={onMouseMove} className="relative bg-brand-800 min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
+    <section ref={sectionRef} onMouseMove={onMouseMove} className="relative bg-[#0B1F4B] min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
 
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes hFloat1 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-20px) scale(1.05); } 66% { transform: translate(-20px,15px) scale(0.95); } }
@@ -31,7 +31,7 @@ export default function HeroBanner() {
         @keyframes hPulseGlow { 0%,100% { opacity: 0.15; } 50% { opacity: 0.25; } }
         @keyframes hFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes hFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes hBorderGlow { 0%,100% { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(139,26,53,0.1); } 50% { border-color: rgba(139,26,53,0.5); box-shadow: 0 0 40px rgba(139,26,53,0.2); } }
+        @keyframes hBorderGlow { 0%,100% { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(255,94,26,0.1); } 50% { border-color: rgba(255,94,26,0.5); box-shadow: 0 0 40px rgba(255,94,26,0.2); } }
         .h-badge { animation: hFadeUp 0.6s ease-out 0.1s both; }
         .h-headline { animation: hFadeUp 0.8s ease-out 0.25s both; }
         .h-subtitle { animation: hFadeUp 0.8s ease-out 0.4s both; }
@@ -50,25 +50,25 @@ export default function HeroBanner() {
         {/* Base gradient mesh */}
         <div className="absolute inset-0" style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 10% 20%, rgba(139,26,53,0.15) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 50% at 90% 80%, rgba(26,63,168,0.25) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 50%),
-            linear-gradient(160deg, #0f1a3e 0%, #1a3fa8 35%, #0f1a3e 70%, #1a2040 100%)
+            radial-gradient(ellipse 80% 60% at 10% 20%, rgba(255,94,26,0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 90% 80%, rgba(11,31,75,0.3) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,94,26,0.06) 0%, transparent 50%),
+            linear-gradient(160deg, #0B1F4B 0%, #122b63 35%, #0B1F4B 70%, #060f24 100%)
           `
         }} />
         {/* Floating animated orbs */}
         <div className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full" style={{
-          background: 'radial-gradient(circle, rgba(59,130,246,0.6) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,94,26,0.5) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'hFloat1 12s ease-in-out infinite, hPulseGlow 4s ease-in-out infinite'
         }} />
         <div className="absolute -bottom-40 -right-32 w-[700px] h-[500px] rounded-full" style={{
-          background: 'radial-gradient(circle, rgba(139,26,53,0.5) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(11,31,75,0.6) 0%, transparent 70%)',
           filter: 'blur(100px)',
           animation: 'hFloat2 15s ease-in-out infinite, hPulseGlow 5s ease-in-out infinite 1s'
         }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full" style={{
-          background: 'radial-gradient(circle, rgba(99,102,241,0.4) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,94,26,0.3) 0%, transparent 70%)',
           filter: 'blur(120px)',
           animation: 'hFloat3 18s ease-in-out infinite, hPulseGlow 6s ease-in-out infinite 0.5s'
         }} />
@@ -93,8 +93,8 @@ export default function HeroBanner() {
           {/* ── Left: Text content ── */}
           <div>
             {/* Badge */}
-            <span className="h-badge inline-flex items-center gap-2 px-4 py-1.5 bg-crimson-500/20 text-crimson-200 text-xs font-bold rounded-full mb-6 tracking-widest uppercase border border-crimson-500/30">
-              <span className="w-1.5 h-1.5 bg-crimson-300 rounded-full animate-pulse" />
+            <span className="h-badge inline-flex items-center gap-2 px-4 py-1.5 bg-[#FF5E1A]/20 text-[#FF5E1A] text-xs font-bold rounded-full mb-6 tracking-widest uppercase border border-[#FF5E1A]/30">
+              <span className="w-1.5 h-1.5 bg-[#FF5E1A] rounded-full animate-pulse" />
               {t('hero.badge')}
             </span>
 
@@ -103,7 +103,7 @@ export default function HeroBanner() {
               {t('hero.title')}
             </h1>
 
-            <p className="h-subtitle text-base md:text-lg text-brand-200 mt-6 max-w-xl leading-relaxed">
+            <p className="h-subtitle text-base md:text-lg text-white/70 mt-6 max-w-xl leading-relaxed">
               {t('hero.subtitle')}
             </p>
 
@@ -115,7 +115,7 @@ export default function HeroBanner() {
               <Link href="/products" className="btn-outline-light px-7 py-3.5">
                 {t('hero.cta2')}
               </Link>
-              <Link href="/contact" className="flex items-center gap-1.5 text-sm text-brand-300 hover:text-white transition-colors py-3.5 font-medium">
+              <Link href="/contact" className="flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors py-3.5 font-medium">
                 {t('hero.cta3')}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -131,8 +131,8 @@ export default function HeroBanner() {
                 { number: '50+', label: 'Brands Available' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="text-3xl md:text-4xl font-bold text-crimson-300">{stat.number}</div>
-                  <div className="text-xs md:text-sm text-brand-300 mt-1 font-medium">{stat.label}</div>
+                  <div className="text-3xl md:text-4xl font-bold text-[#FF5E1A]">{stat.number}</div>
+                  <div className="text-xs md:text-sm text-white/50 mt-1 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -142,7 +142,7 @@ export default function HeroBanner() {
           <div className="h-logo hidden lg:flex items-center justify-center">
             <div className="relative">
               {/* Outer glow ring */}
-              <div className="absolute inset-0 rounded-full bg-crimson-500/20 blur-2xl scale-110" />
+              <div className="absolute inset-0 rounded-full bg-[#FF5E1A]/20 blur-2xl scale-110" />
               {/* Logo card */}
               <div className="relative w-72 h-72 rounded-3xl bg-white/10 backdrop-blur-sm flex items-center justify-center p-10 shadow-2xl" style={{
                 border: '1px solid rgba(255,255,255,0.2)',
@@ -159,7 +159,7 @@ export default function HeroBanner() {
                 <span className="text-lg">⭐</span>
                 <div>
                   <div className="text-xs font-bold text-brand-800">Trusted Since</div>
-                  <div className="text-sm font-bold text-crimson-500">1988</div>
+                  <div className="text-sm font-bold text-[#FF5E1A]">1988</div>
                 </div>
               </div>
               <div className="h-chip2 absolute -bottom-4 -left-6 bg-white rounded-2xl shadow-xl px-4 py-2 flex items-center gap-2">

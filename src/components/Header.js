@@ -33,11 +33,10 @@ export default function Header() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/92 backdrop-blur-[24px] shadow-[0_2px_24px_rgba(0,35,94,0.10)]'
-          : 'bg-white border-b border-outline-variant/60'
+          ? 'bg-white/90 backdrop-blur-xl shadow-[0_2px_24px_rgba(11,31,75,0.10)] border-b border-[#FF5E1A]/30'
+          : 'bg-white/90 backdrop-blur-xl border-b border-[#E0E6F0]'
       }`}
     >
-      {/* ── Single inner row — exactly 72px tall on desktop, 60px on mobile ── */}
       <div className="container-custom">
         <div className="flex items-center h-[60px] md:h-[72px] gap-0">
 
@@ -47,8 +46,7 @@ export default function Header() {
             className="flex items-center gap-2.5 flex-shrink-0 group"
             aria-label="Hariom Electronics – Home"
           >
-            {/* HE monogram icon */}
-            <div className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-outline-variant/70 bg-white shadow-sm group-hover:shadow-md transition-shadow duration-200">
+            <div className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-[#E0E6F0]/70 bg-white shadow-sm group-hover:shadow-md transition-shadow duration-200">
               <img
                 src="/logo-icon.png"
                 alt=""
@@ -56,43 +54,38 @@ export default function Header() {
                 className="absolute inset-0 w-full h-full object-contain p-1"
               />
             </div>
-
-            {/* Wordmark — hidden on xs, visible sm+ */}
             <div className="hidden sm:flex flex-col justify-center leading-none gap-[3px]">
-              <span className="text-[13px] md:text-[15px] font-bold tracking-tight leading-none">
-                <span className="text-crimson-500">HARIOM</span>
-                <span className="text-brand-800"> ELECTRONICS</span>
+              <span className="text-[13px] md:text-[15px] font-bold tracking-tight leading-none font-heading">
+                <span style={{color:'#8B1A35'}}>HARIOM</span>
+                <span style={{color:'#0B1F4B'}}> ELECTRONICS</span>
               </span>
-              <span className="text-[9px] md:text-[10px] font-semibold text-on-surface-variant/70 tracking-[0.14em] uppercase leading-none">
+              <span className="text-[9px] md:text-[10px] font-semibold text-[#6B7A99]/70 tracking-[0.14em] uppercase leading-none">
                 Our Product. Your Trust
               </span>
             </div>
           </Link>
 
           {/* ══ CENTER: Nav links (desktop only) ══ */}
-          {/* flex-1 + flex justify-center pushes links to the middle */}
           <nav className="hidden lg:flex flex-1 items-center justify-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative px-3 py-1.5 text-[13px] font-semibold text-on-surface-variant hover:text-brand-700 transition-colors duration-150 rounded-lg hover:bg-brand-50 whitespace-nowrap group"
+                className="relative px-3 py-1.5 text-[13px] font-semibold text-[#6B7A99] hover:text-[#0B1F4B] transition-colors duration-150 rounded-lg hover:bg-[#F4F6FB] whitespace-nowrap group"
               >
                 {link.label}
-                {/* Underline indicator */}
-                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-crimson-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left rounded-full" />
+                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#FF5E1A] scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left rounded-full" />
               </Link>
             ))}
           </nav>
 
           {/* ══ RIGHT: Language + CTA ══ */}
           <div className="hidden lg:flex items-center gap-3 flex-shrink-0 ml-auto">
-            {/* Divider */}
-            <span className="w-px h-5 bg-outline-variant/50" />
+            <span className="w-px h-5 bg-[#E0E6F0]/50" />
             <LanguageSwitcher />
             <Link
               href="/contact"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-700 text-white text-[13px] font-semibold rounded-xl hover:bg-brand-800 active:scale-95 transition-all duration-150 shadow-sm hover:shadow-md whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#FF5E1A] text-white text-[13px] font-semibold rounded-xl hover:bg-[#e04a0a] active:scale-95 transition-all duration-150 shadow-sm hover:shadow-md whitespace-nowrap"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -101,17 +94,17 @@ export default function Header() {
             </Link>
             <Link
               href="/checkout"
-              className="relative inline-flex items-center justify-center w-10 h-10 rounded-xl border border-outline-variant text-brand-800 hover:bg-brand-50 transition-colors"
+              className="relative inline-flex items-center justify-center w-10 h-10 rounded-xl border border-[#E0E6F0] text-[#0B1F4B] hover:bg-[#F4F6FB] transition-colors"
               aria-label="Cart"
             >
               <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M3 3h2l.4 2m0 0h15.2l-2 8H7.2M5.4 5L7 13m0 0l-1.2 3H19M9 20h.01M17 20h.01" />
               </svg>
-              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-crimson-500 text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
+              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-[#FF5E1A] text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
             </Link>
             <Link
               href="/account"
-              className="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-outline-variant text-brand-800 hover:bg-brand-50 transition-colors"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-[#E0E6F0] text-[#0B1F4B] hover:bg-[#F4F6FB] transition-colors"
               aria-label="Account"
             >
               <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +118,7 @@ export default function Header() {
             <LanguageSwitcher />
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-high transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-xl text-[#6B7A99] hover:bg-[#eef1f7] transition-colors"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,81 +132,63 @@ export default function Header() {
             <Link
               href="/checkout"
               aria-label="Cart"
-              className="relative w-9 h-9 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-high transition-colors"
+              className="relative w-9 h-9 flex items-center justify-center rounded-xl text-[#6B7A99] hover:bg-[#eef1f7] transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M3 3h2l.4 2m0 0h15.2l-2 8H7.2M5.4 5L7 13m0 0l-1.2 3H19M9 20h.01M17 20h.01" />
               </svg>
-              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-crimson-500 text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
+              {totalQuantity > 0 && <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-[#FF5E1A] text-white text-[10px] font-bold flex items-center justify-center">{totalQuantity}</span>}
             </Link>
           </div>
 
         </div>
       </div>
 
-      {/* ══ Mobile drawer ══ */}
+      {/* ══ Mobile drawer — dark navy full-screen ══ */}
       {menuOpen && (
-        <div className="lg:hidden border-t border-outline-variant/60 bg-white shadow-xl">
-
-          {/* Drawer header */}
-          <div className="flex items-center gap-3 px-5 py-4 bg-surface-low border-b border-outline-variant/40">
-            <div className="w-10 h-10 rounded-xl overflow-hidden ring-1 ring-outline-variant flex-shrink-0 bg-white">
-              <img src="/logo-icon.png" alt="Hariom Electronics" className="w-full h-full object-contain p-1" />
-            </div>
-            <div className="leading-tight">
-              <span className="block text-[13px] font-bold">
-                <span className="text-crimson-500">HARIOM</span>
-                <span className="text-brand-800"> ELECTRONICS</span>
-              </span>
-              <span className="block text-[9px] font-semibold text-on-surface-variant/60 tracking-[0.12em] uppercase">
-                Our Product. Your Trust
-              </span>
-            </div>
-          </div>
-
-          {/* Nav items */}
-          <nav className="px-3 py-3 space-y-0.5">
+        <div className="lg:hidden fixed inset-0 top-[60px] z-50 bg-[#071035] overflow-y-auto" style={{animation:'slideDown 0.25s ease-out'}}>
+          <nav className="px-5 py-6 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-between px-4 py-3 text-[14px] font-semibold text-on-surface hover:text-brand-700 hover:bg-brand-50 rounded-xl transition-colors group"
+                className="flex items-center justify-between px-4 py-3.5 text-[15px] font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors group"
               >
                 {link.label}
-                <svg className="w-4 h-4 text-outline opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-white/30 group-hover:text-[#FF5E1A] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
             ))}
+            <div className="border-t border-white/10 my-4" />
             <Link
               href="/account"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-between px-4 py-3 text-[14px] font-semibold text-on-surface hover:text-brand-700 hover:bg-brand-50 rounded-xl transition-colors group"
+              className="flex items-center justify-between px-4 py-3.5 text-[15px] font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors group"
             >
               Account
-              <svg className="w-4 h-4 text-outline opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-white/30 group-hover:text-[#FF5E1A] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
             <Link
               href="/checkout"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-between px-4 py-3 text-[14px] font-semibold text-on-surface hover:text-brand-700 hover:bg-brand-50 rounded-xl transition-colors group"
+              className="flex items-center justify-between px-4 py-3.5 text-[15px] font-semibold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors group"
             >
               Cart {totalQuantity > 0 ? '(' + totalQuantity + ')' : ''}
-              <svg className="w-4 h-4 text-outline opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-white/30 group-hover:text-[#FF5E1A] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
           </nav>
 
-          {/* CTA */}
-          <div className="px-4 pb-4 pt-2 border-t border-surface-high">
+          <div className="px-5 pb-8 pt-2">
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-3 bg-brand-700 text-white text-[14px] font-semibold rounded-xl hover:bg-brand-800 transition-colors shadow-sm"
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#FF5E1A] text-white text-[15px] font-semibold rounded-xl hover:bg-[#e04a0a] transition-colors shadow-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -221,7 +196,6 @@ export default function Header() {
               {t('nav.contact')}
             </Link>
           </div>
-
         </div>
       )}
     </header>

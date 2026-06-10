@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getCategories } from '@/lib/categories'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const icons = {
   tv: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
@@ -31,10 +32,11 @@ export default function CategoryGrid() {
   }, [])
 
   return (
-    <section className="py-14 md:py-20 bg-surface-container">
+    <section className="py-14 md:py-20 bg-[#F4F6FB]">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="section-title">{t('categories.heading')}</h2>
+          <span className="section-badge">Explore</span>
+          <h2 className="section-title font-heading">{t('categories.heading')}</h2>
           <p className="section-subtitle">{t('categories.subheading')}</p>
         </div>
 
@@ -49,9 +51,9 @@ export default function CategoryGrid() {
               <Link
                 key={cat.id}
                 href={`/products/${cat.id}`}
-                className="group card bg-white p-4 md:p-5 flex flex-col items-center text-center"
+                className="group bg-white rounded-2xl border border-[#E0E6F0] shadow-[0_4px_24px_rgba(11,31,75,0.06)] hover:shadow-[0_8px_32px_rgba(255,94,26,0.15)] hover:-translate-y-1 transition-all duration-300 p-4 md:p-5 flex flex-col items-center text-center"
               >
-                <div className="w-13 h-13 mx-auto bg-brand-50 text-brand-700 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-brand-700 group-hover:text-white transition-colors shadow-sm">
+                <div className="w-13 h-13 mx-auto bg-[#fff4ed] text-[#FF5E1A] rounded-2xl flex items-center justify-center mb-3 group-hover:bg-[#FF5E1A] group-hover:text-white transition-colors shadow-sm">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -61,10 +63,10 @@ export default function CategoryGrid() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-sm font-semibold text-on-surface group-hover:text-brand-700 transition-colors">
+                <h3 className="text-sm font-semibold text-[#1b1b1d] group-hover:text-[#0B1F4B] transition-colors">
                   {catName}
                 </h3>
-                <p className="text-xs text-on-surface-variant mt-1 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-[#6B7A99] mt-1 line-clamp-2 leading-relaxed">
                   {catDesc}
                 </p>
               </Link>
@@ -73,7 +75,7 @@ export default function CategoryGrid() {
         </div>
 
         <div className="text-center mt-10">
-          <Link href="/products" className="btn-outline text-sm">
+          <Link href="/products" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#0B1F4B] text-[#0B1F4B] font-semibold rounded-xl hover:bg-[#0B1F4B] hover:text-white transition-all duration-200 text-sm">
             {t('categories.viewAll')}
           </Link>
         </div>

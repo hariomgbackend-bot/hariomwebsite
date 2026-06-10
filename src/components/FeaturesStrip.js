@@ -36,21 +36,22 @@ export default function FeaturesStrip() {
     <section className="py-14 md:py-20 bg-white">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="section-title">{t('features.heading')}</h2>
+          <span className="section-badge">Why Choose Us</span>
+          <h2 className="section-title font-heading">{t('features.heading')}</h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
           {features.map((f) => (
             <div
               key={f.key}
-              className="group flex flex-col items-center text-center p-5 md:p-6 rounded-2xl bg-surface-low hover:bg-brand-50 hover:shadow-md transition-all duration-200 border border-transparent hover:border-brand-100 cursor-default"
+              className="group flex flex-col items-center text-center p-5 md:p-6 rounded-2xl bg-[#F4F6FB] hover:shadow-[0_8px_32px_rgba(255,94,26,0.12)] transition-all duration-300 border-l-[3px] border-transparent hover:border-[#FF5E1A] cursor-default hover:-translate-y-0.5"
             >
-              <div className="w-13 h-13 bg-brand-50 text-brand-700 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-brand-700 group-hover:text-white transition-colors shadow-sm">
+              <div className="w-13 h-13 bg-[#fff4ed] text-[#FF5E1A] rounded-2xl flex items-center justify-center mb-3 group-hover:bg-[#FF5E1A] group-hover:text-white transition-colors shadow-sm">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={f.icon} />
                 </svg>
               </div>
-              <span className="text-xs md:text-sm font-semibold text-on-surface group-hover:text-brand-700 transition-colors leading-snug">
+              <span className="text-xs md:text-sm font-semibold text-[#1b1b1d] group-hover:text-[#0B1F4B] transition-colors leading-snug">
                 {t(`features.${f.key}`)}
               </span>
             </div>

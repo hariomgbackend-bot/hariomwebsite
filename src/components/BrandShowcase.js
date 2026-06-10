@@ -32,7 +32,7 @@ function BrandLogo({ brand, color }) {
   }
 
   return (
-    <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-gray-200">
+    <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-[#FF5E1A] hover:shadow-[0_4px_16px_rgba(255,94,26,0.1)]">
       <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
         <img
           src={`https://cdn.brandfetch.io/${brand.domain}`}
@@ -53,7 +53,8 @@ export default function BrandShowcase() {
     <section className="py-14 md:py-20 bg-white">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="section-title">{t('brands.heading')}</h2>
+          <span className="section-badge">Brands</span>
+          <h2 className="section-title font-heading">{t('brands.heading')}</h2>
           <p className="section-subtitle">{t('brands.subheading')}</p>
         </div>
 
@@ -64,7 +65,7 @@ export default function BrandShowcase() {
         </div>
 
         <div className="text-center mt-10">
-          <Link href="/brands" className="text-sm font-semibold text-brand-700 hover:text-crimson-500 transition-colors inline-flex items-center gap-1.5">
+          <Link href="/brands" className="text-sm font-semibold text-[#0B1F4B] hover:text-[#FF5E1A] transition-colors inline-flex items-center gap-1.5">
             {t('brands.heading')}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
