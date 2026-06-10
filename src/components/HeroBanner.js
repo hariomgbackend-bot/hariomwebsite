@@ -9,21 +9,43 @@ export default function HeroBanner() {
   return (
     <section className="relative bg-brand-800 min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
 
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0">
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-          }}
-        />
-        {/* Crimson glow — top left */}
-        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-crimson-500 rounded-full blur-[120px] opacity-20" />
-        {/* Brand blue glow — bottom right */}
-        <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-brand-600 rounded-full blur-[140px] opacity-30" />
+      {/* ── Professional Blue Blur Electronics Background ── */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Base gradient mesh */}
+        <div className="absolute inset-0" style={{
+          background: `
+            radial-gradient(ellipse 80% 60% at 10% 20%, rgba(139,26,53,0.15) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 90% 80%, rgba(26,63,168,0.25) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 50%),
+            linear-gradient(160deg, #0f1a3e 0%, #1a3fa8 35%, #0f1a3e 70%, #1a2040 100%)
+          `
+        }} />
+        {/* Large blurred tech orbs */}
+        <div className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full opacity-15" style={{
+          background: 'radial-gradient(circle, rgba(59,130,246,0.6) 0%, transparent 70%)',
+          filter: 'blur(80px)'
+        }} />
+        <div className="absolute -bottom-40 -right-32 w-[700px] h-[500px] rounded-full opacity-20" style={{
+          background: 'radial-gradient(circle, rgba(139,26,53,0.5) 0%, transparent 70%)',
+          filter: 'blur(100px)'
+        }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10" style={{
+          background: 'radial-gradient(circle, rgba(99,102,241,0.4) 0%, transparent 70%)',
+          filter: 'blur(120px)'
+        }} />
+        {/* Subtle circuit-like dot grid */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }} />
+        {/* Diagonal tech lines pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.15) 40px, rgba(255,255,255,0.15) 41px)`,
+        }} />
+        {/* Vignette overlay for depth */}
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%)'
+        }} />
       </div>
 
       <div className="container-custom relative z-10 py-20 md:py-28">
