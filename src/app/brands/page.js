@@ -6,14 +6,14 @@ import { getAllBrands } from '@/lib/brands'
 import staticBrands from '@/data/brands'
 
 function BrandCard({ brand }) {
-  var [src, setSrc] = useState(brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com')))
+  var hasImage = !!brand.image
+  var domain = brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'
+  var [src, setSrc] = useState(hasImage ? brand.image : ('https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'))
   var [failed, setFailed] = useState(false)
-  var [usedFallback, setUsedFallback] = useState(false)
 
   function handleError() {
-    if (!usedFallback) {
-      setUsedFallback(true)
-      setSrc('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com'))
+    if (hasImage && src === brand.image) {
+      setSrc('https://www.google.com/s2/favicons?domain=' + domain + '&sz=64')
     } else {
       setFailed(true)
     }
