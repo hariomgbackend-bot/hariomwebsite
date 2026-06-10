@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
         case 'categories':
           renderCategories()
           break
+        case 'brands':
+          renderBrands()
+          break
         case 'customers':
           renderCustomers()
           break
