@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { getFeaturedProducts } from '@/lib/products'
+import { getFeaturedProducts, formatPrice } from '@/lib/products'
 
 // Brand colour map for the placeholder badge
 const brandColors = {
@@ -67,7 +67,7 @@ export default function FeaturedProducts() {
                   {product.name}
                 </h3>
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-outline-variant">
-                  <span className="text-base font-bold text-brand-800">{product.price}</span>
+                  <span className="text-base font-bold text-brand-800">{formatPrice(product.price)}</span>
                   <span className="text-xs bg-brand-700 text-white px-3.5 py-1.5 rounded-xl hover:bg-brand-800 active:scale-95 transition-all font-semibold">
                     Enquire
                   </span>

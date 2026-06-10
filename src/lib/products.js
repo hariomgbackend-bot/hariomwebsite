@@ -1,6 +1,12 @@
 import { db } from '@/lib/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 
+export function formatPrice(price) {
+  if (!price || price === 'Call for Price') return price || '—'
+  var cleaned = String(price).replace(/^₹\s*/, '')
+  return '₹' + cleaned
+}
+
 function slugify(text) {
   return text.toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')

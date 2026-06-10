@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
-import { getProductBySlug } from '@/lib/products'
+import { getProductBySlug, formatPrice } from '@/lib/products'
 import { getCategoryBySlug } from '@/lib/categories'
 import AddToCartButton from '@/components/AddToCartButton'
 
@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
               )}
 
               <div className="mt-6">
-                <span className="text-2xl md:text-3xl font-bold text-brand-800">{product.price || 'Call for Price'}</span>
+                <span className="text-2xl md:text-3xl font-bold text-brand-800">{formatPrice(product.price) || 'Call for Price'}</span>
               </div>
 
               {/* Key highlights */}

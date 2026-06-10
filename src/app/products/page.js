@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getCategories } from '@/lib/categories'
-import { getProducts } from '@/lib/products'
+import { getProducts, formatPrice } from '@/lib/products'
 
 var SORT_OPTIONS = [
   { value: 'name-asc', label: 'Name: A-Z' },
@@ -211,7 +211,7 @@ export default function ProductsPage() {
                               <p className="text-xs text-gray-400 mt-1 line-clamp-1">{product.description}</p>
                             )}
                             <div className="flex items-center justify-between mt-3 pt-3 border-t border-outline-variant">
-                              <span className="text-base font-bold text-brand-800">{product.price || '—'}</span>
+                              <span className="text-base font-bold text-brand-800">{formatPrice(product.price)}</span>
                               <span className="text-xs bg-brand-700 text-white px-3 py-1.5 rounded-xl hover:bg-brand-800 active:scale-95 transition-all font-semibold">
                                 Enquire
                               </span>

@@ -66,6 +66,11 @@ function renderCategoryTiles() {
       return
     }
 
+    var validCatIds = {}
+    cats.forEach(function (c) { validCatIds[c.id] = true })
+
+    var uncategorized = _allProducts.filter(function (p) { return !p.category || !validCatIds[p.category] })
+
     var html = '<div class="category-tile-grid">'
 
     cats.forEach(function (c) {
@@ -78,12 +83,26 @@ function renderCategoryTiles() {
         '</div>'
     })
 
+    if (uncategorized.length > 0) {
+      html +=
+        '<div class="category-tile" data-cat="__uncategorized__" style="border:2px dashed var(--danger);">' +
+        '  <div class="category-tile-icon">&#9888;&#65039;</div>' +
+        '  <div class="category-tile-name" style="color:var(--danger);">Uncategorized</div>' +
+        '  <div class="category-tile-count" style="color:var(--danger);">' + uncategorized.length + ' product' + (uncategorized.length !== 1 ? 's' : '') + '</div>' +
+        '</div>'
+    }
+
     html += '</div>'
     container.innerHTML = html
 
     Array.from(container.querySelectorAll('.category-tile')).forEach(function (el) {
       el.addEventListener('click', function () {
-        showCategoryView(el.getAttribute('data-cat'))
+        var cat = el.getAttribute('data-cat')
+        if (cat === '__uncategorized__') {
+          showUncategorizedView()
+        } else {
+          showCategoryView(cat)
+        }
       })
     })
   }).catch(function () {
@@ -151,7 +170,7 @@ function showCategoryView(categoryId) {
         '<td>' + imgHtml + '</td>' +
         '<td style="font-weight:600;max-width:240px;">' + escapeHtml(p.name) + '</td>' +
         '<td>' + escapeHtml(p.brand || '—') + '</td>' +
-        '<td><span class="price">' + escapeHtml(p.price || '—') + '</span></td>' +
+        '<td><span class="price">&#8377;' + escapeHtml(String(p.price || '').replace(/^₹\s*/, '') || '—') + '</span></td>' +
         '<td>' + featHtml + '</td>' +
         '<td style="font-size:0.78rem;color:var(--on-surface-variant);">' + updated + '</td>' +
         '<td class="actions">' +
@@ -164,6 +183,60 @@ function showCategoryView(categoryId) {
     container.innerHTML = html
   }).catch(function (err) {
     showToast('Error: ' + err.message, 'error')
+  })
+}
+
+function showUncategorizedView() {
+  var container = document.getElementById('stock-table')
+  if (!container) return
+
+  var validCatIds = {}
+  db.collection('categories').get().then(function (snap) {
+    snap.forEach(function (doc) { var d = doc.data(); validCatIds[d.id || doc.id] = true })
+
+    var uncategorized = _allProducts.filter(function (p) { return !p.category || !validCatIds[p.category] })
+
+    var html =
+      '<div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;">' +
+      '  <button class="btn btn-outline btn-sm" onclick="renderCategoryTiles()">&#8592; All Categories</button>' +
+      '  <span style="font-weight:700;font-size:1rem;color:var(--danger);flex:1;">Uncategorized (' + uncategorized.length + ')</span>' +
+      '  <span style="font-size:0.8rem;color:var(--on-surface-variant);">These products have no valid category — delete or edit them</span>' +
+      '</div>'
+
+    if (uncategorized.length === 0) {
+      html += '<div class="empty-state"><p>No uncategorized products.</p></div>'
+      container.innerHTML = html
+      return
+    }
+
+    html +=
+      '<div class="table-wrapper">' +
+      '  <table class="data-table">' +
+      '    <thead><tr>' +
+      '      <th>Image</th><th>Name</th><th>Category</th><th>Brand</th><th>Price</th><th>Actions</th>' +
+      '    </tr></thead><tbody>'
+
+    uncategorized.forEach(function (p) {
+      var imgs = p.images || []
+      var imgHtml = '<span style="color:var(--outline);font-size:18px;">&#128247;</span>'
+      if (imgs.length > 0) {
+        imgHtml = '<img src="' + escapeHtml(imgs[0]) + '" style="width:38px;height:38px;object-fit:cover;border-radius:6px;border:1px solid var(--outline-variant);" onerror="this.style.display=\'none\'" />'
+      }
+      var encName = escapeHtml(p.name).replace(/'/g, "\\'")
+      html += '<tr>' +
+        '<td>' + imgHtml + '</td>' +
+        '<td style="font-weight:600;max-width:200px;">' + escapeHtml(p.name) + '</td>' +
+        '<td style="color:var(--danger);">' + escapeHtml(p.category || '—') + '</td>' +
+        '<td>' + escapeHtml(p.brand || '—') + '</td>' +
+        '<td>&#8377;' + escapeHtml(String(p.price || '').replace(/^₹\s*/, '') || '—') + '</td>' +
+        '<td class="actions">' +
+        '  <button class="btn btn-outline btn-sm" onclick="showEditProductForm(\'' + encName + '\')">Edit</button>' +
+        '  <button class="btn btn-danger btn-sm" onclick="deleteProduct(\'' + encName + '\')">Delete</button>' +
+        '</td></tr>'
+    })
+
+    html += '</tbody></table></div>'
+    container.innerHTML = html
   })
 }
 
@@ -343,10 +416,10 @@ function refreshAddPreview() {
 function renderPreviewCard(data) {
   var img = data.images && data.images.length > 0 ? data.images[0] : ''
   var brandInit = data.brand ? data.brand[0].toUpperCase() : '?'
-  // FIX: only show FEATURED badge if actually featured
   var featuredBadge = data.featured
     ? '<span style="position:absolute;top:12px;left:12px;background:#8b1a35;color:white;font-size:10px;font-weight:bold;padding:4px 10px;border-radius:20px;letter-spacing:0.5px;">FEATURED</span>'
     : ''
+  var displayPrice = data.price ? '&#8377;' + String(data.price).replace(/^₹\s*/, '') : '—'
   return '<div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-family:-apple-system,BlinkMacSystemFont,sans-serif;">' +
     '  <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#e8e0f0,#f0edf2);display:flex;align-items:center;justify-content:center;position:relative;padding:24px;">' +
     (img
@@ -360,7 +433,7 @@ function renderPreviewCard(data) {
     '    <h3 style="font-size:14px;font-weight:600;color:#1b1b1d;margin:4px 0 6px 0;line-height:1.3;">' + escapeHtml(data.name || '') + '</h3>' +
     (data.description ? '<p style="font-size:12px;color:#666;margin:0 0 8px 0;line-height:1.4;">' + escapeHtml(data.description) + '</p>' : '') +
     '    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #e0dde3;">' +
-    '      <span style="font-size:16px;font-weight:bold;color:#001847;">' + escapeHtml(data.price || '—') + '</span>' +
+    '      <span style="font-size:16px;font-weight:bold;color:#001847;">' + displayPrice + '</span>' +
     '      <button style="background:#001847;color:white;border:none;padding:6px 14px;border-radius:12px;font-size:12px;font-weight:600;cursor:default;">Enquire</button>' +
     '    </div>' +
     '  </div>' +

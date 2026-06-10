@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { createCustomerOrder, updateCustomerOrder } from '@/lib/orders'
 import { formatCurrency, useCart } from '@/lib/cart'
+import { formatPrice } from '@/lib/products'
 import { listenToAuth } from '@/lib/auth'
 import { getCustomerProfile, saveCustomerProfile } from '@/lib/customerProfile'
 
@@ -263,7 +264,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-gray-800 line-clamp-2">{item.name}</p>
-                          <p className="text-xs text-gray-500 mt-1">{item.price || 'Call for price'}</p>
+                          <p className="text-xs text-gray-500 mt-1">{formatPrice(item.price)}</p>
                           <div className="flex items-center gap-2 mt-2">
                             <button type="button" onClick={function () { cart.updateQuantity(item.id, item.quantity - 1) }} className="w-7 h-7 rounded-lg border border-gray-200">-</button>
                             <span className="text-sm font-semibold min-w-6 text-center">{item.quantity}</span>

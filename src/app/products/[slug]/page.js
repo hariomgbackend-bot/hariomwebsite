@@ -5,7 +5,7 @@ import { useParams, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getCategoryBySlug } from '@/lib/categories'
-import { getProducts } from '@/lib/products'
+import { getProducts, formatPrice } from '@/lib/products'
 
 const iconPaths = {
   tv: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
@@ -108,7 +108,7 @@ export default function CategoryPage() {
                     <div className="p-5">
                       <span className="text-xs font-medium text-accent-500 uppercase">{product.brand}</span>
                       <h3 className="text-base font-semibold text-gray-800 mt-1 group-hover:text-brand-600 transition-colors">{product.name}</h3>
-                      <p className="text-lg font-bold text-brand-800 mt-2">{product.price}</p>
+                      <p className="text-lg font-bold text-brand-800 mt-2">{formatPrice(product.price)}</p>
                     </div>
                   </Link>
                 )
