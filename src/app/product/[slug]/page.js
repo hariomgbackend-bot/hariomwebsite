@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
-import { getProductBySlug, formatPrice } from '@/lib/products'
+import { getProductBySlug, getProducts, formatPrice } from '@/lib/products'
 import { getCategoryBySlug } from '@/lib/categories'
 import AddToCartButton from '@/components/AddToCartButton'
 
@@ -15,13 +15,18 @@ export default function ProductDetailPage() {
   var [category, setCategory] = useState(null)
   var [loading, setLoading] = useState(true)
   var [selectedImage, setSelectedImage] = useState(0)
+  var [similar, setSimilar] = useState([])
 
   useEffect(function () {
     setLoading(true)
     getProductBySlug(params.slug).then(function (p) {
       if (!p) { setLoading(false); return }
       setProduct(p)
+      setSelectedImage(0)
       getCategoryBySlug(p.category).then(function (c) { setCategory(c) })
+      getProducts(p.category).then(function (all) {
+        setSimilar(all.filter(function (x) { return x.id !== p.id }).slice(0, 10))
+      })
       setLoading(false)
     })
   }, [params.slug])
@@ -167,17 +172,43 @@ export default function ProductDetailPage() {
         </div>
       </section>
 
-      {/* Related / Browse CTA */}
-      <section className="py-12 bg-white">
-        <div className="container-custom text-center">
-          <h2 className="text-2xl font-bold text-brand-800 mb-4">Looking for something else?</h2>
-          <p className="text-gray-600 mb-6">Browse our full range of products across all categories.</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/products" className="btn-primary">View All Products</Link>
-            <Link href={'/products/' + product.category} className="btn-outline">Browse {catName}</Link>
+      {/* Similar Products */}
+      {similar.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container-custom">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-800">Similar Products</h2>
+              <Link href={'/products/' + product.category} className="text-sm text-accent-600 hover:text-accent-700 font-semibold">View All</Link>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin" style={{scrollbarWidth:'thin'}}>
+              {similar.map(function (sp) {
+                return (
+                  <Link
+                    key={sp.id}
+                    href={'/product/' + sp.slug}
+                    className="min-w-[180px] md:min-w-[200px] bg-white rounded-xl border border-gray-100 hover:shadow-lg transition-shadow overflow-hidden shrink-0 snap-start group"
+                  >
+                    <div className="aspect-[4/3] bg-gradient-to-br from-brand-50 to-surface-low flex items-center justify-center p-4">
+                      {sp.image && sp.image !== '/images/placeholder.svg' ? (
+                        <img src={sp.image} alt={sp.name} className="w-full h-full object-contain" onError={function (e) { e.target.src = '/images/placeholder.svg'; e.target.onerror = null }} />
+                      ) : (
+                        <div className="w-14 h-14 bg-brand-600/10 rounded-xl flex items-center justify-center">
+                          <span className="text-xl font-bold text-brand-600">{sp.brand ? sp.brand[0] : sp.name[0]}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-3">
+                      {sp.brand && <span className="text-[10px] font-bold text-accent-200 uppercase">{sp.brand}</span>}
+                      <h3 className="text-xs font-semibold text-gray-800 mt-0.5 line-clamp-2 group-hover:text-brand-700 transition-colors">{sp.name}</h3>
+                      <span className="text-sm font-bold text-brand-800 mt-1 block">{formatPrice(sp.price)}</span>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   )
 }
