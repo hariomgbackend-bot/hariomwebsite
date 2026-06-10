@@ -1,26 +1,10 @@
 import { db } from '@/lib/firebase'
-import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore'
-import staticProducts from '@/data/products'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 
 function slugify(text) {
   return text.toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-}
-
-function mapStaticProduct(p) {
-  return {
-    id: p.id,
-    slug: slugify(p.name),
-    name: p.name || '',
-    brand: p.brand || '',
-    category: p.category || '',
-    price: p.price || '',
-    description: p.description || '',
-    featured: p.featured === true,
-    image: p.image || '/images/placeholder.svg',
-    images: p.images || []
-  }
 }
 
 function mapFirestoreDoc(doc) {
@@ -40,10 +24,7 @@ function mapFirestoreDoc(doc) {
 }
 
 export async function getProductBySlug(slug) {
-  if (!db) {
-    var found = staticProducts.find(function (p) { return slugify(p.name) === slug })
-    return found ? mapStaticProduct(found) : null
-  }
+  if (!db) return null
   try {
     var ref = collection(db, 'products')
     var q = query(ref, where('is_visible', '==', true))
@@ -51,17 +32,15 @@ export async function getProductBySlug(slug) {
     var results = []
     snap.forEach(function (doc) { results.push(mapFirestoreDoc(doc)) })
     var match = results.find(function (p) { return p.slug === slug })
-    if (match) return match
-    return null
+    return match || null
   } catch (e) {
     console.error('getProductBySlug error:', e)
-    var fallback = staticProducts.find(function (p) { return slugify(p.name) === slug })
-    return fallback ? mapStaticProduct(fallback) : null
+    return null
   }
 }
 
 export async function getProducts(categoryId) {
-  if (!db) return staticProducts.filter(function (p) { return !categoryId || p.category === categoryId }).map(mapStaticProduct)
+  if (!db) return []
   try {
     var ref = collection(db, 'products')
     var constraints = [where('is_visible', '==', true)]
@@ -73,13 +52,13 @@ export async function getProducts(categoryId) {
     return results
   } catch (e) {
     console.error('getProducts error:', e)
-    return staticProducts.filter(function (p) { return !categoryId || p.category === categoryId }).map(mapStaticProduct)
+    return []
   }
 }
 
 export async function getFeaturedProducts(max) {
   max = max || 8
-  if (!db) return staticProducts.filter(function (p) { return p.featured !== false }).slice(0, max).map(mapStaticProduct)
+  if (!db) return []
   try {
     var ref = collection(db, 'products')
     var q = query(ref, where('is_visible', '==', true))
@@ -93,6 +72,6 @@ export async function getFeaturedProducts(max) {
     return results.slice(0, max)
   } catch (e) {
     console.error('getFeaturedProducts error:', e)
-    return staticProducts.filter(function (p) { return p.featured !== false }).slice(0, max).map(mapStaticProduct)
+    return []
   }
 }
