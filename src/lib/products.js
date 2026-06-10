@@ -3,8 +3,22 @@ import { collection, getDocs, query, where } from 'firebase/firestore'
 
 export function formatPrice(price) {
   if (!price || price === 'Call for Price') return price || '—'
-  var cleaned = String(price).replace(/^₹\s*/, '')
-  return '₹' + cleaned
+  var cleaned = String(price).replace(/[₹,\s]/g, '')
+  var num = parseFloat(cleaned)
+  if (isNaN(num)) return '₹ ' + String(price).replace(/^₹\s*/, '')
+  var intPart = Math.floor(num).toString()
+  var last3 = intPart.slice(-3)
+  var rest = intPart.slice(0, -3)
+  var formatted = last3
+  if (rest) {
+    var groups = []
+    while (rest.length > 0) {
+      groups.unshift(rest.slice(-2))
+      rest = rest.slice(0, -2)
+    }
+    formatted = groups.join(',') + ',' + last3
+  }
+  return '₹ ' + formatted
 }
 
 function slugify(text) {

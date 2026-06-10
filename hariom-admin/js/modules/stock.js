@@ -170,7 +170,7 @@ function showCategoryView(categoryId) {
         '<td>' + imgHtml + '</td>' +
         '<td style="font-weight:600;max-width:240px;">' + escapeHtml(p.name) + '</td>' +
         '<td>' + escapeHtml(p.brand || '—') + '</td>' +
-        '<td><span class="price">&#8377;' + escapeHtml(String(p.price || '').replace(/^₹\s*/, '') || '—') + '</span></td>' +
+        '<td><span class="price">' + formatAdminPrice(p.price) + '</span></td>' +
         '<td>' + featHtml + '</td>' +
         '<td style="font-size:0.78rem;color:var(--on-surface-variant);">' + updated + '</td>' +
         '<td class="actions">' +
@@ -228,7 +228,7 @@ function showUncategorizedView() {
         '<td style="font-weight:600;max-width:200px;">' + escapeHtml(p.name) + '</td>' +
         '<td style="color:var(--danger);">' + escapeHtml(p.category || '—') + '</td>' +
         '<td>' + escapeHtml(p.brand || '—') + '</td>' +
-        '<td>&#8377;' + escapeHtml(String(p.price || '').replace(/^₹\s*/, '') || '—') + '</td>' +
+        '<td>' + formatAdminPrice(p.price) + '</td>' +
         '<td class="actions">' +
         '  <button class="btn btn-outline btn-sm" onclick="showEditProductForm(\'' + encName + '\')">Edit</button>' +
         '  <button class="btn btn-danger btn-sm" onclick="deleteProduct(\'' + encName + '\')">Delete</button>' +
@@ -435,6 +435,26 @@ function refreshAddPreview() {
   el.innerHTML = renderPreviewCard(data)
 }
 
+function formatAdminPrice(price) {
+  if (!price) return '—'
+  var cleaned = String(price).replace(/[₹,\s]/g, '')
+  var num = parseFloat(cleaned)
+  if (isNaN(num)) return '&#8377; ' + String(price).replace(/^₹\s*/, '')
+  var intPart = Math.floor(num).toString()
+  var last3 = intPart.slice(-3)
+  var rest = intPart.slice(0, -3)
+  var formatted = last3
+  if (rest) {
+    var groups = []
+    while (rest.length > 0) {
+      groups.unshift(rest.slice(-2))
+      rest = rest.slice(0, -2)
+    }
+    formatted = groups.join(',') + ',' + last3
+  }
+  return '&#8377; ' + formatted
+}
+
 /* ── Preview Card ── */
 function renderPreviewCard(data) {
   var img = data.images && data.images.length > 0 ? data.images[0] : ''
@@ -442,7 +462,7 @@ function renderPreviewCard(data) {
   var featuredBadge = data.featured
     ? '<span style="position:absolute;top:12px;left:12px;background:#8b1a35;color:white;font-size:10px;font-weight:bold;padding:4px 10px;border-radius:20px;letter-spacing:0.5px;">FEATURED</span>'
     : ''
-  var displayPrice = data.price ? '&#8377;' + String(data.price).replace(/^₹\s*/, '') : '—'
+  var displayPrice = data.price ? formatAdminPrice(data.price) : '—'
   return '<div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-family:-apple-system,BlinkMacSystemFont,sans-serif;">' +
     '  <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#e8e0f0,#f0edf2);display:flex;align-items:center;justify-content:center;position:relative;padding:24px;">' +
     (img
