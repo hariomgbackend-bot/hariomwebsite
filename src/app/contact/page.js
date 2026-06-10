@@ -55,7 +55,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">{t('contact.email')}</h3>
-                  <a href="mailto:info@hariomelectronics.com" className="text-sm text-brand-600 hover:text-accent-500">info@hariomelectronics.com</a>
+                  <a href="mailto:hariom_elect@live.com" className="text-sm text-brand-600 hover:text-accent-500">hariom_elect@live.com</a>
                 </div>
 
                 <div className="bg-white rounded-xl p-5 border border-gray-100 text-center hover:shadow-md transition-shadow">
@@ -66,7 +66,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">Main Store</h3>
-                  <p className="text-xs text-gray-600">Shree Krishna Complex, Alandi Road</p>
+                  <a href={`https://www.google.com/maps?q=${stores.find(s => s.isMain)?.coordinates.lat},${stores.find(s => s.isMain)?.coordinates.lng}`} target="_blank" rel="noopener noreferrer" className="text-xs text-brand-600 hover:text-accent-500 underline">Shree Krishna Complex, Alandi Road</a>
                 </div>
               </div>
 

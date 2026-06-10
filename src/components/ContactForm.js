@@ -15,18 +15,19 @@ export default function ContactForm() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    var form = new FormData(e.currentTarget)
+    var form = e.currentTarget
+    var data = new FormData(form)
     try {
       await addDoc(collection(db, 'enquiries'), {
-        name: form.get('name') || '',
-        email: form.get('email') || '',
-        phone: form.get('phone') || '',
-        message: form.get('message') || '',
+        name: data.get('name') || '',
+        email: data.get('email') || '',
+        phone: data.get('phone') || '',
+        message: data.get('message') || '',
         source: 'website-contact',
         read: false,
         createdAt: serverTimestamp()
       })
-      e.currentTarget.reset()
+      form.reset()
       setSubmitted(true)
       setTimeout(() => setSubmitted(false), 5000)
     } catch (err) {
