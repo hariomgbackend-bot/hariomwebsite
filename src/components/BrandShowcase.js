@@ -19,8 +19,18 @@ const palette = [
 ]
 
 function BrandLogo({ brand, color }) {
+  var [src, setSrc] = useState(brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com')))
   var [failed, setFailed] = useState(false)
-  var src = brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'))
+  var [usedFallback, setUsedFallback] = useState(false)
+
+  function handleError() {
+    if (!usedFallback) {
+      setUsedFallback(true)
+      setSrc('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'))
+    } else {
+      setFailed(true)
+    }
+  }
 
   var content = (
     <div className={'rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ' + (failed ? color : 'bg-white border-gray-100 hover:border-gray-200')}>
@@ -34,7 +44,7 @@ function BrandLogo({ brand, color }) {
       ) : (
         <>
           <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
-            <img src={src} alt={brand.name} className="max-w-full max-h-full object-contain" onError={function () { setFailed(true) }} />
+            <img src={src} alt={brand.name} className="max-w-full max-h-full object-contain" onError={handleError} />
           </div>
           <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
         </>

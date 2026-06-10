@@ -6,7 +6,18 @@ import { getAllBrands } from '@/lib/brands'
 import staticBrands from '@/data/brands'
 
 function BrandCard({ brand }) {
+  var [src, setSrc] = useState(brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com')))
   var [failed, setFailed] = useState(false)
+  var [usedFallback, setUsedFallback] = useState(false)
+
+  function handleError() {
+    if (!usedFallback) {
+      setUsedFallback(true)
+      setSrc('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com'))
+    } else {
+      setFailed(true)
+    }
+  }
 
   var card = (
     <div className="bg-white rounded-xl p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-gray-100 group cursor-default">
@@ -15,10 +26,10 @@ function BrandCard({ brand }) {
           <span className="text-xl font-bold text-[#FF5E1A]">{brand.name.slice(0, 2).toUpperCase()}</span>
         ) : (
           <img
-            src={brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com'))}
+            src={src}
             alt={brand.name}
             className="max-w-full max-h-full object-contain"
-            onError={function () { setFailed(true) }}
+            onError={handleError}
           />
         )}
       </div>
