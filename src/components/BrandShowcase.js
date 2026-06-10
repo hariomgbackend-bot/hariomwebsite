@@ -20,35 +20,31 @@ const palette = [
 
 function BrandLogo({ brand, color }) {
   var [failed, setFailed] = useState(false)
+  var src = brand.image || ('https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'))
 
-  var content = failed ? (
-    <div className={'rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ' + color}>
-      <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
-        {brand.name.slice(0, 2).toUpperCase()}
-      </div>
-      <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
-    </div>
-  ) : (
-    <div className="rounded-2xl border border-gray-100 p-3 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default bg-white hover:border-[#FF5E1A] hover:shadow-[0_4px_16px_rgba(255,94,26,0.1)]">
-      <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
-        {brand.image ? (
-          <img src={brand.image} alt={brand.name} className="max-w-full max-h-full object-contain" onError={function () { setFailed(true) }} />
-        ) : (
-          <img src={'https://cdn.brandfetch.io/' + (brand.domain || brand.name.toLowerCase() + '.com')} alt={brand.name} className="max-w-full max-h-full object-contain" onError={function () { setFailed(true) }} />
-        )}
-      </div>
-      <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
+  var content = (
+    <div className={'rounded-2xl border p-4 flex flex-col items-center justify-center text-center hover:shadow-md transition-all duration-200 group cursor-default ' + (failed ? color : 'bg-white border-gray-100 hover:border-gray-200')}>
+      {failed ? (
+        <>
+          <div className="w-11 h-11 rounded-full border-2 border-current border-opacity-20 flex items-center justify-center mb-2 text-lg font-bold">
+            {brand.name.slice(0, 2).toUpperCase()}
+          </div>
+          <span className="text-[11px] font-bold leading-tight">{brand.name}</span>
+        </>
+      ) : (
+        <>
+          <div className="w-full aspect-[3/2] flex items-center justify-center p-2">
+            <img src={src} alt={brand.name} className="max-w-full max-h-full object-contain" onError={function () { setFailed(true) }} />
+          </div>
+          <span className="text-[11px] font-bold text-gray-700 leading-tight mt-1">{brand.name}</span>
+        </>
+      )}
     </div>
   )
 
   if (brand.link) {
-    return (
-      <a href={brand.link} target="_blank" rel="noopener noreferrer">
-        {content}
-      </a>
-    )
+    return <a href={brand.link} target="_blank" rel="noopener noreferrer">{content}</a>
   }
-
   return content
 }
 
