@@ -186,7 +186,7 @@ function showAddProductForm(categoryId) {
     '      </div>' +
     '      <div class="field"><label>Brand</label><input type="text" id="pf-brand" oninput="refreshAddPreview()" /></div>' +
     '      <div class="field"><label>Category</label><input type="text" id="pf-category" value="' + escapeHtml(categoryId) + '" readonly style="background:var(--surface-variant);color:var(--on-surface-variant);" /></div>' +
-    '      <div class="field"><label>Price (display text)</label><input type="text" id="pf-price" oninput="refreshAddPreview()" placeholder="e.g. ₹54,990" /></div>' +
+    '      <div class="field"><label>Price (display text)</label><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:1rem;font-weight:600;color:var(--on-surface);">&#8377;</span><input type="text" id="pf-price" oninput="refreshAddPreview()" placeholder="54,990" style="flex:1;" /></div></div>' +
     '      <div class="field"><label>Description</label><textarea id="pf-desc" rows="2" oninput="refreshAddPreview()" placeholder="Brief product description"></textarea></div>' +
     '      <div class="field">' +
     '        <label>Product Images * (max 5, at least 1)</label>' +
@@ -419,22 +419,22 @@ function showEditProductForm(productName) {
       '      <div class="field"><label>Product Name</label><input type="text" id="pf-name" value="' + escapeHtml(name) + '" oninput="refreshEditPreview()" required /></div>' +
       '      <div class="field"><label>Brand</label><input type="text" id="pf-brand" value="' + escapeHtml(brand) + '" oninput="refreshEditPreview()" /></div>' +
       '      <div class="field"><label>Category</label><input type="text" id="pf-category" value="' + escapeHtml(category) + '" readonly style="background:var(--surface-variant);color:var(--on-surface-variant);" /></div>' +
-      '      <div class="field"><label>Price (display text)</label><input type="text" id="pf-price" value="' + escapeHtml(price) + '" oninput="refreshEditPreview()" /></div>' +
-      '      <div class="field"><label>Description</label><textarea id="pf-desc" rows="2" oninput="refreshEditPreview()">' + escapeHtml(description) + '</textarea></div>' +
-      '      <div class="field">' +
-      '        <label>Product Images (max 5 total)</label>' +
-      '        <div id="pf-existing-images" class="images-preview-grid">' + existingHtml + '</div>' +
-      '        <input type="file" id="pf-images" accept="image/*" multiple onchange="previewProductImages(event)" style="margin-top:8px;" />' +
-      '        <div id="pf-images-preview" class="images-preview-grid" style="margin-top:6px;"></div>' +
-      '      </div>' +
-      '      <div class="field"><label><input type="checkbox" id="pf-featured" ' + (featured ? 'checked' : '') + ' onchange="refreshEditPreview()" /> Show in Featured on homepage</label></div>' +
-      '    </form>' +
-      '  </div>' +
-      '  <div class="form-with-preview-preview">' +
-      '    <div style="font-size:11px;font-weight:600;color:var(--on-surface-variant);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Live Preview</div>' +
-      '    <div id="edit-preview-container">' + renderPreviewCard(previewData) + '</div>' +
-      '  </div>' +
-      '</div>'
+'      <div class="field"><label>Price (display text)</label><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:1rem;font-weight:600;color:var(--on-surface);">&#8377;</span><input type="text" id="pf-price" value="' + escapeHtml(price.replace(/^₹\s*/, '')) + '" oninput="refreshEditPreview()" style="flex:1;" /></div></div>' +
+    '      <div class="field"><label>Description</label><textarea id="pf-desc" rows="2" oninput="refreshEditPreview()">' + escapeHtml(description) + '</textarea></div>' +
+    '      <div class="field">' +
+    '        <label>Product Images (max 5 total)</label>' +
+    '        <div id="pf-existing-images" class="images-preview-grid">' + existingHtml + '</div>' +
+    '        <input type="file" id="pf-images" accept="image/*" multiple onchange="previewProductImages(event)" style="margin-top:8px;" />' +
+    '        <div id="pf-images-preview" class="images-preview-grid" style="margin-top:6px;"></div>' +
+    '      </div>' +
+    '      <div class="field"><label><input type="checkbox" id="pf-featured" ' + (featured ? 'checked' : '') + ' onchange="refreshEditPreview()" /> Show in Featured on homepage</label></div>' +
+    '    </form>' +
+    '  </div>' +
+    '  <div class="form-with-preview-preview">' +
+    '    <div style="font-size:11px;font-weight:600;color:var(--on-surface-variant);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Live Preview</div>' +
+    '    <div id="edit-preview-container">' + renderPreviewCard(previewData) + '</div>' +
+    '  </div>' +
+    '</div>'
 
     openModal('Edit: ' + escapeHtml(name), body,
       '<button class="btn btn-outline" onclick="this.closest(\'.modal-overlay\').remove()">Cancel</button>' +
