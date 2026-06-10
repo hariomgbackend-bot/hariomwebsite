@@ -94,7 +94,7 @@ export default function FeaturedProducts() {
               }}
             >
               {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
+              <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 rounded-xl mx-3 md:mx-4 mt-3 md:mt-4 shadow-sm">
                 <Image
                   src={product.images?.[0] || '/placeholder.png'}
                   alt={product.name}

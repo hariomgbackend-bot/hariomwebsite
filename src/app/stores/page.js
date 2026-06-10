@@ -36,11 +36,11 @@ export default function StoresPage() {
             {stores.map(function (store) {
               var storeName = lang === 'hi' ? (store.nameHi || store.name) : lang === 'mr' ? (store.nameMr || store.name) : store.name
               return (
-                <div key={store.id} className="space-y-3">
-                  <h3 className="text-lg font-bold text-brand-800">{storeName}</h3>
-                  <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-md border border-gray-200">
+                <div key={store.id} className="flex flex-col h-full">
+                  <h3 className="text-lg font-bold text-brand-800 mb-3">{storeName}</h3>
+                  <div className="flex-1 rounded-xl overflow-hidden shadow-md border border-gray-200">
                     <iframe
-                      src={store.mapEmbed}
+                      src={`https://maps.google.com/maps?q=${store.coordinates.lat},${store.coordinates.lng}&z=15&output=embed`}
                       width="100%"
                       height="100%"
                       style={{ border: 0, minHeight: '220px' }}
