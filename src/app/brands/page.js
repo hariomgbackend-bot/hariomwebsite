@@ -8,12 +8,12 @@ import staticBrands from '@/data/brands'
 function BrandCard({ brand }) {
   var hasImage = !!brand.image
   var domain = brand.domain || brand.name.toLowerCase().replace(/\s+/g, '') + '.com'
-  var [src, setSrc] = useState(hasImage ? brand.image : ('https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'))
+  var [src, setSrc] = useState(hasImage ? brand.image : ('https://logo.clearbit.com/' + domain))
   var [failed, setFailed] = useState(false)
 
   function handleError() {
     if (hasImage && src === brand.image) {
-      setSrc('https://www.google.com/s2/favicons?domain=' + domain + '&sz=64')
+      setSrc('https://logo.clearbit.com/' + domain)
     } else {
       setFailed(true)
     }
