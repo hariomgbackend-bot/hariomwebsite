@@ -64,10 +64,10 @@ export default function AdminDashboardPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {adminSections.map((section) => (
-            <button
+            <Link
               key={section.key}
-              onClick={() => alert(`${t(`admin.${section.key}`)} management will be connected to Firebase Firestore.`)}
-              className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-left group"
+              href={section.key === 'manageBrands' ? '/admin/brands' : '#'}
+              className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-left group block"
             >
               <div className={`w-12 h-12 ${section.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,9 +78,9 @@ export default function AdminDashboardPage() {
                 {t(`admin.${section.key}`)}
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Manage via Firebase Firestore console
+                {section.key === 'manageBrands' ? 'Add, edit, delete brands with logos' : 'Coming soon'}
               </p>
-            </button>
+            </Link>
           ))}
         </div>
 
