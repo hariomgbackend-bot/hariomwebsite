@@ -7,7 +7,6 @@ import { formatPrice } from '@/lib/products'
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([])
-  const [activeTab, setActiveTab] = useState('all')
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -21,9 +20,6 @@ export default function FeaturedProducts() {
       })
   }, [])
 
-  const categories = [...new Set(products.map((p) => p.category || 'Uncategorized'))]
-  const filtered = activeTab === 'all' ? products : products.filter((p) => (p.category || 'Uncategorized') === activeTab)
-
   if (error) return null
   if (!products.length) return null
 
@@ -35,38 +31,9 @@ export default function FeaturedProducts() {
           <h2 className="section-title font-heading">Featured Products</h2>
         </div>
 
-        {/* Tabs */}
-        {categories.length > 1 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-8 md:mb-10">
-            <button
-              onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                activeTab === 'all'
-                  ? 'bg-[#FF5E1A] text-white shadow-[0_4px_16px_rgba(255,94,26,0.25)]'
-                  : 'bg-[#F4F6FB] text-[#1b1b1d] hover:bg-[#FF5E1A]/10'
-              }`}
-            >
-              All
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveTab(cat)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 capitalize ${
-                  activeTab === cat
-                    ? 'bg-[#FF5E1A] text-white shadow-[0_4px_16px_rgba(255,94,26,0.25)]'
-                    : 'bg-[#F4F6FB] text-[#1b1b1d] hover:bg-[#FF5E1A]/10'
-                }`}
-              >
-                {cat.replace(/-/g, ' ')}
-              </button>
-            ))}
-          </div>
-        )}
-
         {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-          {filtered.map((product) => {
+          {products.map((product) => {
             const onImgError = (e) => {
               e.target.onerror = null
               e.target.src = '/images/placeholder.svg'
