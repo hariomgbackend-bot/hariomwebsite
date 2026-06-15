@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, Fragment } from 'react'
 
 var GRID = 20
 var CELL = 18
@@ -243,11 +243,11 @@ export default function SnakeGame() {
               <div className="font-bold text-gray-400 text-xs pb-1 text-right">Score</div>
               {leaderboard.map(function (e, i) {
                 return (
-                  <>
+                  <Fragment key={i}>
                     <div className={'py-0.5 ' + (i === 0 ? 'text-[#FF5E1A] font-bold' : 'text-gray-500')}>{i + 1}</div>
                     <div className={'py-0.5 ' + (i === 0 ? 'text-[#FF5E1A] font-bold' : 'text-gray-700')}>{e.name}</div>
                     <div className={'py-0.5 text-right ' + (i === 0 ? 'text-[#FF5E1A] font-bold' : 'text-[#0B1F4B] font-semibold')}>{e.score}</div>
-                  </>
+                  </Fragment>
                 )
               })}
             </div>
