@@ -18,6 +18,15 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Lock body scroll while the mobile drawer is open
+  useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => { document.body.style.overflow = prev }
+    }
+  }, [menuOpen])
+
   const navLinks = [
     { href: '/',                      label: t('nav.home')     },
     { href: '/about',                 label: t('nav.about')    },
@@ -147,7 +156,19 @@ export default function Header() {
       {/* ══ Mobile drawer — dark navy full-screen ══ */}
       {menuOpen && (
         <div className="lg:hidden fixed inset-0 top-[60px] z-50 bg-[#071035] overflow-y-auto" style={{animation:'slideDown 0.25s ease-out'}}>
-          <nav className="px-5 py-6 space-y-1">
+          <div className="flex items-center justify-between px-5 pt-5 pb-2">
+            <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40">Menu</span>
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Close menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <nav className="px-5 py-2 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

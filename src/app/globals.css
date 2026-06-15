@@ -44,6 +44,15 @@
   --color-muted: #6B7A99;
   --color-dark: #071035;
 
+  --color-crimson-50:  #fce8ee;
+  --color-crimson-100: #f5b8ca;
+  --color-crimson-200: #ee88a6;
+  --color-crimson-300: #c22249;
+  --color-crimson-400: #a01e3f;
+  --color-crimson-500: #8B1A35;
+  --color-crimson-600: #6e1429;
+  --color-crimson-700: #560f20;
+
   --font-heading: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
   --font-body: 'Inter', 'Noto Sans Devanagari', sans-serif;
 }
@@ -91,6 +100,12 @@ body {
   .btn-outline-light {
     @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-[#0B1F4B] transition-all duration-200 text-sm md:text-base;
   }
+  .btn-primary-light {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-[#0B1F4B] text-[#0B1F4B] font-semibold rounded-xl hover:bg-[#0B1F4B] hover:text-white transition-all duration-200 text-sm md:text-base;
+  }
+  .btn-sm {
+    @apply inline-flex items-center justify-center px-3.5 py-2 font-semibold rounded-lg transition-all duration-200 text-xs md:text-sm;
+  }
   .btn-ghost {
     @apply inline-flex items-center justify-center px-4 py-2 text-[#6B7A99] font-medium hover:text-[#0B1F4B] transition-colors text-sm;
   }
@@ -137,4 +152,19 @@ body {
   bottom: 24px;
   right: 24px;
   z-index: 50;
+}
+
+/* ── Reduced motion: respect user accessibility preference ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .animate-marquee { animation: none !important; }
+  .animate-pulse-whatsapp { animation: none !important; }
+  .fade-up { opacity: 1 !important; transform: none !important; }
 }

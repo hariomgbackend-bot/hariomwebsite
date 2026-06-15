@@ -55,7 +55,7 @@ export default function BrandShowcase() {
 
   useEffect(function () {
     getAllBrands().then(function (data) {
-      if (data && data.length) setBrands(data)
+      if (data && data.length) setBrands(data.slice(0, 18))
     })
   }, [])
 
@@ -76,7 +76,7 @@ export default function BrandShowcase() {
 
         <div className="text-center mt-10">
           <Link href="/brands" className="text-sm font-semibold text-[#0B1F4B] hover:text-[#FF5E1A] transition-colors inline-flex items-center gap-1.5">
-            {t('brands.heading')}
+            View All Brands
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

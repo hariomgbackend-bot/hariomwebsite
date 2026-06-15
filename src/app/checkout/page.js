@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { createCustomerOrder, updateCustomerOrder } from '@/lib/orders'
 import { formatCurrency, useCart } from '@/lib/cart'
@@ -28,6 +29,7 @@ function loadRazorpayScript() {
 
 export default function CheckoutPage() {
   var cart = useCart()
+  var router = useRouter()
   var [user, setUser] = useState(null)
   var [customer, setCustomer] = useState({
     name: '',
@@ -187,6 +189,8 @@ export default function CheckoutPage() {
       setOrderId(id)
       setMessage(canPayOnline ? 'Payment received. Your order is confirmed.' : 'Order placed. Our team will confirm availability and payment.')
       cart.clearCart()
+      // Redirect to the confirmation screen
+      router.push('/order/' + id + '/success')
     } catch (err) {
       setMessage(err.message || 'Unable to place order.')
     } finally {

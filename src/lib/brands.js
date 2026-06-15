@@ -1,26 +1,35 @@
 import { db, storage } from '@/lib/firebase'
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy } from 'firebase/firestore'
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import staticBrands from '@/data/brands'
 
 const COLLECTION = 'brands'
 
+function mergeBrands(firestoreBrands) {
+  var merged = staticBrands.slice()
+  firestoreBrands.forEach(function (fb) {
+    var idx = merged.findIndex(function (sb) { return sb.name.toLowerCase() === (fb.name || '').toLowerCase() })
+    if (idx !== -1) {
+      merged[idx] = { ...merged[idx], ...fb, _firestore: true }
+    } else {
+      merged.push({ ...fb, _firestore: true })
+    }
+  })
+  merged.sort(function (a, b) {
+    var oa = a.order != null ? a.order : 999
+    var ob = b.order != null ? b.order : 999
+    if (oa !== ob) return oa - ob
+    return (a.name || '').localeCompare(b.name || '')
+  })
+  return merged
+}
+
 export async function getAllBrands() {
   if (!db) return staticBrands
   try {
-    var snap = await getDocs(query(collection(db, COLLECTION), orderBy('name')))
+    var snap = await getDocs(collection(db, COLLECTION))
     var firestoreBrands = snap.docs.map(function (d) { return { id: d.id, ...d.data() } })
-    var merged = staticBrands.slice()
-    var staticNames = new Set(staticBrands.map(function (b) { return b.name.toLowerCase() }))
-    firestoreBrands.forEach(function (fb) {
-      var idx = merged.findIndex(function (sb) { return sb.name.toLowerCase() === (fb.name || '').toLowerCase() })
-      if (idx !== -1) {
-        merged[idx] = { ...merged[idx], ...fb, _firestore: true }
-      } else {
-        merged.push({ ...fb, _firestore: true })
-      }
-    })
-    return merged
+    return mergeBrands(firestoreBrands)
   } catch (e) {
     console.error('getAllBrands error:', e)
     return staticBrands

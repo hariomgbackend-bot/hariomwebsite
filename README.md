@@ -1,48 +1,84 @@
-# Flags of Countries Learning App
+# Hariom Electronics — Storefront & Admin Portal
 
-A fun, interactive React application designed for kids to learn about countries, their flags, and their leaders.
+Multi-brand electronics & home-appliance retailer serving Alandi, Maharashtra since 1988. This repo contains two apps:
 
-## Features
+- **`/`** — Next.js 15 storefront (the public website)
+- **`/hariom-admin`** — Static HTML/JS admin portal (inventory, orders, CRM)
 
-- Beautiful, colorful UI designed for children
-- Interactive flashcards with country flags
-- Learn country names and their leaders (Presidents/Prime Ministers)
-- Easy navigation with next/previous buttons
-- Progress tracking
-- Responsive design for all devices
+## Tech stack
 
-## Getting Started
+| Layer | Storefront | Admin Portal |
+|-------|-----------|--------------|
+| Framework | Next.js 15 (App Router) + React 19 | Vanilla JS (no framework) |
+| Styling | Tailwind CSS v4 | Hand-written CSS |
+| Database | Cloud Firestore | Cloud Firestore (Firebase compat SDK) |
+| Auth | Firebase Auth (customers) | Firebase Auth (admins) |
+| Storage | Firebase Storage | Firebase Storage |
+| Payments | Razorpay | — |
+| Hosting | Vercel | Vercel |
+
+## Storefront structure
+
+```
+src/
+├── app/                # Next.js App Router pages
+│   ├── page.js                  # Home
+│   ├── products/                # Product listing + category pages
+│   ├── product/[slug]/          # Product detail
+│   ├── checkout/                # Cart + checkout + Razorpay
+│   ├── order/[id]/success/      # Order confirmation
+│   ├── brands, offers, stores, services, about, awards, contact, account
+│   └── api/                     # pincode, razorpay create-order/verify
+├── components/         # Header, Footer, Hero, ProductCards, etc.
+├── lib/                # Firebase, products, cart, orders, brands, offers
+├── data/               # Static fallback data
+├── contexts/           # LanguageProvider (en / hi / mr)
+└── hooks/              # useTranslation
+```
+
+## Admin portal structure
+
+```
+hariom-admin/
+├── index.html          # Login + dashboard shell
+├── css/                # style.css, dashboard.css
+└── js/
+    ├── app.js          # Router + sidebar nav
+    ├── auth.js         # Firebase auth + admin role check
+    ├── firebase-config.js
+    ├── utils/          # table.js (search/sort/paginate/CSV), audio-alert.js
+    └── modules/        # dashboard, stock, brands, categories, offers,
+                        # enquiries, orders, returns, customers, published
+```
+
+## Getting started (storefront)
 
 1. Install dependencies:
    ```
    npm install
    ```
-
-2. Start the development server:
+2. Copy `.env.local.example` → `.env.local` and fill in your Firebase + Razorpay keys.
+3. Run the dev server:
    ```
    npm run dev
    ```
+4. Open `http://localhost:3000`.
 
-3. Open your browser and navigate to `http://localhost:5173`
+## Getting started (admin portal)
 
-## Learning Content
+The admin portal is static — no build step. Configure `js/firebase-config.js`, then either open `hariom-admin/index.html` directly or deploy as a static site (it's already wired for Vercel via `hariom-admin/vercel.json`).
 
-The app currently features 10 countries:
-- United States 🇺🇸
-- Canada 🇨🇦
-- United Kingdom 🇬🇧
-- Germany 🇩🇪
-- France 🇫🇷
-- Japan 🇯🇵
-- Australia 🇦🇺
-- Brazil 🇧🇷
-- India 🇮🇳
-- South Africa 🇿🇦
+## Environment variables
 
-Each card shows the country flag and name. Click on a card to reveal the current leader and their title.
+See `.env.local.example`:
+- `NEXT_PUBLIC_FIREBASE_*` — Firebase web config (storefront + admin share the project)
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` — WhatsApp click-to-chat number
+- `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` — server-side Razorpay keys
 
-## Customization
+## Firestore collections
 
-To add more countries or update information, edit the `src/data/countries.js` file.
+`products`, `categories`, `brands`, `promotions`, `enquiries`, `orders`, `customers`, `returns`.
 
-Enjoy learning about the world!
+## License
+
+Proprietary — Hariom Electronics. All rights reserved.

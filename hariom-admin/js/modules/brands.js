@@ -24,7 +24,7 @@ function loadBrands() {
   if (brandsUnsubscribe) brandsUnsubscribe()
 
   brandsUnsubscribe = db.collection('brands')
-    .orderBy('name')
+    .orderBy('order')
     .onSnapshot(function (snapshot) {
       var rows = []
       snapshot.forEach(function (doc) {
@@ -46,16 +46,24 @@ function loadBrands() {
         },
         { label: 'Name', key: 'name' },
         {
+          label: 'Tagline',
+          key: 'description',
+          render: function (v) { return v ? '<span style="color:var(--on-surface-variant);font-size:0.78rem;">' + escapeHtml(v).slice(0, 40) + (v.length > 40 ? '…' : '') + '</span>' : '—' }
+        },
+        { label: 'Order', key: 'order', render: function (v) { return v != null ? v : '—' } },
+        {
           label: 'Link',
           key: 'link',
           render: function (v) {
-            return v ? '<a href="' + escapeHtml(v) + '" target="_blank" style="color:var(--brand-500);font-size:0.78rem;">' + escapeHtml(v).slice(0, 30) + '…</a>' : '—'
+            return v ? '<a href="' + escapeHtml(v) + '" target="_blank" style="color:var(--brand-500);font-size:0.78rem;">link</a>' : '—'
           }
         }
       ], rows, function (row) {
         var id = escapeHtml(row._id)
-        var encName = escapeHtml(row.name || '').replace(/'/g, "\\'")
-        return '<button class="btn btn-outline btn-sm" onclick="showEditBrandForm(\'' + id + '\')">Edit</button>' +
+        var order = row.order != null ? row.order : 0
+        return '<button class="btn btn-outline btn-sm" onclick="moveBrand(\'' + id + '\', ' + (order - 1) + ')">&#9650;</button>' +
+          '<button class="btn btn-outline btn-sm" onclick="moveBrand(\'' + id + '\', ' + (order + 1) + ')">&#9660;</button>' +
+          '<button class="btn btn-outline btn-sm" onclick="showEditBrandForm(\'' + id + '\')">Edit</button>' +
           '<button class="btn btn-danger btn-sm" onclick="deleteBrand(\'' + id + '\')">Delete</button>'
       })
     }, function (error) {
@@ -64,11 +72,20 @@ function loadBrands() {
     })
 }
 
+function moveBrand(docId, newOrder) {
+  if (newOrder < 0) newOrder = 0
+  db.collection('brands').doc(docId).update({ order: newOrder }).catch(function (err) {
+    showToast('Error: ' + err.message, 'error')
+  })
+}
+
 function showAddBrandForm() {
   var body =
     '<form id="brand-form">' +
     '  <div class="field"><label>Brand Name *</label><input type="text" id="br-name" required /></div>' +
+    '  <div class="field"><label>Tagline</label><textarea id="br-desc" rows="2" placeholder="e.g. Innovative consumer electronics leader"></textarea></div>' +
     '  <div class="field"><label>Logo Image</label><input type="file" id="br-image" accept="image/*" /></div>' +
+    '  <div class="field"><label>Order</label><input type="number" id="br-order" value="0" min="0" /></div>' +
     '  <div class="field"><label>Link (optional)</label><input type="url" id="br-link" placeholder="https://example.com/brand-page" /></div>' +
     '  <div style="font-size:0.78rem;color:var(--on-surface-variant);">When clicked, opens this URL on the website. Leave empty for no link.</div>' +
     '</form>'
@@ -85,32 +102,16 @@ function saveNewBrand() {
 
   var fileInput = document.getElementById('br-image')
   var file = fileInput && fileInput.files ? fileInput.files[0] : null
+  var desc = document.getElementById('br-desc').value.trim() || ''
+  var order = parseInt(document.getElementById('br-order').value) || 0
   var link = document.getElementById('br-link').value.trim() || ''
 
-  if (file) {
-    var uploadTask = storage.ref('brands/' + Date.now() + '_' + file.name).put(file)
-    uploadTask.on('state_changed', null, function (err) {
-      showToast('Upload error: ' + err.message, 'error')
-    }, function () {
-      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        db.collection('brands').add({
-          name: name,
-          image: downloadURL,
-          link: link,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(function () {
-          showToast('Brand added', 'success')
-          document.querySelector('.modal-overlay').remove()
-        }).catch(function (err) {
-          showToast('Error: ' + err.message, 'error')
-        })
-      })
-    })
-  } else {
+  function saveToFirestore(imageUrl) {
     db.collection('brands').add({
       name: name,
-      image: '',
+      description: desc,
+      image: imageUrl || '',
+      order: order,
       link: link,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -120,6 +121,19 @@ function saveNewBrand() {
     }).catch(function (err) {
       showToast('Error: ' + err.message, 'error')
     })
+  }
+
+  if (file) {
+    var uploadTask = storage.ref('brands/' + Date.now() + '_' + file.name).put(file)
+    uploadTask.on('state_changed', null, function (err) {
+      showToast('Upload error: ' + err.message, 'error')
+    }, function () {
+      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        saveToFirestore(downloadURL)
+      })
+    })
+  } else {
+    saveToFirestore('')
   }
 }
 
@@ -135,12 +149,14 @@ function showEditBrandForm(docId) {
     var body =
       '<form id="brand-form">' +
       '  <div class="field"><label>Brand Name *</label><input type="text" id="br-name" value="' + escapeHtml(d.name || '') + '" required /></div>' +
+      '  <div class="field"><label>Tagline</label><textarea id="br-desc" rows="2">' + escapeHtml(d.description || '') + '</textarea></div>' +
       '  <div class="field">' +
       '    <label>Logo Image</label>' +
       currentImageHtml +
       '    <input type="file" id="br-image" accept="image/*" />' +
       '    <div style="font-size:0.72rem;color:var(--outline);margin-top:4px;">Leave empty to keep current logo</div>' +
       '  </div>' +
+      '  <div class="field"><label>Order</label><input type="number" id="br-order" value="' + (d.order != null ? d.order : 0) + '" min="0" /></div>' +
       '  <div class="field"><label>Link</label><input type="url" id="br-link" value="' + escapeHtml(d.link || '') + '" /></div>' +
       '</form>'
 
@@ -159,7 +175,27 @@ function updateBrand(docId) {
 
   var fileInput = document.getElementById('br-image')
   var file = fileInput && fileInput.files ? fileInput.files[0] : null
+  var desc = document.getElementById('br-desc').value.trim() || ''
+  var order = parseInt(document.getElementById('br-order').value) || 0
   var link = document.getElementById('br-link').value.trim() || ''
+
+  function updateInFirestore(imageUrl) {
+    var data = {
+      name: name,
+      description: desc,
+      order: order,
+      link: link,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }
+    if (imageUrl !== undefined) data.image = imageUrl
+
+    db.collection('brands').doc(docId).update(data).then(function () {
+      showToast('Brand updated', 'success')
+      document.querySelector('.modal-overlay').remove()
+    }).catch(function (err) {
+      showToast('Error: ' + err.message, 'error')
+    })
+  }
 
   if (file) {
     var uploadTask = storage.ref('brands/' + Date.now() + '_' + file.name).put(file)
@@ -167,30 +203,11 @@ function updateBrand(docId) {
       showToast('Upload error: ' + err.message, 'error')
     }, function () {
       uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        db.collection('brands').doc(docId).update({
-          name: name,
-          image: downloadURL,
-          link: link,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(function () {
-          showToast('Brand updated', 'success')
-          document.querySelector('.modal-overlay').remove()
-        }).catch(function (err) {
-          showToast('Error: ' + err.message, 'error')
-        })
+        updateInFirestore(downloadURL)
       })
     })
   } else {
-    db.collection('brands').doc(docId).update({
-      name: name,
-      link: link,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function () {
-      showToast('Brand updated', 'success')
-      document.querySelector('.modal-overlay').remove()
-    }).catch(function (err) {
-      showToast('Error: ' + err.message, 'error')
-    })
+    updateInFirestore()
   }
 }
 
@@ -201,8 +218,7 @@ function deleteBrand(docId) {
     if (doc.exists) {
       var d = doc.data()
       if (d.image && d.image.startsWith('http')) {
-        var storageRef = storage.refFromURL(d.image)
-        storageRef.delete().catch(function () { /* ignore delete errors */ })
+        try { storage.refFromURL(d.image).delete().catch(function () {}) } catch (e) {}
       }
     }
     db.collection('brands').doc(docId).delete().then(function () {

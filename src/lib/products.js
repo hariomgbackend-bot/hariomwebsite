@@ -1,5 +1,6 @@
 import { db } from '@/lib/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import fallbackCategories from '@/data/categories'
 
 export function formatPrice(price) {
   if (!price || price === 'Call for Price') return price || '—'
@@ -45,14 +46,23 @@ function mapFirestoreDoc(doc) {
 
 async function getValidCategoryIds() {
   try {
+    if (!db) return buildFallbackIds()
     var ref = collection(db, 'categories')
     var snap = await getDocs(ref)
     var ids = {}
     snap.forEach(function (doc) { var d = doc.data(); ids[d.id || doc.id] = true })
+    if (Object.keys(ids).length === 0) return buildFallbackIds()
     return ids
   } catch (e) {
-    return {}
+    console.error('getValidCategoryIds error:', e)
+    return buildFallbackIds()
   }
+}
+
+function buildFallbackIds() {
+  var ids = {}
+  fallbackCategories.forEach(function (c) { ids[c.id] = true })
+  return ids
 }
 
 export async function getProductBySlug(slug) {

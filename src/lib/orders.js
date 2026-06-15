@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/firebase'
 import { ensureGuestUser } from '@/lib/auth'
-import { addDoc, collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 
 export async function createCustomerOrder(payload) {
   if (!db) throw new Error('Firebase is not configured')
@@ -25,6 +25,14 @@ export async function updateCustomerOrder(orderId, data) {
   await updateDoc(doc(db, 'orders', orderId), Object.assign({}, data, {
     updatedAt: serverTimestamp()
   }))
+}
+
+export async function getOrderById(orderId) {
+  if (!db) throw new Error('Firebase is not configured')
+  var snap = await getDoc(doc(db, 'orders', orderId))
+  if (!snap.exists()) return null
+  var data = snap.data()
+  return Object.assign({ id: snap.id }, data)
 }
 
 export async function getOrdersForUser(userId) {
