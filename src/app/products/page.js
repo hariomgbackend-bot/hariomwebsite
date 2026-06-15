@@ -32,7 +32,7 @@ export default function ProductsPage() {
   var [showFilters, setShowFilters] = useState(false)
 
   if (sectionLoading) return null
-  if (!active) return <SectionPlaceholder message={message} />
+  if (!active) return <SectionPlaceholder message={message} showSnake={true} />
 
   useEffect(function () {
     Promise.all([getProducts(), getCategories()]).then(function ([products, cats]) {

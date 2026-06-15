@@ -2,7 +2,7 @@
 
 import SnakeGame from '@/components/SnakeGame'
 
-export default function SectionPlaceholder({ message }) {
+export default function SectionPlaceholder({ message, showSnake }) {
   return (
     <section className="py-14 md:py-20 bg-white">
       <div className="container-custom">
@@ -19,9 +19,11 @@ export default function SectionPlaceholder({ message }) {
             </>
           )}
         </div>
-        <div className="flex justify-center mt-6">
-          <SnakeGame />
-        </div>
+        {showSnake && (
+          <div className="flex justify-center mt-6">
+            <SnakeGame />
+          </div>
+        )}
       </div>
     </section>
   )
