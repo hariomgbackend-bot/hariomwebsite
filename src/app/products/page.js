@@ -3,8 +3,10 @@
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useSectionToggle } from '@/lib/site-sections'
 import { getCategories } from '@/lib/categories'
 import { getProducts, formatPrice } from '@/lib/products'
+import SectionPlaceholder from '@/components/SectionPlaceholder'
 
 var SORT_OPTIONS = [
   { value: 'name-asc', label: 'Name: A-Z' },
@@ -19,6 +21,7 @@ function parsePrice(priceStr) {
 }
 
 export default function ProductsPage() {
+  var { active, message, loading: sectionLoading } = useSectionToggle('products')
   var { lang, t } = useTranslation()
   var [allProducts, setAllProducts] = useState([])
   var [categories, setCategories] = useState([])
@@ -27,6 +30,9 @@ export default function ProductsPage() {
   var [selectedCategory, setSelectedCategory] = useState('')
   var [sort, setSort] = useState('name-asc')
   var [showFilters, setShowFilters] = useState(false)
+
+  if (sectionLoading) return null
+  if (!active) return <SectionPlaceholder message={message} />
 
   useEffect(function () {
     Promise.all([getProducts(), getCategories()]).then(function ([products, cats]) {

@@ -2,26 +2,28 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSectionToggle } from '@/lib/site-sections'
 import { getFeaturedProducts } from '@/lib/products'
 import { formatPrice } from '@/lib/products'
+import SectionPlaceholder from '@/components/SectionPlaceholder'
 
 export default function FeaturedProducts() {
-  const [products, setProducts] = useState([])
-  const [error, setError] = useState(false)
+  var { active, message, loading } = useSectionToggle('featured')
+  var [products, setProducts] = useState([])
+  var [error, setError] = useState(false)
 
-  useEffect(() => {
-    getFeaturedProducts(12)
-      .then((data) => {
-        setProducts(data)
-        setError(false)
-      })
-      .catch(() => {
-        setError(true)
-      })
+  useEffect(function () {
+    getFeaturedProducts(12).then(function (data) {
+      setProducts(data)
+      setError(false)
+    }).catch(function () {
+      setError(true)
+    })
   }, [])
 
-  if (error) return null
-  if (!products.length) return null
+  if (loading) return null
+  if (!active) return <SectionPlaceholder message={message} />
+  if (error || !products.length) return null
 
   return (
     <section className="py-14 md:py-20 bg-white">

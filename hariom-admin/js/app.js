@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
         case 'published':
           renderPublished()
           break
+        case 'site-sections':
+          renderSiteSections()
+          break
         default:
           refs.mainContent.innerHTML = '<h1>Module not found</h1>'
       }

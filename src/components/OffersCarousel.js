@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useSectionToggle } from '@/lib/site-sections'
 import staticOffers from '@/data/offers'
+import SectionPlaceholder from '@/components/SectionPlaceholder'
 
 const badgeColors = {
   SALE: 'bg-green-500',
@@ -15,8 +17,12 @@ const badgeColors = {
 }
 
 export default function OffersCarousel() {
-  const { t } = useTranslation()
-  const [offers] = useState([...(staticOffers.current || []), ...(staticOffers.exchange || []), ...(staticOffers.emi || [])])
+  var { t } = useTranslation()
+  var { active, message, loading } = useSectionToggle('offers')
+  var [offers] = useState([...(staticOffers.current || []), ...(staticOffers.exchange || []), ...(staticOffers.emi || [])])
+
+  if (loading) return null
+  if (!active) return <SectionPlaceholder message={message} />
 
   if (!offers.length) {
     return (
