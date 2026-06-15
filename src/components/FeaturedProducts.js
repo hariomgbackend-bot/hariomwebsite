@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getFeaturedProducts } from '@/lib/products'
 import { formatPrice } from '@/lib/products'
@@ -8,23 +8,7 @@ import { formatPrice } from '@/lib/products'
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([])
   const [activeTab, setActiveTab] = useState('all')
-  const [isVisible, setIsVisible] = useState(false)
   const [error, setError] = useState(false)
-  const ref = useRef(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1 }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     getFeaturedProducts(12)
@@ -44,7 +28,7 @@ export default function FeaturedProducts() {
   if (!products.length) return null
 
   return (
-    <section ref={ref} className="py-14 md:py-20 bg-white">
+    <section className="py-14 md:py-20 bg-white">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-12">
           <span className="section-badge">Products</span>
@@ -82,22 +66,16 @@ export default function FeaturedProducts() {
 
         {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-          {filtered.map((product, i) => {
+          {filtered.map((product) => {
             const onImgError = (e) => {
               e.target.onerror = null
               e.target.src = '/images/placeholder.svg'
             }
             return (
               <Link
-                key={product.id}
-                href={`/product/${product.slug}`}
-                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-[0_8px_32px_rgba(255,94,26,0.12)] transition-all duration-500"
-                style={{
-                  animationDelay: `${i * 80}ms`,
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
-                  transition: 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease',
-                }}
+                  key={product.id}
+                  href={`/product/${product.slug}`}
+                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-[0_8px_32px_rgba(255,94,26,0.12)] transition-all duration-500"
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-gray-50 rounded-xl mx-3 md:mx-4 mt-3 md:mt-4 shadow-sm flex items-center justify-center p-3">
