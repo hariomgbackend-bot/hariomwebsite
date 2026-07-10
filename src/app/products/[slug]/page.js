@@ -32,13 +32,13 @@ export default function CategoryPage() {
   useEffect(function () {
     setLoading(true)
     getCategoryBySlug(params.slug).then(function (cat) {
-      if (!cat) return
+      if (!cat) { setLoading(false); return }
       setCategory(cat)
       getProducts(cat.id).then(function (products) {
         setCategoryProducts(products)
         setLoading(false)
-      })
-    })
+      }).catch(function () { setLoading(false) })
+    }).catch(function () { setLoading(false) })
   }, [params.slug])
 
   if (category === null && !loading) return notFound()

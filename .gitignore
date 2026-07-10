@@ -27,3 +27,6 @@ out
 *.sw?
 
 .vercel
+rzp-test-key.csv
+*.csv
+.opencode

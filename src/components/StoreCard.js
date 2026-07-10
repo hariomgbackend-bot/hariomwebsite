@@ -1,22 +1,29 @@
 'use client'
 
+import { useState } from 'react'
+import Image from 'next/image'
 import { useTranslation } from '@/hooks/useTranslation'
 
 export default function StoreCard({ store }) {
   const { lang, t } = useTranslation()
+  const [imgError, setImgError] = useState(false)
 
   const storeName = lang === 'hi' ? store.nameHi : lang === 'mr' ? store.nameMr : store.name
   const storeAddr = lang === 'hi' ? store.addressHi : lang === 'mr' ? store.addressMr : store.address
 
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-      <div className="aspect-[16/9] overflow-hidden bg-gray-100">
-        <img
-          src={store.image}
-          alt={storeName}
-          className="w-full h-full object-cover"
-          onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-gradient-to-br', 'from-brand-600', 'to-accent-600') }}
-        />
+      <div className={'aspect-[16/9] overflow-hidden bg-gray-100 relative' + (imgError ? ' bg-gradient-to-br from-brand-600 to-accent-600' : '')}>
+        {!imgError && (
+          <Image
+            src={store.image}
+            alt={storeName}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            onError={() => setImgError(true)}
+          />
+        )}
       </div>
       <div className="p-5 space-y-3">
         <h3 className="text-lg font-bold text-brand-800">{storeName}</h3>

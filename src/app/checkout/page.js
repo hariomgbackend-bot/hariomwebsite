@@ -8,6 +8,7 @@ import { formatCurrency, useCart } from '@/lib/cart'
 import { formatPrice } from '@/lib/products'
 import { listenToAuth } from '@/lib/auth'
 import { getCustomerProfile, saveCustomerProfile } from '@/lib/customerProfile'
+import { getPaymentMode } from '@/lib/settings'
 
 var PAYMENT_METHODS = [
   { id: 'razorpay', label: 'Razorpay', description: 'Cards, UPI, net banking and wallets' },
@@ -40,13 +41,26 @@ export default function CheckoutPage() {
     landmark: '',
     city: '',
     state: '',
-    pincode: ''
+    pincode: '',
+    locality: ''
   })
-  var [paymentMethod, setPaymentMethod] = useState('razorpay')
+  var [paymentMethod, setPaymentMethod] = useState('cod')
   var [loading, setLoading] = useState(false)
   var [message, setMessage] = useState('')
   var [orderId, setOrderId] = useState('')
   var [pincodeMessage, setPincodeMessage] = useState('')
+  var [paymentMode, setPaymentModeState] = useState({ enabled: false })
+  var [checkingPayment, setCheckingPayment] = useState(true)
+
+  useEffect(function () {
+    getPaymentMode().then(function (mode) {
+      setPaymentModeState(mode)
+      setCheckingPayment(false)
+      if (!mode.enabled && paymentMethod === 'razorpay') {
+        setPaymentMethod('cod')
+      }
+    }).catch(function () { setCheckingPayment(false) })
+  }, [])
 
   useEffect(function () {
     return listenToAuth(function (current) {
@@ -68,7 +82,7 @@ export default function CheckoutPage() {
               })
             })
           }
-        })
+        }).catch(function () {})
       }
     })
   }, [])
@@ -96,10 +110,11 @@ export default function CheckoutPage() {
         return Object.assign({}, current, {
           city: data.city || current.city,
           state: data.state || current.state,
+          locality: data.locality || current.locality,
           pincode: pin
         })
       })
-      setPincodeMessage((data.city || 'Area') + ', ' + (data.state || 'India'))
+      setPincodeMessage((data.locality || data.city || 'Area') + ', ' + (data.state || 'India'))
     } catch (err) {
       setPincodeMessage(err.message || 'Unable to check pincode.')
     }
@@ -232,14 +247,20 @@ export default function CheckoutPage() {
                   </div>
                   <input name="city" required placeholder="City / district" value={customer.city} onChange={updateCustomer} className="px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                   <input name="state" required placeholder="State" value={customer.state} onChange={updateCustomer} className="px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
+                  <input name="locality" placeholder="Locality (auto-filled)" value={customer.locality} disabled className="px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-gray-500 outline-none" />
                   <input name="landmark" placeholder="Landmark optional" value={customer.landmark} onChange={updateCustomer} className="px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                   <textarea name="address" required placeholder="Delivery address" value={customer.address} onChange={updateCustomer} className="sm:col-span-2 px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200 resize-none" rows={3} />
                 </div>
 
-                <div>
+                  <div>
                   <h2 className="text-xl font-bold text-brand-800 mb-3">Payment</h2>
+                  {!paymentMode.enabled && (
+                    <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-xl px-4 py-3 mb-4">
+                      Online payment is currently unavailable. Choose from the alternative payment methods below.
+                    </div>
+                  )}
                   <div className="grid sm:grid-cols-2 gap-3">
-                    {PAYMENT_METHODS.map(function (method) {
+                    {PAYMENT_METHODS.filter(function (m) { return paymentMode.enabled || m.id !== 'razorpay' }).map(function (method) {
                       return (
                         <label key={method.id} className={'border rounded-xl p-4 cursor-pointer transition-colors ' + (paymentMethod === method.id ? 'border-brand-600 bg-brand-50' : 'border-gray-200 bg-white hover:border-gray-300')}>
                           <input type="radio" name="paymentMethod" value={method.id} checked={paymentMethod === method.id} onChange={function () { setPaymentMethod(method.id) }} className="sr-only" />

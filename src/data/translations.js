@@ -162,6 +162,7 @@ const translations = {
       manageStores: 'Manage Stores',
       manageBrands: 'Manage Brands',
       manageBanners: 'Manage Banners',
+      manageSettings: 'Settings',
     },
   },
 
@@ -328,6 +329,7 @@ const translations = {
       manageStores: 'स्टोर प्रबंधित करें',
       manageBrands: 'ब्रांड प्रबंधित करें',
       manageBanners: 'बैनर प्रबंधित करें',
+      manageSettings: 'सेटिंग्स',
     },
   },
 
@@ -494,6 +496,7 @@ const translations = {
       manageStores: 'स्टोअर्स व्यवस्थापित करा',
       manageBrands: 'ब्रँड व्यवस्थापित करा',
       manageBanners: 'बॅनर व्यवस्थापित करा',
+      manageSettings: 'सेटिंग्ज',
     },
   },
 }

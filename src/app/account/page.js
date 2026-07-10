@@ -30,9 +30,10 @@ export default function AccountPage() {
   var [mode, setMode] = useState('login')
   var [user, setUser] = useState(null)
   var [authForm, setAuthForm] = useState({ name: '', email: '', password: '' })
-  var [profile, setProfile] = useState({ name: '', email: '', phone: '', alternatePhone: '', address: '', landmark: '', city: '', state: '', pincode: '' })
+  var [profile, setProfile] = useState({ name: '', email: '', phone: '', alternatePhone: '', address: '', landmark: '', city: '', state: '', pincode: '', locality: '' })
   var [orders, setOrders] = useState([])
   var [message, setMessage] = useState('')
+  var [pincodeMessage, setPincodeMessage] = useState('')
   var [loading, setLoading] = useState(false)
   var [returnForms, setReturnForms] = useState({})
 
@@ -61,6 +62,31 @@ export default function AccountPage() {
 
   function updateProfileField(e) {
     setProfile(Object.assign({}, profile, { [e.target.name]: e.target.value }))
+  }
+
+  async function lookupPincode(value) {
+    var pin = value || profile.pincode
+    if (!/^\d{6}$/.test(pin)) {
+      setPincodeMessage('Enter a valid 6 digit pincode.')
+      return
+    }
+    setPincodeMessage('Checking pincode...')
+    try {
+      var res = await fetch('/api/pincode/' + pin)
+      var data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Pincode not found.')
+      setProfile(function (current) {
+        return Object.assign({}, current, {
+          city: data.city || current.city,
+          state: data.state || current.state,
+          locality: data.locality || current.locality,
+          pincode: pin
+        })
+      })
+      setPincodeMessage((data.locality || data.city || 'Area') + ', ' + (data.state || 'India'))
+    } catch (err) {
+      setPincodeMessage(err.message || 'Unable to check pincode.')
+    }
   }
 
   async function submitAuth(e) {
@@ -159,11 +185,18 @@ export default function AccountPage() {
                 <input name="name" placeholder="Full name" value={profile.name} onChange={updateProfileField} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                 <input name="phone" placeholder="Mobile number" value={profile.phone} onChange={updateProfileField} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                 <input name="alternatePhone" placeholder="Alternate number optional" value={profile.alternatePhone} onChange={updateProfileField} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
-                <input name="pincode" placeholder="Pincode" value={profile.pincode} onChange={updateProfileField} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
+                <div>
+                  <div className="flex gap-2">
+                    <input name="pincode" placeholder="Pincode" value={profile.pincode} onChange={function (e) { updateProfileField(e); if (e.target.value.length === 6) lookupPincode(e.target.value) }} className="min-w-0 flex-1 px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
+                    <button type="button" onClick={function () { lookupPincode() }} className="px-4 py-3 rounded-lg border border-brand-700 text-brand-700 text-sm font-semibold whitespace-nowrap">Check</button>
+                  </div>
+                  {pincodeMessage && <p className="text-xs text-gray-500 mt-1">{pincodeMessage}</p>}
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <input name="city" placeholder="City" value={profile.city} onChange={updateProfileField} className="px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                   <input name="state" placeholder="State" value={profile.state} onChange={updateProfileField} className="px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                 </div>
+                <input name="locality" placeholder="Locality (auto-filled)" value={profile.locality} disabled className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-gray-500 outline-none" />
                 <input name="landmark" placeholder="Landmark optional" value={profile.landmark} onChange={updateProfileField} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200" />
                 <textarea name="address" placeholder="Default delivery address" value={profile.address} onChange={updateProfileField} rows={3} className="w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-brand-200 resize-none" />
                 <button disabled={loading} className="btn-primary w-full">{loading ? 'Saving...' : 'Save Profile'}</button>

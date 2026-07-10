@@ -18,7 +18,7 @@ export default function OffersPage() {
     getActivePromotions().then(function (results) {
       setPromotions(results)
       setLoading(false)
-    })
+    }).catch(function () { setLoading(false) })
   }, [])
 
   var liveOffers = promotions.length > 0 ? promotions : staticOffers.current

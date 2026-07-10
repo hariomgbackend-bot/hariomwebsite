@@ -1,5 +1,6 @@
 export async function GET(request, context) {
-  var pincode = context.params.pincode
+  var params = await context.params
+  var pincode = params.pincode
   if (!/^\d{6}$/.test(pincode || '')) {
     return Response.json({ error: 'Enter a valid 6 digit pincode.' }, { status: 400 })
   }
@@ -18,6 +19,7 @@ export async function GET(request, context) {
       pincode: pincode,
       city: offices[0].District || '',
       state: offices[0].State || '',
+      locality: offices[0].Name || '',
       postOffices: offices.map(function (office) {
         return {
           name: office.Name,

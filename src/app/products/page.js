@@ -39,7 +39,7 @@ export default function ProductsPage() {
       setAllProducts(products)
       setCategories(cats)
       setLoading(false)
-    })
+    }).catch(function () { setLoading(false) })
   }, [])
 
   var filtered = useMemo(function () {

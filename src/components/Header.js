@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useCart } from '@/lib/cart'
@@ -40,7 +42,7 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-shadow duration-300 ${
         scrolled
           ? 'bg-white/90 backdrop-blur-xl shadow-[0_2px_24px_rgba(11,31,75,0.10)] border-b border-[#FF5E1A]/30'
           : 'bg-white/90 backdrop-blur-xl border-b border-[#E0E6F0]'
@@ -56,11 +58,14 @@ export default function Header() {
             aria-label="Hariom Electronics – Home"
           >
             <div className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-[#E0E6F0]/70 bg-white shadow-sm group-hover:shadow-md transition-shadow duration-200">
-              <img
-                src="/logo-icon.png"
+              <Image
+                src="/logo-icon.webp"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-contain p-1"
+                width={40}
+                height={40}
+                priority
               />
             </div>
             <div className="hidden sm:flex flex-col justify-center leading-none gap-[3px]">
@@ -154,8 +159,8 @@ export default function Header() {
       </div>
 
       {/* ══ Mobile drawer — dark navy full-screen ══ */}
-      {menuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[60px] z-50 bg-[#071035] overflow-y-auto" style={{animation:'slideDown 0.25s ease-out'}}>
+      {menuOpen && typeof document !== 'undefined' && createPortal(
+        <div className="lg:hidden fixed inset-0 top-[60px] z-[100] bg-[#071035] overflow-y-auto overscroll-contain">
           <div className="flex items-center justify-between px-5 pt-5 pb-2">
             <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40">Menu</span>
             <button
@@ -217,7 +222,8 @@ export default function Header() {
               {t('nav.contact')}
             </Link>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   )

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hariomwebsite.vercel.app/sitemap.xml

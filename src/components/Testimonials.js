@@ -60,7 +60,7 @@ function StarRating({ rating }) {
 }
 
 export default function Testimonials() {
-  const { t, locale } = useTranslation()
+  const { t, lang: locale } = useTranslation()
   const [testimonials, setTestimonials] = useState(defaultTestimonials)
   const [storedReviews, setStoredReviews] = useState([])
   const scrollRef = useRef(null)

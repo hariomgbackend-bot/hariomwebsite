@@ -28,7 +28,7 @@ export default function CategoryGrid() {
   useEffect(function () {
     getCategories().then(function (cats) {
       setCategories(cats)
-    })
+    }).catch(function () {})
   }, [])
 
   return (

@@ -145,7 +145,7 @@ export default function OrderSuccessPage() {
                   </p>
                 )}
                 <p className="text-sm text-gray-600">
-                  {[order.customer.city, order.customer.state, order.customer.pincode].filter(Boolean).join(', ')}
+                  {[order.customer.locality, order.customer.city, order.customer.state, order.customer.pincode].filter(Boolean).join(', ')}
                 </p>
               </div>
             )}

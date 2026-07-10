@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
-import { getAllBrands, addBrand, updateBrand, deleteBrand, uploadBrandImage, deleteBrandImage } from '@/lib/brands'
+import { db } from '@/lib/firebase'
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { storage } from '@/lib/firebase'
+import staticBrands from '@/data/brands'
 
 function getCroppedImg(imageSrc, crop, zoom) {
   return new Promise(function (resolve) {
@@ -22,9 +26,72 @@ function getCroppedImg(imageSrc, crop, zoom) {
   })
 }
 
+var COLLECTION = 'brands'
+
+function mergeBrands(firestoreBrands) {
+  var merged = staticBrands.slice()
+  firestoreBrands.forEach(function (fb) {
+    var idx = merged.findIndex(function (sb) { return sb.name?.toLowerCase() === (fb.name || '').toLowerCase() })
+    if (idx !== -1) {
+      merged[idx] = { ...merged[idx], ...fb, _firestore: true }
+    } else {
+      merged.push({ ...fb, _firestore: true })
+    }
+  })
+  merged.sort(function (a, b) {
+    var oa = a.order != null ? a.order : 999
+    var ob = b.order != null ? b.order : 999
+    if (oa !== ob) return oa - ob
+    return (a.name || '').localeCompare(b.name || '')
+  })
+  return merged
+}
+
+async function loadAllBrands() {
+  if (!db) return staticBrands
+  try {
+    var snap = await getDocs(collection(db, COLLECTION))
+    var firestoreBrands = snap.docs.map(function (d) { return { id: d.id, ...d.data() } })
+    return mergeBrands(firestoreBrands)
+  } catch (e) {
+    console.error('[AdminBrands] Firestore read error:', e)
+    return staticBrands
+  }
+}
+
+async function addBrandToFirestore(data) {
+  var ref = await addDoc(collection(db, COLLECTION), { ...data, createdAt: serverTimestamp(), updatedAt: serverTimestamp() })
+  return ref.id
+}
+
+async function updateBrandInFirestore(id, data) {
+  await updateDoc(doc(db, COLLECTION, id), { ...data, updatedAt: serverTimestamp() })
+}
+
+async function deleteBrandFromFirestore(id) {
+  await deleteDoc(doc(db, COLLECTION, id))
+}
+
+async function uploadBrandImageToStorage(file, brandId) {
+  var storageRef = ref(storage, 'brands/' + brandId + '/' + file.name)
+  var snapshot = await uploadBytes(storageRef, file)
+  var url = await getDownloadURL(snapshot.ref)
+  return url
+}
+
+async function deleteBrandImageFromStorage(url) {
+  try {
+    var storageRef = ref(storage, url)
+    await deleteObject(storageRef)
+  } catch (e) {
+    console.error('deleteBrandImage error:', e)
+  }
+}
+
 export default function AdminBrandsPage() {
   var [brands, setBrands] = useState([])
   var [loading, setLoading] = useState(true)
+  var [debugInfo, setDebugInfo] = useState(null)
   var [showModal, setShowModal] = useState(false)
   var [editing, setEditing] = useState(null)
   var [saving, setSaving] = useState(false)
@@ -39,11 +106,39 @@ export default function AdminBrandsPage() {
   var [showCrop, setShowCrop] = useState(false)
 
   function loadBrands() {
-    setLoading(true)
-    getAllBrands().then(function (data) {
-      setBrands(data)
+    try {
+      setLoading(true)
+      var firestoreRaw = []
+      if (db) {
+        getDocs(collection(db, COLLECTION)).then(function (snap) {
+          firestoreRaw = snap.docs.map(function (d) { return { id: d.id, name: d.data().name } })
+          setDebugInfo({ count: firestoreRaw.length, names: firestoreRaw.map(function (b) { return b.name }) })
+        }).catch(function (e) {
+          setDebugInfo({ error: e.message })
+        })
+      } else {
+        setDebugInfo({ error: 'db is null' })
+      }
+      loadAllBrands().then(function (data) {
+        if (!data || !data.length) {
+          console.warn('[AdminBrands] loadAllBrands returned empty, falling back to staticBrands')
+          setBrands(staticBrands)
+        } else {
+          setBrands(data)
+        }
+        setLoading(false)
+      }).catch(function (err) {
+        console.error('[AdminBrands] loadAllBrands promise rejected:', err)
+        setBrands(staticBrands)
+        setLoading(false)
+        setDebugInfo({ error: 'loadAllBrands failed: ' + err.message })
+      })
+    } catch (err) {
+      console.error('[AdminBrands] loadBrands sync error:', err)
+      setBrands(staticBrands)
       setLoading(false)
-    })
+      setDebugInfo({ error: err.message })
+    }
   }
 
   useEffect(function () { loadBrands() }, [])
@@ -85,22 +180,22 @@ export default function AdminBrandsPage() {
       var imageUrl = editing ? editing.image || '' : ''
       if (imageFile && imagePreview && !showCrop) {
         var dataUrl = imagePreview
-        if (editing && editing.image) await deleteBrandImage(editing.image)
+        if (editing && editing.image) await deleteBrandImageFromStorage(editing.image)
         var blob = await (await fetch(dataUrl)).blob()
-        imageUrl = await uploadBrandImage(blob, 'brand_' + Date.now())
+        imageUrl = await uploadBrandImageToStorage(blob, 'brand_' + Date.now())
       } else if (imageFile && showCrop) {
         var cropped = await getCroppedImg(imagePreview, crop, zoom)
         var croppedBlob = await (await fetch(cropped)).blob()
-        if (editing && editing.image) await deleteBrandImage(editing.image)
-        imageUrl = await uploadBrandImage(croppedBlob, 'brand_' + Date.now())
+        if (editing && editing.image) await deleteBrandImageFromStorage(editing.image)
+        imageUrl = await uploadBrandImageToStorage(croppedBlob, 'brand_' + Date.now())
       }
 
       var data = { name: name.trim(), image: imageUrl, link: link.trim() || '' }
 
       if (editing) {
-        await updateBrand(editing.id, data)
+        await updateBrandInFirestore(editing.id, data)
       } else {
-        await addBrand(data)
+        await addBrandToFirestore(data)
       }
 
       setShowModal(false)
@@ -115,8 +210,8 @@ export default function AdminBrandsPage() {
   async function handleDelete(brand) {
     if (!confirm('Delete "' + brand.name + '"?')) return
     try {
-      if (brand.image) await deleteBrandImage(brand.image)
-      await deleteBrand(brand.id)
+      if (brand.image) await deleteBrandImageFromStorage(brand.image)
+      await deleteBrandFromFirestore(brand.id)
       loadBrands()
     } catch (err) {
       alert('Error deleting brand: ' + err.message)
@@ -137,6 +232,14 @@ export default function AdminBrandsPage() {
           Add Brand
         </button>
       </div>
+
+      {debugInfo && (
+        <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-600">
+          <strong>Firestore brands:</strong> {debugInfo.count != null ? debugInfo.count + ' found' : ''}
+          {debugInfo.names ? ' — ' + debugInfo.names.join(', ') : ''}
+          {debugInfo.error ? ' Error: ' + debugInfo.error : ''}
+        </div>
+      )}
 
       {loading ? (
         <div className="text-center py-12 text-gray-400">Loading brands...</div>

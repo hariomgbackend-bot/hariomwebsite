@@ -4,6 +4,25 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import ClientProviders from '@/components/ClientProviders'
+import { Plus_Jakarta_Sans, Inter, Noto_Sans_Devanagari } from 'next/font/google'
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-heading-family',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body-family',
+})
+
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ['devanagari', 'latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-devanagari-family',
+})
 
 export const metadata = {
   title: 'Hariom Electronics | Trusted Since 1988 | Electronics Store in Alandi',
@@ -19,14 +38,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${notoSansDevanagari.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <link rel="icon" href="/logo-icon.png" />
         <link rel="apple-touch-icon" href="/logo-icon.png" />
         <script

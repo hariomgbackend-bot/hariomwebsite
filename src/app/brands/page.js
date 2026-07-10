@@ -46,7 +46,7 @@ export default function BrandsPage() {
   useEffect(function () {
     getAllBrands().then(function (data) {
       if (data && data.length) setBrands(data)
-    })
+    }).catch(function () {})
   }, [])
 
   return (

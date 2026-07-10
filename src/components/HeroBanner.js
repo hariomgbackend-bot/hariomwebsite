@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useTranslation } from '@/hooks/useTranslation'
 
 export default function HeroBanner() {
@@ -148,10 +149,13 @@ export default function HeroBanner() {
                 border: '1px solid rgba(255,255,255,0.2)',
                 animation: 'hBorderGlow 3s ease-in-out infinite'
               }}>
-                <img
-                  src="/logo-hariom.png"
+                <Image
+                  src="/logo-hariom.webp"
                   alt="Hariom Electronics"
                   className="w-full h-full object-contain drop-shadow-2xl"
+                  width={288}
+                  height={288}
+                  priority
                 />
               </div>
               {/* Floating badge chips */}

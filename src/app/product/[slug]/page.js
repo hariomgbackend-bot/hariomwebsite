@@ -23,12 +23,15 @@ export default function ProductDetailPage() {
       if (!p) { setLoading(false); return }
       setProduct(p)
       setSelectedImage(0)
-      getCategoryBySlug(p.category).then(function (c) { setCategory(c) })
-      getProducts(p.category).then(function (all) {
+      Promise.all([
+        getCategoryBySlug(p.category),
+        getProducts(p.category)
+      ]).then(function ([c, all]) {
+        setCategory(c)
         setSimilar(all.filter(function (x) { return x.id !== p.id }).slice(0, 10))
-      })
+      }).catch(function () {})
       setLoading(false)
-    })
+    }).catch(function () { setLoading(false) })
   }, [params.slug])
 
   if (loading) {

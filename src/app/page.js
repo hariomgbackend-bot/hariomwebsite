@@ -1,10 +1,12 @@
+import dynamic from 'next/dynamic'
 import HeroBanner from '@/components/HeroBanner'
 import FeaturesStrip from '@/components/FeaturesStrip'
 import CategoryGrid from '@/components/CategoryGrid'
-import BrandShowcase from '@/components/BrandShowcase'
-import FeaturedProducts from '@/components/FeaturedProducts'
-import OffersCarousel from '@/components/OffersCarousel'
-import Testimonials from '@/components/Testimonials'
+
+const BrandShowcase = dynamic(() => import('@/components/BrandShowcase'))
+const FeaturedProducts = dynamic(() => import('@/components/FeaturedProducts'))
+const OffersCarousel = dynamic(() => import('@/components/OffersCarousel'))
+const Testimonials = dynamic(() => import('@/components/Testimonials'))
 
 export default function HomePage() {
   return (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 
 const defaults = { active: true, message: '' }
 
@@ -14,18 +14,16 @@ export function useSectionToggle(sectionId) {
 
     var ref = doc(db, 'site_sections', sectionId)
 
-    var unsub = onSnapshot(ref, function (snap) {
+    getDoc(ref).then(function (snap) {
       if (snap.exists()) {
         var d = snap.data()
         setState({ active: d.active !== false, message: d.message || '', loading: false })
       } else {
         setState({ active: true, message: '', loading: false })
       }
-    }, function () {
+    }).catch(function () {
       setState({ active: true, message: '', loading: false })
     })
-
-    return unsub
   }, [sectionId])
 
   return state

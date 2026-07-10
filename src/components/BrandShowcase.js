@@ -56,7 +56,7 @@ export default function BrandShowcase() {
   useEffect(function () {
     getAllBrands().then(function (data) {
       if (data && data.length) setBrands(data.slice(0, 18))
-    })
+    }).catch(function () {})
   }, [])
 
   return (

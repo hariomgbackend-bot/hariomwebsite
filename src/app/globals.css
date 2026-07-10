@@ -53,8 +53,8 @@
   --color-crimson-600: #6e1429;
   --color-crimson-700: #560f20;
 
-  --font-heading: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
-  --font-body: 'Inter', 'Noto Sans Devanagari', sans-serif;
+  --font-heading: var(--font-heading-family), var(--font-devanagari-family), sans-serif;
+  --font-body: var(--font-body-family), var(--font-devanagari-family), sans-serif;
 }
 
 html { scroll-behavior: smooth; }
