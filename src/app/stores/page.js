@@ -1,11 +1,28 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useTranslation } from '@/hooks/useTranslation'
 import stores from '@/data/stores'
 import StoreCard from '@/components/StoreCard'
+import ReviewCard, { StarRating } from '@/components/ReviewCard'
+import { getGoogleReviews } from '@/lib/reviews'
 
 export default function StoresPage() {
   const { lang, t } = useTranslation()
+  const [reviewsByStore, setReviewsByStore] = useState({})
+
+  useEffect(function () {
+    var cancelled = false
+    getGoogleReviews().then(function (list) {
+      if (cancelled) return
+      var map = {}
+      list.forEach(function (s) { map[s.storeId] = s })
+      setReviewsByStore(map)
+    }).catch(function () {})
+    return function () { cancelled = true }
+  }, [])
+
+  var electronicsStores = stores.filter(function (s) { return s.placeId })
 
   return (
     <>
@@ -28,6 +45,69 @@ export default function StoresPage() {
           </div>
         </div>
       </section>
+
+      {electronicsStores.length > 0 && (
+        <section className="py-12 md:py-16 bg-white">
+          <div className="container-custom">
+            <div className="text-center mb-10">
+              <span className="section-badge">Reviews</span>
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-800">Customer Reviews</h2>
+              <p className="text-gray-500 mt-2">What our customers say about us on Google</p>
+            </div>
+            <div className="space-y-12">
+              {electronicsStores.map(function (store) {
+                var storeName = lang === 'hi' ? (store.nameHi || store.name) : lang === 'mr' ? (store.nameMr || store.name) : store.name
+                var sr = reviewsByStore[store.id]
+                return (
+                  <div key={store.id}>
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <h3 className="text-lg font-bold text-brand-800">{storeName}</h3>
+                        {sr && sr.count > 0 && (
+                          <div className="flex items-center gap-1.5 text-sm">
+                            <span className="font-bold text-[#1b1b1d]">{Number(sr.rating).toFixed(1)}</span>
+                            <StarRating rating={Math.round(sr.rating)} />
+                            <span className="text-gray-400">({sr.count.toLocaleString('en-IN')} Google reviews)</span>
+                          </div>
+                        )}
+                      </div>
+                      {sr && sr.mapsUri && (
+                        <a href={sr.mapsUri} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#FF5E1A] hover:underline">
+                          Read all reviews on Google
+                        </a>
+                      )}
+                    </div>
+                    {sr && sr.reviews && sr.reviews.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {sr.reviews.map(function (r) {
+                          return (
+                            <ReviewCard
+                              key={r.reviewId || r.author + r.text}
+                              name={r.author}
+                              role="Google Review"
+                              avatar={r.authorPhoto}
+                              rating={r.rating}
+                              text={r.text}
+                              relativeTime={r.relativeTime}
+                              sourceUrl={r.authorUri || ''}
+                              className="h-full"
+                            />
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="bg-gray-50 rounded-xl border border-gray-100 p-8 text-center text-sm text-gray-400">
+                        Loading Google reviews…
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-center text-xs text-gray-400 mt-8">Powered by Google</p>
+          </div>
+        </section>
+      )}
 
       <section className="py-12 md:py-16 bg-white">
         <div className="container-custom">

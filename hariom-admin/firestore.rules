@@ -32,6 +32,12 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // REVIEWS: public read, admin write (Google reviews synced server-side)
+    match /reviews/{storeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // TALLY PRODUCTS: admin read/write (Tally sync index)
     match /tally_products/{docId} {
       allow read: if true;

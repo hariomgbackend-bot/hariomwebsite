@@ -74,10 +74,22 @@ See `.env.local.example`:
 - `NEXT_PUBLIC_FIREBASE_*` — Firebase web config (storefront + admin share the project)
 - `NEXT_PUBLIC_WHATSAPP_NUMBER` — WhatsApp click-to-chat number
 - `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` — server-side Razorpay keys
+- `GOOGLE_PLACES_API_KEY` — Google Places API (New) key, server-side only. Powers the Google reviews on the homepage carousel and Stores page
+- `FIREBASE_CLIENT_EMAIL` / `FIREBASE_PRIVATE_KEY` — optional Firebase Admin service-account credentials (used by `/api/admin/sync-auth` and the Google-reviews Firestore cache)
+
+## Google reviews
+
+The homepage Reviews carousel and the Stores page show live Google reviews for the two electronics stores (Alandi main store + Dhanore branch). Flow:
+
+1. `GET /api/google-reviews` calls the Google Places API (New) for each store's Place ID (stored in `src/data/stores.js`), normalizes the data, and caches it in the `reviews` Firestore collection (6-hour TTL).
+2. `src/lib/reviews.js` fetches from that endpoint and is consumed by `src/components/Testimonials.js` and `src/app/stores/page.js`.
+3. If Google data is unavailable, the homepage falls back to the static reviews in `src/data/testimonials.js`.
+
+Setup: enable **Places API (New)** in Google Cloud Console, create a restricted API key, and set it as `GOOGLE_PLACES_API_KEY` in Vercel. The Places API returns up to 5 most-relevant reviews per location.
 
 ## Firestore collections
 
-`products`, `categories`, `brands`, `promotions`, `enquiries`, `orders`, `customers`, `returns`.
+`products`, `categories`, `brands`, `promotions`, `reviews`, `enquiries`, `orders`, `customers`, `returns`.
 
 ## License
 
