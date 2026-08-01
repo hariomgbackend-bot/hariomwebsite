@@ -1,10 +1,10 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
+import stores from '@/data/stores'
 
-const STORES = [
-  { storeId: 'main-store', placeId: '0x3bc2c8831512374f:0x82bee502536ab580' },
-  { storeId: 'branch-1', placeId: '0x3bc2c76befcccc9b:0x5a7567068d9543ab' }
-]
+const STORES = stores
+  .filter(function (s) { return s.placeId })
+  .map(function (s) { return { storeId: s.id, placeId: s.placeId } })
 
 const TTL_MS = 6 * 60 * 60 * 1000
 const FIELD_MASK = 'id,displayName,rating,userRatingCount,reviews,googleMapsUri'

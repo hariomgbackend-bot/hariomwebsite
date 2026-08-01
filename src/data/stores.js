@@ -1,7 +1,7 @@
 const stores = [
   {
     id: 'main-store',
-    placeId: '0x3bc2c8831512374f:0x82bee502536ab580',
+    placeId: 'ChIJTzcSFYPIwjsRgLVqUwLlvoI',
     name: 'Hari Om Electronics - Main Store',
     nameHi: 'हरि ओम इलेक्ट्रॉनिक्स - मुख्य स्टोर',
     nameMr: 'हरी ओम इलेक्ट्रॉनिक्स - मुख्य स्टोअर',
@@ -22,7 +22,7 @@ const stores = [
   },
   {
     id: 'branch-1',
-    placeId: '0x3bc2c76befcccc9b:0x5a7567068d9543ab',
+    placeId: 'ChIJm8zM72vHwjsRq0OVjQZndVo',
     name: 'Hari Om Electronics & Appliances - Dhanore',
     nameHi: 'हरि ओम इलेक्ट्रॉनिक्स & अप्लायंसेज - धानोरे',
     nameMr: 'हरी ओम इलेक्ट्रॉनिक्स & अप्लायन्सेस - धानोरे',
