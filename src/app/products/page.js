@@ -31,16 +31,14 @@ export default function ProductsPage() {
   var [sort, setSort] = useState('name-asc')
   var [showFilters, setShowFilters] = useState(false)
 
-  if (sectionLoading) return null
-  if (!active) return <SectionPlaceholder message={message} showSnake={true} />
-
   useEffect(function () {
+    if (!active || sectionLoading) return
     Promise.all([getProducts(), getCategories()]).then(function ([products, cats]) {
       setAllProducts(products)
       setCategories(cats)
       setLoading(false)
     }).catch(function () { setLoading(false) })
-  }, [])
+  }, [active, sectionLoading])
 
   var filtered = useMemo(function () {
     var result = allProducts.slice()
@@ -69,6 +67,9 @@ export default function ProductsPage() {
 
     return result
   }, [allProducts, selectedCategory, search, sort])
+
+  if (sectionLoading) return null
+  if (!active) return <SectionPlaceholder message={message} showSnake={true} />
 
   return (
     <>
