@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
               areaServed: 'Alandi, Maharashtra, India',
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: 'Shree Krishna Complex, Alandi Road',
+                streetAddress: 'Ram Krishan Complex, Alandi Road',
                 addressLocality: 'Alandi',
                 addressRegion: 'Maharashtra',
                 postalCode: '412105',
